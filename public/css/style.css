@@ -277,6 +277,7 @@ section.active {
     font-weight: 500;
     border: 2px solid var(--text-color);
     transition: all 0.3s;
+    display: block;
 }
 
 .btn:hover {
