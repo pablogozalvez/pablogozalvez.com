@@ -48,3 +48,5 @@ function loadProjects() {
             console.error('Error loading projects:', error);
         });
 }
+
+console.log("test");
