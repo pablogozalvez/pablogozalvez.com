@@ -166,6 +166,7 @@ footer {
     left: 0;
     width: 100%;
     background-color: var(--container-color);
+    opacity: 0.95;
     text-align: center;
     padding: 20px 0;
     transition: background-color var(--transition-speed);
