@@ -1,15 +1,6 @@
-const menuItems = document.querySelectorAll('#menu ul li a');
+const menuLinks = document.querySelectorAll('a[href^="#"]');
 const projectCardTemplate = document.getElementById('project-card-template');
 const projectContainer = document.getElementById('project-container');
-
-menuItems.forEach(item => {
-    item.addEventListener('click', function() {
-        menuItems.forEach(item => item.classList.remove('active'));
-        this.classList.add('active');
-        document.querySelectorAll('.card').forEach(card => card.classList.remove('active'));
-        document.getElementById(this.dataset.category).classList.add('active');
-    });
-});
 
 document.addEventListener('scroll', function() {
     var menu = document.getElementById('menu');
@@ -23,6 +14,7 @@ document.addEventListener('scroll', function() {
 document.addEventListener('DOMContentLoaded', (event) => {
     hljs.highlightAll();
     loadProjects();
+    setupLinksAnimation();
 });
 
 function loadProjects() {
@@ -47,4 +39,34 @@ function loadProjects() {
         .catch(error => {
             console.error('Error loading projects:', error);
         });
+}
+
+
+function setupLinksAnimation() {
+    menuLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            menuLinks.forEach(link => {
+                const targetId = link.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+                
+                if (targetSection) {
+                    targetSection.classList.remove('active');
+                }
+            });
+            e.preventDefault();
+            
+            const targetId = link.getAttribute('href').substring(1);
+            const targetSection = document.getElementById(targetId);
+            
+            if (targetSection) {
+                targetSection.classList.add('active');
+                
+                const topOffset = targetSection.offsetTop - 50;
+                window.scrollTo({
+                    top: topOffset,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
 }
