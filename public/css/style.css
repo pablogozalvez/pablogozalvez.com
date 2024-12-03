@@ -34,6 +34,10 @@ body {
     line-height: 1.6;
 }
 
+h2 {
+    margin: 0 10px;
+}
+
 pre {
     border-radius: 8px;
     overflow-x: auto;
@@ -66,7 +70,7 @@ pre code p {
     bottom: -50%;
     width: 200%;
     height: 200vh;
-    background: transparent url('../assets/img/noise-transparent.png') repeat 0 0;
+    background: transparent url('../assets/img/noise-transparent.webp') repeat 0 0;
     background-repeat: repeat;
     animation: bg-animation .5s infinite;
     opacity: .9;
@@ -257,7 +261,7 @@ section.active {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 0 1.5rem;
-    padding: 0 1.5rem ;
+    padding: 0 1rem ;
 }
 
 .skill-list {
