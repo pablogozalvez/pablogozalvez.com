@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 });
 
 function loadProjects() {
-    fetch('../data/projects.json')
+    fetch('./assets/js/data/projects.json')
         .then(response => response.json())
         .then(data => {
             data.projects.forEach(project => {

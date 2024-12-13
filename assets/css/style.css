@@ -70,7 +70,7 @@ pre code p {
     bottom: -50%;
     width: 200%;
     height: 200vh;
-    background: transparent url('../assets/img/noise-transparent.webp') repeat 0 0;
+    background: transparent url('../img/noise-transparent.webp') repeat 0 0;
     background-repeat: repeat;
     animation: bg-animation .5s infinite;
     opacity: .9;

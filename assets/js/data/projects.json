@@ -14,7 +14,7 @@
         },
         {
             "name": "PseudoBlocks",
-            "description": "Create simple programs using a visual interface with pseudocode blocks. Users can connect blocks of actions to form sequences of instructions.",
+            "description": "Create simple programs using a visual interface with pseudocode blocks. Made from scratch in C# winforms.",
             "image": "assets/img/pseudoblocks.webp",
             "url": "https://github.com/pablogozalvez/PseudoBlocks"
         },
