@@ -7,16 +7,16 @@
             "url": "https://jayoru.itch.io/tricky-mansion"
         },
         {
-            "name": "Clumsy Mimics",
-            "description": "Game created for the fifth UJI Game Jam. Everything was created exclusively by our team, being completed in less than 48 hours.",
-            "image": "assets/img/clumsy-mimics.webp",
-            "url": "https://github.com/pablogozalvez/ClumsyMimics"
-        },
-        {
             "name": "PseudoBlocks",
             "description": "Create simple programs using a visual interface with pseudocode blocks. Made from scratch in C# winforms.",
             "image": "assets/img/pseudoblocks.webp",
             "url": "https://github.com/pablogozalvez/PseudoBlocks"
+        },
+        {
+            "name": "Clumsy Mimics",
+            "description": "Game created for the fifth UJI Game Jam. Everything was created exclusively by our team, being completed in less than 48 hours.",
+            "image": "assets/img/clumsy-mimics.webp",
+            "url": "https://github.com/pablogozalvez/ClumsyMimics"
         },
         {
             "name": "Super Mario Phaser",
