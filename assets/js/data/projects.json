@@ -19,6 +19,12 @@
             "url": "https://github.com/pablogozalvez/ClumsyMimics"
         },
         {
+            "name": "Scroll Carousel",
+            "description": "A Unity component for creating dynamic and interactive carousels in user interfaces - ideal for menus, galleries and more!",
+            "image": "assets/img/scroll-carousel.webp",
+            "url": "https://github.com/pablogozalvez/ScrollCarousel"
+        },
+        {
             "name": "Super Mario Phaser",
             "description": "Recreation of the classic Super Mario Bros game using the Phaser framework, featuring random level generation.",
             "image": "assets/img/super-mario-phaser.webp",
