@@ -1,0 +1,78 @@
+{
+    "personalInfo": {
+        "name": "Pablo Gozálvez",
+        "title": "Full Stack Developer",
+        "email": "pablogozalvezr@gmail.com",
+        "location": "Alicante, Spain",
+        "website": "https://pablogozalvez.com"
+    },
+    "summary": "Passionate Full Stack developer with experience in web development and multiplatform applications. I have a strong knowledge of programming languages, databases, and frameworks. I am a fast learner, problem solver, and team player.",
+    "experience": [
+        {
+            "title": "Computer Technician",
+            "company": "University of Alicante",
+            "location": "Alicante, Spain",
+            "startDate": "2023-01",
+            "endDate": "2023-7",
+            "description": "Provided technical support, solved hardware and software problems and maintenance.",
+            "technologies": ["Problem Solving", "Teamwork", "Windows", "Linux", "Networking", "Hardware", "Software"]
+        }
+    ],
+    "education": [
+        {
+            "degree": "Technician in Microcomputer Systems and Networks",
+            "institution": "IES San Vicente",
+            "location": "San Vicente del Raspeig, Alicante",
+            "startDate": "2021-09",
+            "endDate": "2023-01",
+            "description": "Acquired knowledge in computer systems, networks, databases, web development, cybersecurity, and operating systems."
+        },
+        {
+            "degree": "Higher Technician in Web Applications Development and Multiplatform Applications Development",
+            "institution": "IES San Vicente",
+            "location": "San Vicente del Raspeig, Alicante",
+            "startDate": "2023-09",
+            "endDate": "Current",
+            "description": "Studying a double degree in Web Applications Development and Multiplatform Applications Development. I'm using technologies such as HTML, CSS, JavaScript, C#, Java, Kotlin TypeScript, Angular, PHP, Node.js, Android, Git, MySql, PostgreSQL SQLite and MongoDB."
+        }
+    ],
+    "skills": {
+        "technical": [
+            "C#",
+            "Java",
+            "Kotlin",
+            "HTML",
+            "CSS",
+            "JavaScript",
+            "TypeScript",
+            "Angular",
+            "Node.js",
+            "PHP",
+            "MongoDB",
+            "MySql",
+            "PostgreSQL",
+            "SQLite",
+            "Next.js",
+            "React",
+            "Docker",
+            "Git",
+            "Windows",
+            "Linux"
+        ],
+        "soft": ["Problem Solving", "Teamwork", "Communication", "Self-Learning", "Fast Learning", "Critical Thinking"]
+    },
+    "languages": [
+        {
+            "name": "English",
+            "level": "High"
+        },
+        {
+            "name": "Spanish",
+            "level": "Native"
+        },
+        {
+            "name": "Valencian",
+            "level": "Native"
+        }
+    ]
+}

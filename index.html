@@ -1,248 +1,355 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <!-- SEO Optimization Improvements -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <head>
+        <!-- SEO Optimization Improvements -->
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- SEO Meta Tags -->
-    <title>Pablo Gozálvez - Full Stack Developer</title>
-    <meta name="description" content="Pablo Gozálvez - Full Stack Developer specializing in Java, JavaScript, TypeScript, Angular, Node.js, and more. Explore my projects and skills.">
-    <meta name="keywords" content="Pablo Gozálvez, Full Stack Developer, Java, JavaScript, TypeScript, Angular, Node.js, Web Development, Software Engineer">
-    
-    <!-- SEO Open Graph Tags -->
-    <meta property="og:title" content="Pablo Gozálvez - Full Stack Developer">
-    <meta property="og:description" content="Pablo Gozálvez - Full Stack Developer specializing in Java, JavaScript, TypeScript, Angular, Node.js, and more. Explore my projects and skills.">
-    <meta property="og:image" content="https://pablogozalvez.com/assets/img/meta/og-image.jpg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Pablo Gozálvez's Projects page preview">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://pablogozalvez.com">
+        <!-- SEO Meta Tags -->
+        <title>Pablo Gozálvez - Full Stack Developer</title>
+        <meta
+            name="description"
+            content="Pablo Gozálvez - Full Stack Developer specializing in Java, JavaScript, TypeScript, Angular, Node.js, and more. Explore my projects and skills."
+        />
+        <meta
+            name="keywords"
+            content="Pablo Gozálvez, Full Stack Developer, Java, JavaScript, TypeScript, Angular, Node.js, Web Development, Software Engineer"
+        />
 
-    <!-- SEO Twitter Card Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://www.pablogozalvez.com/">
-    <meta name="twitter:image" content="https://pablogozalvez.com/assets/img/meta/twitter-image.jpg">
-    <meta name="twitter:image:alt" content="Pablo Gozálvez's Projects page preview">
-    <meta name="twitter:title" content="Pablo Gozálvez - Full Stack Developer">
-    <meta name="twitter:description" content="Pablo Gozálvez - Full Stack Developer specializing in Java, JavaScript, TypeScript, Angular, Node.js, and more. Explore my projects and skills.">
+        <!-- SEO Open Graph Tags -->
+        <meta property="og:title" content="Pablo Gozálvez - Full Stack Developer" />
+        <meta
+            property="og:description"
+            content="Pablo Gozálvez - Full Stack Developer specializing in Java, JavaScript, TypeScript, Angular, Node.js, and more. Explore my projects and skills."
+        />
+        <meta property="og:image" content="https://pablogozalvez.com/assets/img/meta/og-image.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Pablo Gozálvez's Projects page preview" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://pablogozalvez.com" />
 
-    <!-- SEO Canonical Link -->
-    <link rel="canonical" href="https://pablogozalvez.com">
+        <!-- SEO Twitter Card Tags -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://www.pablogozalvez.com/" />
+        <meta name="twitter:image" content="https://pablogozalvez.com/assets/img/meta/twitter-image.jpg" />
+        <meta name="twitter:image:alt" content="Pablo Gozálvez's Projects page preview" />
+        <meta name="twitter:title" content="Pablo Gozálvez - Full Stack Developer" />
+        <meta
+            name="twitter:description"
+            content="Pablo Gozálvez - Full Stack Developer specializing in Java, JavaScript, TypeScript, Angular, Node.js, and more. Explore my projects and skills."
+        />
 
-    <!-- Favicon principal en formato ICO (multi-tamaño) -->
-    <link rel="icon" href="assets/img/favicon/favicon.ico" type="image/x-icon">
+        <!-- SEO Canonical Link -->
+        <link rel="canonical" href="https://pablogozalvez.com" />
 
-    <!-- Favicons en PNG para tamaños específicos -->
-    <link rel="icon" href="assets/img/favicon/favicon-16.png" type="image/png" sizes="16x16">
-    <link rel="icon" href="assets/img/favicon/favicon-32.png" type="image/png" sizes="32x32">
-    <link rel="icon" href="assets/img/favicon/favicon-96.png" type="image/png" sizes="96x96">
+        <!-- Favicon principal en formato ICO (multi-tamaño) -->
+        <link rel="icon" href="assets/img/favicon/favicon.ico" type="image/x-icon" />
 
-    <!-- External Library Preconnect and Preload -->
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
-    
-    <!-- Preload Critical Assets -->
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js" as="script">
-    <link rel="preload" href="assets/js/main.js" as="script">
+        <!-- Favicons en PNG para tamaños específicos -->
+        <link rel="icon" href="assets/img/favicon/favicon-16.png" type="image/png" sizes="16x16" />
+        <link rel="icon" href="assets/img/favicon/favicon-32.png" type="image/png" sizes="32x32" />
+        <link rel="icon" href="assets/img/favicon/favicon-96.png" type="image/png" sizes="96x96" />
 
-    <!-- Structured Data - JSON-LD -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Person",
-        "name": "Pablo Gozálvez",
-        "jobTitle": "Full Stack Developer",
-        "url": "https://www.pablogozalvez.com/",
-        "sameAs": [
-            "https://www.linkedin.com/in/pablogozálvez/",
-            "https://github.com/pablogozalvez",
-            "https://decauwu.itch.io/"
-        ],
-        "skills": [
-            "Java", "JavaScript", "TypeScript", "C#", "PHP", 
-            "Kotlin", "Angular", "Node.js", "Express", 
-            "Spring", "MySQL", "MongoDB", "Docker"
-        ],
-        "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Alicante",
-            "addressCountry": "Spain"
-        },
-        "alumniOf": {
-            "@type": "EducationalOrganization",
-            "name": "IES San Vicente"
-        }
-    }
-    </script>
-</head>
-<body>
-    <header>
-        <div id="menu" class="menu">
-            <nav>
-                <ul>
-                    <li><a href="#about" data-category="about">ABOUT ME</a></li>
-                    <li class="v-separator"></li>
-                    <li><a href="#projects" data-category="projects">PROJECTS</a></li>
-                    <li class="v-separator"></li>
-                    <li><a href="#contact" data-category="contact">CONTACT ME</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-    <main>
-        <div class="card">
-            <h1>Pablo Gozálvez</h1>
-            <p class="card-description">Full Stack Developer</p>
-        </div>
+        <!-- External Library Preconnect and Preload -->
+        <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+        <link rel="stylesheet" href="assets/css/style.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css"
+        />
 
-        <section id="about" class="card active" aria-labelledby="about-heading">
-            <h2 id="about-heading">About Me</h2>
-            <div class="h-separator"></div>
-            <pre aria-labelledby="java-introduction-description"><code class="language-java" data-lang="java">
+        <!-- Preload Critical Assets -->
+        <link
+            rel="preload"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js"
+            as="script"
+        />
+        <link rel="preload" href="assets/js/main.js" as="script" />
+
+        <!-- Structured Data - JSON-LD -->
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "Person",
+                "name": "Pablo Gozálvez",
+                "jobTitle": "Full Stack Developer",
+                "url": "https://www.pablogozalvez.com/",
+                "sameAs": [
+                    "https://www.linkedin.com/in/pablogozálvez/",
+                    "https://github.com/pablogozalvez",
+                    "https://decauwu.itch.io/"
+                ],
+                "skills": [
+                    "Java",
+                    "JavaScript",
+                    "TypeScript",
+                    "C#",
+                    "PHP",
+                    "Kotlin",
+                    "Angular",
+                    "Node.js",
+                    "Express",
+                    "Spring",
+                    "MySQL",
+                    "MongoDB",
+                    "Docker"
+                ],
+                "address": {
+                    "@type": "PostalAddress",
+                    "addressLocality": "Alicante",
+                    "addressCountry": "Spain"
+                },
+                "alumniOf": {
+                    "@type": "EducationalOrganization",
+                    "name": "IES San Vicente"
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <header>
+            <div id="menu" class="menu">
+                <nav>
+                    <ul>
+                        <li><a href="#about" data-category="about">ABOUT ME</a></li>
+                        <li class="v-separator"></li>
+                        <li><a href="#projects" data-category="projects">PROJECTS</a></li>
+                        <li class="v-separator"></li>
+                        <li><a href="#contact" data-category="contact">CONTACT ME</a></li>
+                        <li class="v-separator"></li>
+                        <li><a href="#cv" data-category="cv">CV</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        <main>
+            <div class="card">
+                <h1>Pablo Gozálvez</h1>
+                <p class="card-description">Full Stack Developer</p>
+            </div>
+
+            <section id="about" class="card active" aria-labelledby="about-heading">
+                <h2 id="about-heading">About Me</h2>
+                <div class="h-separator"></div>
+                <pre aria-labelledby="java-introduction-description"><code class="language-java" data-lang="java">
     public class PabloGozalvez {
         public static void main(String[] args) {
             System.out.println("Hi! I'm Pablo, a Full Stack Developer based in Alicante, Spain.");
         }
     }
             </code></pre>
-            <p id="java-introduction-description" style="display: none;">
-                Example Java code introducing Pablo Gozálvez.
-            </p>
-            <div class="card-grid">
-                <div class="card hoverable">
-                    <h3>Languages</h3>
-                    <div class="h-separator"></div>
-                    <ul class="skill-list">
-                        <li><i class="devicon-java-plain"></i></li>
-                        <li><i class="devicon-javascript-plain"></i></li>
-                        <li><i class="devicon-typescript-plain"></i></li>
-                        <li><i class="devicon-csharp-plain"></i></li>
-                        <li><i class="devicon-php-plain"></i></li>
-                        <li><i class="devicon-kotlin-plain"></i></li>
-                    </ul>
+                <p id="java-introduction-description" style="display: none">
+                    Example Java code introducing Pablo Gozálvez.
+                </p>
+                <div class="card-grid">
+                    <div class="card hoverable">
+                        <h3>Languages</h3>
+                        <div class="h-separator"></div>
+                        <ul class="skill-list">
+                            <li><i class="devicon-java-plain"></i></li>
+                            <li><i class="devicon-javascript-plain"></i></li>
+                            <li><i class="devicon-typescript-plain"></i></li>
+                            <li><i class="devicon-csharp-plain"></i></li>
+                            <li><i class="devicon-php-plain"></i></li>
+                            <li><i class="devicon-kotlin-plain"></i></li>
+                        </ul>
+                    </div>
+                    <div class="card hoverable">
+                        <h3>Frontend</h3>
+                        <div class="h-separator"></div>
+                        <ul class="skill-list">
+                            <li><i class="devicon-angularjs-plain"></i></li>
+                            <li><i class="devicon-bootstrap-plain"></i></li>
+                            <li><i class="devicon-java-plain"></i>Fx</li>
+                            <li><i class="devicon-androidstudio-plain"></i></li>
+                            <li><i class="devicon-nextjs-plain"></i></li>
+                        </ul>
+                    </div>
+                    <div class="card hoverable">
+                        <h3>Backend</h3>
+                        <div class="h-separator"></div>
+                        <ul class="skill-list">
+                            <li><i class="devicon-nodejs-plain"></i></li>
+                            <li><i class="devicon-express-original"></i></li>
+                            <li><i class="devicon-spring-plain"></i></li>
+                            <li><i class="devicon-laravel-original"></i></li>
+                        </ul>
+                    </div>
+                    <div class="card hoverable">
+                        <h3>Databases</h3>
+                        <div class="h-separator"></div>
+                        <ul class="skill-list">
+                            <li><i class="devicon-mysql-plain"></i></li>
+                            <li><i class="devicon-mongodb-plain"></i></li>
+                            <li><i class="devicon-postgresql-plain"></i></li>
+                            <li><i class="devicon-sqlite-plain"></i></li>
+                            <li><i class="devicon-microsoftsqlserver-plain"></i></li>
+                        </ul>
+                    </div>
+                    <div class="card hoverable">
+                        <h3>Tools</h3>
+                        <div class="h-separator"></div>
+                        <ul class="skill-list">
+                            <li><i class="devicon-git-plain"></i></li>
+                            <li><i class="devicon-docker-plain"></i></li>
+                            <li><i class="devicon-composer-line"></i></li>
+                            <li><i class="devicon-jira-plain"></i></li>
+                            <li><i class="devicon-junit-plain"></i></li>
+                        </ul>
+                    </div>
+                    <div class="card hoverable">
+                        <h3>Game Development</h3>
+                        <div class="h-separator"></div>
+                        <ul class="skill-list">
+                            <li><i class="devicon-unity-plain"></i></li>
+                            <li><i class="devicon-godot-plain"></i></li>
+                            <li><i class="devicon-blender-original"></i></li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="card hoverable">
-                    <h3>Frontend</h3>
-                    <div class="h-separator"></div>
-                    <ul class="skill-list">
-                        <li><i class="devicon-angularjs-plain"></i></li>
-                        <li><i class="devicon-bootstrap-plain"></i></li>
-                        <li><i class="devicon-java-plain"></i>Fx</li>
-                        <li><i class="devicon-androidstudio-plain"></i></li>
-                        <li><i class="devicon-nextjs-plain"></i></li>
-                    </ul>
-                </div>
-                <div class="card hoverable">
-                    <h3>Backend</h3>
-                    <div class="h-separator"></div>
-                    <ul class="skill-list">
-                        <li><i class="devicon-nodejs-plain"></i></li>
-                        <li><i class="devicon-express-original"></i></li>
-                        <li><i class="devicon-spring-plain"></i></li>
-                        <li><i class="devicon-laravel-original"></i></li>
-                    </ul>
-                </div>
-                <div class="card hoverable">
-                    <h3>Databases</h3>
-                    <div class="h-separator"></div>
-                    <ul class="skill-list">
-                        <li><i class="devicon-mysql-plain"></i></li>
-                        <li><i class="devicon-mongodb-plain"></i></li>
-                        <li><i class="devicon-postgresql-plain"></i></li>
-                        <li><i class="devicon-sqlite-plain"></i></li>
-                        <li><i class="devicon-microsoftsqlserver-plain"></i></li>
-                    </ul>
-                </div>
-                <div class="card hoverable">
-                    <h3>Tools</h3>
-                    <div class="h-separator"></div>
-                    <ul class="skill-list">
-                        <li><i class="devicon-git-plain"></i></li>
-                        <li><i class="devicon-docker-plain"></i></li>
-                        <li><i class="devicon-composer-line"></i></li>
-                        <li><i class="devicon-jira-plain"></i></li>
-                        <li><i class="devicon-junit-plain"></i></li>
-                    </ul>
-                </div>
-                <div class="card hoverable">
-                    <h3>Game Development</h3>
-                    <div class="h-separator"></div>
-                    <ul class="skill-list">
-                        <li><i class="devicon-unity-plain"></i></li>
-                        <li><i class="devicon-godot-plain"></i></li>
-                        <li><i class="devicon-blender-original"></i></li>
-                    </ul>
-                </div>                
-            </div>
-        </section>
+            </section>
 
-        <section id="projects" class="card" aria-labelledby="projects-heading">
-            <h2 id="projects-heading">Completed Projects</h2>
-            <div class="h-separator"></div>
-            <p class="card-description">See some of the projects I have worked on!</p>
-            <p class="card-description">Explore all of my projects on <a class="devicon-github-original social-icon" href="https://github.com/pablogozalvez" target="_blank" aria-label="GitHub Profile"></a></p>
-            <div id="project-container" class="card-grid"></div>
-        </section>
+            <section id="projects" class="card" aria-labelledby="projects-heading">
+                <h2 id="projects-heading">Completed Projects</h2>
+                <div class="h-separator"></div>
+                <p class="card-description">See some of the projects I have worked on!</p>
+                <p class="card-description">
+                    Explore all of my projects on
+                    <a
+                        class="devicon-github-original social-icon"
+                        href="https://github.com/pablogozalvez"
+                        target="_blank"
+                        aria-label="GitHub Profile"
+                    ></a>
+                </p>
+                <div id="project-container" class="card-grid"></div>
+            </section>
 
-        <section id="contact" class="card" aria-labelledby="contact-heading">
-            <h2 id="contact-heading">Get in Touch with Me</h2>
-            <div class="h-separator"></div>
-            <pre aria-label="Java code"><code class="language-java java">
+            <section id="contact" class="card" aria-labelledby="contact-heading">
+                <h2 id="contact-heading">Get in Touch with Me</h2>
+                <div class="h-separator"></div>
+                <pre aria-label="Java code"><code class="language-java java">
     public class Contact {
         public static void main(String[] args) {
             System.out.println("You can contact me in different ways:");
         }
     }
             </code></pre>
-            <p class="card-description">Via email: <a href="mailto:pablogozalvezr@gmail.com">pablogozalvezr@gmail.com</a></p>
-            <p class="card-description">Social media:
-                <a class="devicon-linkedin-plain social-icon" href="https://www.linkedin.com/in/pablogoz%C3%A1lvez/" target="_blank" aria-label="LinkedIn Profile"></a>
-                <a class="devicon-github-original social-icon" href="https://github.com/pablogozalvez" target="_blank" aria-label="GitHub Profile"></a>
-                <a class="fa-solid fa-gamepad social-icon" href="https://decauwu.itch.io/" target="_blank" aria-label="Itch.io Profile"></a>
-                <a class="devicon-twitter-original social-icon" href="https://x.com/decaa21" target="_blank" aria-label="Twitter (X) Profile"></a>
-            </p>
-        </section>
-    </main>
+                <p class="card-description">
+                    Via email: <a href="mailto:pablogozalvezr@gmail.com">pablogozalvezr@gmail.com</a>
+                </p>
+                <p class="card-description">
+                    Social media:
+                    <a
+                        class="devicon-linkedin-plain social-icon"
+                        href="https://www.linkedin.com/in/pablogoz%C3%A1lvez/"
+                        target="_blank"
+                        aria-label="LinkedIn Profile"
+                    ></a>
+                    <a
+                        class="devicon-github-original social-icon"
+                        href="https://github.com/pablogozalvez"
+                        target="_blank"
+                        aria-label="GitHub Profile"
+                    ></a>
+                    <a
+                        class="fa-solid fa-gamepad social-icon"
+                        href="https://decauwu.itch.io/"
+                        target="_blank"
+                        aria-label="Itch.io Profile"
+                    ></a>
+                    <a
+                        class="devicon-twitter-original social-icon"
+                        href="https://x.com/decaa21"
+                        target="_blank"
+                        aria-label="Twitter (X) Profile"
+                    ></a>
+                </p>
+            </section>
 
-    <footer role="contentinfo">
-        <ul class="social-media-icons">
-            <li><a class="devicon-linkedin-plain" href="https://www.linkedin.com/in/pablogoz%C3%A1lvez/" target="_blank" aria-label="LinkedIn Profile"></a></li>
-            <li><a class="devicon-github-original" href="https://github.com/pablogozalvez" target="_blank" aria-label="GitHub Profile"></a></li>
-            <li><a class="fa-solid fa-gamepad" href="https://decauwu.itch.io/" target="_blank" aria-label="Itch.io Profile"></a></li>
-            <li><a class="devicon-twitter-original" href="https://x.com/decaa21" target="_blank" aria-label="Twitter (X) Profile"></a></li>
-            <li><a class="far fa-envelope" href="mailto:pablogozalvezr@gmail.com" target="_blank" aria-label="Send me an email"></a></li>
-        </ul>
-        <p>&copy; 2025 - Created by Pablo Gozálvez</p>
-    </footer>
-    
-    <div class="bg-effect"></div>
-
-    <template id="project-card-template">
-        <div class="card hoverable project-card">
-            <h3 class="project-title"></h3>
-            <img class="card-image project-image" src="" alt="Project screenshot" loading="lazy">
-            <p class="project-description"></p>
-            <a class="btn project-url" href="" target="_blank">See more</a>
-        </div>
-    </template>
-    
-    <!-- External Libraries -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js"></script>
-    <script src="assets/js/main.js"></script>
-    <script src="assets/js/theme-switcher.js"></script>
-    
-    <noscript>
-        <div class="blurbg">
-            <div class="alertpopup">
-                <h2>JavaScript disabled!</h2>
+            <section id="cv" class="card" aria-labelledby="cv-heading">
+                <h2 id="cv-heading">CV</h2>
                 <div class="h-separator"></div>
-                <p>This website uses JavaScript to show content properly, please enable it and try again.</p>
+                <div class="cv-actions">
+                    <button id="downloadCV" class="btn">Download CV as PDF</button>
+                </div>
+                <div id="cv-content"></div>
+            </section>
+        </main>
+
+        <footer role="contentinfo">
+            <ul class="social-media-icons">
+                <li>
+                    <a
+                        class="devicon-linkedin-plain"
+                        href="https://www.linkedin.com/in/pablogoz%C3%A1lvez/"
+                        target="_blank"
+                        aria-label="LinkedIn Profile"
+                    ></a>
+                </li>
+                <li>
+                    <a
+                        class="devicon-github-original"
+                        href="https://github.com/pablogozalvez"
+                        target="_blank"
+                        aria-label="GitHub Profile"
+                    ></a>
+                </li>
+                <li>
+                    <a
+                        class="fa-solid fa-gamepad"
+                        href="https://decauwu.itch.io/"
+                        target="_blank"
+                        aria-label="Itch.io Profile"
+                    ></a>
+                </li>
+                <li>
+                    <a
+                        class="devicon-twitter-original"
+                        href="https://x.com/decaa21"
+                        target="_blank"
+                        aria-label="Twitter (X) Profile"
+                    ></a>
+                </li>
+                <li>
+                    <a
+                        class="far fa-envelope"
+                        href="mailto:pablogozalvezr@gmail.com"
+                        target="_blank"
+                        aria-label="Send me an email"
+                    ></a>
+                </li>
+            </ul>
+            <p>&copy; 2025 - Created by Pablo Gozálvez</p>
+        </footer>
+
+        <div class="bg-effect"></div>
+
+        <template id="project-card-template">
+            <div class="card hoverable project-card">
+                <h3 class="project-title"></h3>
+                <img class="card-image project-image" src="" alt="Project screenshot" loading="lazy" />
+                <p class="project-description"></p>
+                <a class="btn project-url" href="" target="_blank">See more</a>
             </div>
-        </div>
-    </noscript>
-</body>
+        </template>
+
+        <!-- External Libraries -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js"></script>
+        <script src="assets/js/main.js"></script>
+        <script src="/assets/js/cv-generator.js"></script>
+
+        <noscript>
+            <div class="blurbg">
+                <div class="alertpopup">
+                    <h2>JavaScript disabled!</h2>
+                    <div class="h-separator"></div>
+                    <p>This website uses JavaScript to show content properly, please enable it and try again.</p>
+                </div>
+            </div>
+        </noscript>
+    </body>
 </html>
