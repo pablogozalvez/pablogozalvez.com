@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Editor de Escenas 360° con Pannellum</title>
+        <meta name="description" content="Editor para crear escenas 360° interactivas con hotspots usando Pannellum" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pannellum/2.5.6/pannellum.css" />
+        <link rel="stylesheet" href="style.css" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pannellum/2.5.6/pannellum.js" defer></script>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Editor de Escenas 360° con Pannellum</h1>
+        </div>
+
+        <div class="container">
+            <h2>Instrucciones de uso:</h2>
+            <div class="instructions">
+                <ul>
+                    <li>Sube una imagen 360°</li>
+                    <li>Introduce el nombre de la escena</li>
+                    <li>
+                        Establece la vista inicial de la escena haciendo click en el botón
+                        <strong>"Establecer vista actual como inicial"</strong>
+                    </li>
+                    <li>
+                        Para añadir un hotspot, haz <strong>doble clic</strong> directamente donde quieres colocarlo
+                    </li>
+                    <li>Configura cada hotspot</li>
+                    <li>Se generará el JSON correspondiente a la escena automáticamente</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="container">
+            <section class="upload-section">
+                <div>
+                    <label for="uploadImage" class="visually-hidden">Cargar imagen 360°:</label>
+                    <input type="file" id="uploadImage" accept="image/*" aria-label="Cargar imagen 360°" />
+                </div>
+                <div>
+                    <label for="sceneName">Nombre de la Escena:</label>
+                    <input type="text" id="sceneName" placeholder="Nombre de la escena" value="" />
+                </div>
+            </section>
+
+            <section aria-label="Visor panorámico 360">
+                <div id="panorama" class="panorama" role="application" aria-label="Imagen panorámica 360 grados"></div>
+
+                <div class="controls">
+                    <button id="setStartView" disabled>Establecer vista actual como inicial</button>
+                    <button id="resetHotspots" disabled>Eliminar hotspots</button>
+                    <button id="resetAll" disabled>Eliminar todo</button>
+                </div>
+            </section>
+
+            <section class="hotspots-section">
+                <h3>Hotspots</h3>
+                <div id="hotspotContainer" class="hotspot-list" aria-live="polite"></div>
+            </section>
+
+            <section class="json-section">
+                <h3>JSON generado</h3>
+                <pre id="jsonOutput" class="json-output"></pre>
+                <button id="downloadJson" disabled>Descargar JSON</button>
+            </section>
+        </div>
+
+        <script src="script.js"></script>
+    </body>
+</html>
