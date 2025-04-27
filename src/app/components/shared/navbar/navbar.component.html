@@ -1,0 +1,34 @@
+<header>
+  <div id="menu" class="menu" [class.nav]="isScrolled">
+    <nav>
+      <ul>
+        <li>
+          <a
+            routerLink="/"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            >ABOUT ME</a
+          >
+        </li>
+        <li class="v-separator"></li>
+        <li>
+          <a
+            routerLink="/projects"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            >PROJECTS</a
+          >
+        </li>
+        <li class="v-separator"></li>
+        <li>
+          <a
+            routerLink="/contact"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            >CONTACT ME</a
+          >
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
