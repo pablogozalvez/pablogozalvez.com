@@ -1,0 +1,103 @@
+{
+    "nav": {
+        "home": "Inicio",
+        "about": "Sobre mí",
+        "projects": "Proyectos",
+        "contact": "Contacto"
+    },
+    "hero": {
+        "title": "PABLO<br />GOZÁLVEZ",
+        "subtitle": "Me apasiona crear cosas desde cero y experimentar con nuevas ideas. Tengo hambre de construir, de aprender algo nuevo cada día y de seguir mejorando sin parar.",
+        "viewProjects": "Ver Proyectos",
+        "contactMe": "Contáctame",
+        "scroll": "Desliza",
+        "code": {
+            "hello": "¡Hola! Soy ",
+            "stack": "Stack: ",
+            "mood": "Estado: ",
+            "goal": "Objetivo: ",
+            "class": "Yo",
+            "method": "presentarse",
+            "varName": "nombre",
+            "varStack": "stack",
+            "varMood": "estado",
+            "varGoal": "objetivo"
+        }
+    },
+    "about": {
+        "title": "Un poco sobre <span class=\"text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400\">lo que hago</span>",
+        "p1": "No me limito a escribir código; desde muy joven <strong class=\"text-white font-medium\">desarrollaba mis propios programas</strong> y aprendía de manera autodidacta. Con el tiempo, decidí que mi carrera estaría dedicada al <strong class=\"text-white font-medium\">desarrollo de software</strong>, profundizando mis conocimientos y mejorando cada día.",
+        "p2": "Lo que empezó como pequeños programas autodidactas cuando era niño se convirtió con los años en proyectos más complejos y desafiantes. Cada desafío me enseñó a <strong class=\"text-white font-medium\">resolver problemas de manera práctica</strong> y a entender cómo unir <strong class=\"text-white font-medium\">frontend y backend</strong> para que todo funcione como un conjunto coherente.",
+        "stats": {
+            "projects": "Proyectos",
+            "releases": "Lanzamientos",
+            "commitment": "Compromiso"
+        },
+        "skills": {
+            "frontend": "Frontend",
+            "backend": "Backend y Sistemas",
+            "gamedev": "Desarrollo de Juegos",
+            "languages": "Lenguajes"
+        },
+        "resume": {
+            "title": "Mira mi currículum",
+            "subtitle": "Ver la línea de tiempo completa de mi experiencia"
+        }
+    },
+    "projects": {
+        "title": "Trabajos <span class=\"text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400\">seleccionados</span>",
+        "subtitle": "Una muestra de mis proyectos completados, experimentos técnicos y contribuciones.",
+        "viewArchive": "Ver archivo completo",
+        "items": {
+            "trickyMansion": {
+                "description": "Un juego de plataformas 2D desarrollado en Unity. Cuenta con generación aleatoria de niveles con desplazamiento vertical, varios enemigos y trampas. Ha sido presentado en varios eventos de desarrollo de juegos y se encuentra publicado en plataformas como Google Play e Itch.io."
+            },
+            "pseudoBlocks": {
+                "description": "Entorno de programación visual construido desde cero con C# WinForms. Incluye un lexer/parser personalizado para interpretar la lógica de bloques."
+            },
+            "clumsyMimics": {
+                "description": "Entrada ganadora de Game Jam creada en 48h. Se centra en el prototipado rápido y una sensación mecánica pulida."
+            },
+            "scrollCarousel": {
+                "description": "Componente de UI de Unity de código abierto que proporciona desplazamiento basado en inercia de alto rendimiento para elementos de canvas."
+            },
+            "superMarioPhaser": {
+                "description": "Recreación basada en navegador del clásico usando Phaser 3. Demuestra motores de física JS y gestión de mapas de tiles."
+            },
+            "spaceInvaders": {
+                "description": "Implementación de consola de bajo nivel centrada en la gestión de memoria y la optimización del bucle de renderizado."
+            },
+            "jokerAssistant": {
+                "description": "Asistente de voz de escritorio que integra Microsoft Speech API para el reconocimiento de comandos y automatización."
+            }
+        }
+    },
+    "contact": {
+        "openForOpportunities": "Disponible",
+        "title": "Empecemos una <br /><span class=\"text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400\">conversación.</span>",
+        "subtitle": "Ya sea que tengas una idea de juego, una plataforma web en mente o simplemente quieras charlar sobre arquitectura de código, soy todo oídos.",
+        "directAccess": "Acceso Directo",
+        "emailCommand": "Comando de Email",
+        "copied": "¡Copiado al portapapeles!",
+        "location": "Alicante, ES",
+        "form": {
+            "name": "Nombre",
+            "namePlaceholder": "Juan Pérez",
+            "email": "Email",
+            "emailPlaceholder": "juan@ejemplo.com",
+            "message": "Mensaje",
+            "messagePlaceholder": "Cuéntame qué tienes en mente...",
+            "send": "Enviar Mensaje",
+            "sent": "¡Mensaje Enviado!",
+            "disabledTitle": "Formulario deshabilitado",
+            "disabledMessage": "Utiliza el email directo,<br />este formulario estará disponible muy pronto."
+        }
+    },
+    "footer": {
+        "description": "Desarrollador de Software | Creador de Juegos | Entusiasta de la Tecnología",
+        "navigation": "Navegación",
+        "connect": "Conectar",
+        "allSystemsOperational": "Todos los sistemas operativos",
+        "rights": "Pablo Gozálvez. Todos los derechos reservados."
+    }
+}

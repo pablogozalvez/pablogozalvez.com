@@ -1,0 +1,103 @@
+{
+    "nav": {
+        "home": "Home",
+        "about": "About",
+        "projects": "Projects",
+        "contact": "Contact"
+    },
+    "hero": {
+        "title": "PABLO<br />GOZÁLVEZ",
+        "subtitle": "I am passionate about creating things from scratch and experimenting with new ideas. I have a hunger to build, to learn something new every day, and to keep improving nonstop.",
+        "viewProjects": "View Projects",
+        "contactMe": "Contact Me",
+        "scroll": "Scroll",
+        "code": {
+            "hello": "Hello! I am ",
+            "stack": "Stack: ",
+            "mood": "Mood: ",
+            "goal": "Goal: ",
+            "class": "Me",
+            "method": "introduce",
+            "varName": "name",
+            "varStack": "stack",
+            "varMood": "mood",
+            "varGoal": "goal"
+        }
+    },
+    "about": {
+        "title": "A bit about <span class=\"text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400\">what I do</span>",
+        "p1": "I don't just write code; from a very young age I was <strong class=\"text-white font-medium\">building my own programs</strong> and learning on my own. Over time, I decided to dedicate my career to <strong class=\"text-white font-medium\">software development</strong>, deepening my knowledge and improving every day.",
+        "p2": "What started as small, self-taught programs in my childhood gradually evolved into more complex and challenging projects. Each challenge taught me how to <strong class=\"text-white font-medium\">solve problems practically</strong> and understand how to connect <strong class=\"text-white font-medium\">frontend and backend</strong> so that everything works together as a coherent whole.",
+        "stats": {
+            "projects": "Projects",
+            "releases": "Releases",
+            "commitment": "Commitment"
+        },
+        "skills": {
+            "frontend": "Frontend",
+            "backend": "Backend & Systems",
+            "gamedev": "Game Development",
+            "languages": "Languages"
+        },
+        "resume": {
+            "title": "Check out my resume",
+            "subtitle": "See the full timeline of my experience"
+        }
+    },
+    "projects": {
+        "title": "Selected <span class=\"text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400\">work</span>",
+        "subtitle": "A showcase of my completed projects, technical experiments, and contributions.",
+        "viewArchive": "View full archive",
+        "items": {
+            "trickyMansion": {
+                "description": "A 2D platformer game developed in Unity. Features a random vertical scrolling level generation, various enemies and traps. It has been showcased at several game development events and is published on platforms like Google Play and Itch.io."
+            },
+            "pseudoBlocks": {
+                "description": "Visual programming environment built from scratch with C# WinForms. Includes a custom lexer/parser for interpreting block logic."
+            },
+            "clumsyMimics": {
+                "description": "Award-winning Game Jam entry created in 48h. Focuses on rapid prototyping and polished mechanic feel."
+            },
+            "scrollCarousel": {
+                "description": "Open-source Unity UI component providing high-performance, inertia-based scrolling for canvas elements."
+            },
+            "superMarioPhaser": {
+                "description": "Browser-based recreation of the classic using Phaser 3. Demonstrates JS physics engines and tilemap management."
+            },
+            "spaceInvaders": {
+                "description": "Low-level console implementation focusing on memory management and rendering loop optimization."
+            },
+            "jokerAssistant": {
+                "description": "Desktop voice assistant integrating Microsoft Speech API for command recognition and automation."
+            }
+        }
+    },
+    "contact": {
+        "openForOpportunities": "Available",
+        "title": "Let's start a <br /><span class=\"text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400\">conversation.</span>",
+        "subtitle": "Whether you have a game idea, a web platform in mind, or just want to chat about code architecture, I'm all ears.",
+        "directAccess": "Direct Access",
+        "emailCommand": "Email Command",
+        "copied": "Copied to clipboard!",
+        "location": "Alicante, ES",
+        "form": {
+            "name": "Name",
+            "namePlaceholder": "John Doe",
+            "email": "Email",
+            "emailPlaceholder": "john@example.com",
+            "message": "Message",
+            "messagePlaceholder": "Tell me what's on your mind...",
+            "send": "Send Message",
+            "sent": "Message Sent!",
+            "disabledTitle": "Under Development",
+            "disabledMessage": "Please use the direct email,<br />this form will be available very soon."
+        }
+    },
+    "footer": {
+        "description": "Software Developer | Game Creator | Technology Enthusiast",
+        "navigation": "Navigation",
+        "connect": "Connect",
+        "allSystemsOperational": "All Systems Operational",
+        "rights": "Pablo Gozálvez. All rights reserved."
+    }
+}
