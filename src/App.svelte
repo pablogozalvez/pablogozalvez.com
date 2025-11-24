@@ -47,7 +47,7 @@
 
 <SEO
     title="Pablo Gozalvez - Portfolio"
-    description="Portfolio de Pablo Gozalvez, Full Stack Developer especializado en desarrollo web y videojuegos."
+    description="Portfolio of Pablo Gozalvez, Full Stack Developer specialized in multiplatform development and videogames."
 />
 
 <Loader {isLoading} />

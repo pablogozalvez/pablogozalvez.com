@@ -1,17 +1,5 @@
 @import "tailwindcss";
 
-:root {
-    --color-bg-primary: #030712; /* gray-950 */
-    --color-accent: #3b82f6; /* blue-500 */
-}
-
-body {
-    background-color: var(--color-bg-primary);
-    color: white;
-    overflow-x: hidden;
-}
-
-/* Custom Scrollbar */
 ::-webkit-scrollbar {
     width: 8px;
 }
@@ -29,39 +17,7 @@ body {
     background: #475569;
 }
 
-/* Selection color */
 ::selection {
     background-color: rgba(59, 130, 246, 0.3);
     color: white;
-}
-
-@keyframes gradient-x {
-    0%,
-    100% {
-        background-size: 200% 200%;
-        background-position: left center;
-    }
-    50% {
-        background-size: 200% 200%;
-        background-position: right center;
-    }
-}
-
-.animate-gradient-x {
-    animation: gradient-x 3s ease infinite;
-}
-
-@keyframes fade-in-up {
-    0% {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.animate-fade-in-up {
-    animation: fade-in-up 0.8s ease-out forwards;
 }
