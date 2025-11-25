@@ -2,19 +2,19 @@
     import { onMount } from "svelte";
     import { spring } from "svelte/motion";
 
-    // Configuración del movimiento
+    export let hidden = false;
+
     let coords = spring(
-        { x: -50, y: -50 },
+        { x: -100, y: -100 },
         {
-            stiffness: 0.1,
-            damping: 0.25,
+            stiffness: 0.15,
+            damping: 0.35,
         }
     );
 
-    // Configuración del tamaño
-    let size = spring(12, {
-        stiffness: 0.15,
-        damping: 0.3,
+    let size = spring(10, {
+        stiffness: 0.1,
+        damping: 0.25,
     });
 
     // Estados
@@ -23,26 +23,40 @@
     let isVisible = false;
     let isText = false;
 
+    function updateBodyCursor() {
+        if (typeof document !== "undefined") {
+            if (!hidden && !isText) {
+                document.body.classList.add("custom-cursor-active");
+            } else {
+                document.body.classList.remove("custom-cursor-active");
+            }
+        }
+    }
+
+    $: updateBodyCursor();
+
     onMount(() => {
         const handleMouseMove = (e) => {
             coords.set({ x: e.clientX, y: e.clientY });
-            isVisible = true;
+            isVisible = true; // Asegurar visibilidad al mover
         };
 
         const handleMouseDown = () => {
             isClicking = true;
-            size.set(isHovering ? 50 : 10); // Efecto visual al clickar
+            size.set(isHovering ? 45 : 8); // Efecto de "presión"
         };
 
         const handleMouseUp = () => {
             isClicking = false;
-            size.set(isHovering ? 64 : 12); // Restaurar tamaño
+            size.set(isHovering ? 60 : 10); // Restaurar tamaño
         };
 
+        // Fade Out al salir de la ventana
         const handleMouseLeave = () => {
             isVisible = false;
         };
 
+        // Fade In al entrar
         const handleMouseEnter = () => {
             isVisible = true;
         };
@@ -50,40 +64,34 @@
         const handleMouseOver = (e) => {
             const target = e.target;
 
-            // 1. Detección de Inputs / Texto
+            // Detección de Inputs (Cursor nativo)
             const tagName = target.tagName.toLowerCase();
             const isInput = tagName === "input" || tagName === "textarea" || target.isContentEditable;
 
             if (isInput) {
                 isText = true;
-                isHovering = false;
-                size.set(12);
+                updateBodyCursor();
                 return;
             }
-
             isText = false;
+            updateBodyCursor();
 
-            // 2. Detección MEJORADA de elementos clicables
-            // Usamos .closest() para ver si el elemento O alguno de sus padres es interactivo
-            const clickableElement = target.closest('a, button, [role="button"], label, select');
-
-            // También comprobamos el estilo computado por si es un div con cursor: pointer
+            // Detección de elementos interactivos
+            const clickableElement = target.closest('a, button, [role="button"], label, select, .cursor-pointer');
             const style = window.getComputedStyle(target);
-            const hasPointerCursor = style.cursor === "pointer";
 
-            if (clickableElement || hasPointerCursor) {
+            if (clickableElement || style.cursor === "pointer") {
                 isHovering = true;
-                if (!isClicking) size.set(64); // Círculo grande
+                if (!isClicking) size.set(60); // Círculo grande magnético
             } else {
                 isHovering = false;
-                if (!isClicking) size.set(12); // Punto normal
+                if (!isClicking) size.set(10); // Punto normal
             }
         };
 
         window.addEventListener("mousemove", handleMouseMove);
         window.addEventListener("mousedown", handleMouseDown);
         window.addEventListener("mouseup", handleMouseUp);
-        // Usamos mouseover en window para delegación global
         window.addEventListener("mouseover", handleMouseOver);
         document.addEventListener("mouseleave", handleMouseLeave);
         document.addEventListener("mouseenter", handleMouseEnter);
@@ -95,37 +103,43 @@
             window.removeEventListener("mouseover", handleMouseOver);
             document.removeEventListener("mouseleave", handleMouseLeave);
             document.removeEventListener("mouseenter", handleMouseEnter);
+            document.body.classList.remove("custom-cursor-active");
         };
     });
 </script>
 
 <div
     class="fixed top-0 left-0 pointer-events-none z-[9999] mix-blend-difference flex items-center justify-center will-change-transform"
-    class:opacity-0={!isVisible || isText}
-    class:opacity-100={isVisible && !isText}
+    class:opacity-5={!isVisible || isText || hidden}
+    class:opacity-100={isVisible && !isText && !hidden}
     style="
-        transform: translate3d({$coords.x}px, {$coords.y}px, 0) translate(-50%, -50%); 
-        transition: opacity 0.3s ease;
+        transform: translate3d({$coords.x}px, {$coords.y}px, 0) translate(-50%, -50%);
+        transition: opacity 0.4s cubic-bezier(.4,0,.2,1);
     "
 >
-    <div class="bg-white rounded-full shadow-[0_0_10px_rgba(255,255,255,0.8)]" style="width: 8px; height: 8px;"></div>
+    <div
+        class="absolute bg-white rounded-full transition-all duration-300 ease-out"
+        class:opacity-5={isHovering}
+        style="width: 8px; height: 8px;"
+    ></div>
 
     <div
-        class="absolute border border-white/30 rounded-full transition-all duration-300 ease-out"
+        class="border rounded-full transition-colors duration-300"
         style="
             width: {$size}px; 
-            height: {$size}px; 
-            opacity: {isHovering ? 1 : 0.5};
-            border-width: {isHovering ? 2 : 1}px;
-            background: {isHovering ? 'rgba(255,255,255,0.05)' : 'transparent'};
-            backdrop-filter: {isHovering ? 'blur(2px)' : 'none'};
+            height: {$size}px;
+            border-width: {isHovering ? '1.5px' : '2px'};
+            border-color: {isHovering ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.4)'};
+            background-color: {isHovering ? 'rgba(255,255,255,0.1)' : 'transparent'};
+            backdrop-filter: {isHovering ? 'blur(1px)' : 'none'};
         "
     ></div>
 </div>
 
 <style>
+    /* Ocultar cursor nativo solo si el cursor custom está visible */
     @media (hover: hover) and (pointer: fine) {
-        :global(body) {
+        :global(body.custom-cursor-active) {
             cursor: none;
         }
         :global(input),
@@ -135,11 +149,11 @@
         }
     }
     @media (hover: none) {
-        :global(body) {
-            cursor: auto;
-        }
         div.fixed {
             display: none;
+        }
+        :global(body) {
+            cursor: auto;
         }
     }
 </style>

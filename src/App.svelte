@@ -16,6 +16,7 @@
     let scrollY = 0;
     let innerHeight = 0;
     let showPdfModal = false;
+    let cursorHidden = false;
 
     onMount(() => {
         // Esperar a que se cargue la ventana (imágenes, estilos, etc)
@@ -52,7 +53,7 @@
 
 <Loader {isLoading} />
 
-<Cursor />
+<Cursor hidden={cursorHidden} />
 
 {#if showScrollTop}
     <button
@@ -82,7 +83,13 @@
 
     <main class="bg-[#030712] shadow-[0_-20px_50px_rgba(0,0,0,0.5)]">
         <Hero />
-        <About {showPdfModal} on:showPdfModalChange={(e) => (showPdfModal = e.detail)} />
+        <About
+            {showPdfModal}
+            on:showPdfModalChange={(e) => {
+                showPdfModal = e.detail;
+                cursorHidden = showPdfModal;
+            }}
+        />
         <Projects />
         <Contact />
         <Footer />

@@ -71,7 +71,7 @@
 
 {#if showPdfModal}
     <div
-        class="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-md p-4 md:p-8"
+        class="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 md:p-8"
         transition:fade={{ duration: 200 }}
         on:click|self={() => (showPdfModal = false)}
         on:keydown|self={(e) => e.key === "Escape" && (showPdfModal = false)}
