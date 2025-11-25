@@ -1,8 +1,8 @@
 <script>
-    import { onMount } from "svelte";
     import { fade } from "svelte/transition";
 
     export let isLoading = true;
+    export let title = "Initializing System";
 </script>
 
 {#if isLoading}
@@ -28,7 +28,7 @@
         </div>
 
         <div class="mt-4 text-xs font-mono text-gray-500 uppercase tracking-widest animate-pulse">
-            Initializing System
+            {title}
         </div>
     </div>
 {/if}
