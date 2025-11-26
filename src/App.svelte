@@ -46,8 +46,8 @@
 <svelte:window bind:scrollY bind:innerHeight />
 
 <SEO
-    title="Pablo Gozalvez - Portfolio"
-    description="Portfolio of Pablo Gozalvez, Full Stack Developer specialized in multiplatform development and videogames."
+    title="Pablo Gozálvez - Portfolio"
+    description="Portfolio of Pablo Gozálvez, Full Stack Developer specialized in multiplatform development and videogames."
 />
 
 <Loader {isLoading} />
