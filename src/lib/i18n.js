@@ -61,7 +61,9 @@ export async function setLocale(lang) {
 
 export const isLocaleLoaded = writable(false);
 
-// Initial load
-Promise.all(AVAILABLE_LOCALES.map(loadTranslations)).then(() => {
-    isLocaleLoaded.set(true);
-});
+// Initial load only in browser
+if (typeof window !== "undefined") {
+    Promise.all(AVAILABLE_LOCALES.map(loadTranslations)).then(() => {
+        isLocaleLoaded.set(true);
+    });
+}

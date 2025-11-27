@@ -22,16 +22,16 @@
 
     $: blur = isMobile ? 0 : rawProgress * rawProgress * 10;
 
-    $: titleY = isMobile ? 0 : progress * -200;
-    $: textY = isMobile ? 0 : progress * -120;
-    $: btnY = isMobile ? 0 : progress * -60;
+    $: titleY = isMobile ? 0 : progress * -150;
+    $: textY = isMobile ? 0 : progress * -100;
+    $: btnY = isMobile ? 0 : progress * -50;
 
-    $: codeParallax = isMobile ? 0 : progress * -150;
+    $: codeParallax = isMobile ? 0 : progress * -300;
 
-    $: codeScale = isMobile ? 1 : 1 + progress * 0.2;
+    $: codeScale = isMobile ? 1 : 1 + progress * 0.25;
 
-    $: codeRotateX = isMobile ? 0 : 10 + mouseY * 0.5 + progress * 15;
-    $: codeRotateY = isMobile ? 0 : -10 + mouseX * 0.5 - progress * 5;
+    $: codeRotateX = isMobile ? 0 : 10 + mouseY * 0.5 + progress * 25;
+    $: codeRotateY = isMobile ? 0 : -10 + mouseX * 0.5 - progress * 10;
 
     function handleMouseMove(e) {
         if (isMobile) return;
@@ -71,7 +71,7 @@
 >
     <div class="absolute inset-0 bg-[#0a0a0a]"></div>
     <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,#1a1a1a_0%,#0a0a0a_50%,#000000_100%)]"></div>
-    <div class="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.04]"></div>
+    <div class="absolute inset-0 bg-[url('/img/grid.svg')] opacity-[0.05]" style="background-size: 65px 65px;"></div>
 
     <div
         class="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,#000000_120%)] transition-opacity duration-300"
@@ -107,7 +107,7 @@
         >
             {#if visible}
                 <h1
-                    in:fly={{ y: 50, duration: 1000, delay: 200, easing: cubicOut }}
+                    in:fly={{ y: 50, duration: 1000, delay: 0, easing: cubicOut }}
                     class="text-6xl sm:text-7xl lg:text-8xl font-extrabold tracking-tighter mb-8 leading-[0.85] text-transparent bg-clip-text bg-gradient-to-b from-white via-gray-100 to-gray-500 drop-shadow-lg select-none will-change-transform"
                     style="transform: translate3d(0, {titleY}px, 0)"
                 >
@@ -115,7 +115,7 @@
                 </h1>
 
                 <p
-                    in:fly={{ y: 30, duration: 1000, delay: 400, easing: cubicOut }}
+                    in:fly={{ y: 30, duration: 1000, delay: 200, easing: cubicOut }}
                     class="text-lg sm:text-xl text-gray-400 mb-10 max-w-lg leading-relaxed font-light will-change-transform border-l-4 border-indigo-500 pl-6 italic bg-gradient-to-r from-indigo-900/15 via-transparent to-transparent"
                     style="transform: translate3d(0, {textY}px, 0)"
                 >
@@ -125,7 +125,7 @@
                 </p>
 
                 <div
-                    in:fly={{ y: 20, duration: 1000, delay: 600, easing: cubicOut }}
+                    in:fly={{ y: 20, duration: 1000, delay: 400, easing: cubicOut }}
                     class="flex flex-col sm:flex-row gap-5 w-auto will-change-transform"
                     style="transform: translate3d(0, {btnY}px, 0)"
                 >

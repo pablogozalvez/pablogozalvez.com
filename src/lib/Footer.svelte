@@ -25,7 +25,7 @@
     <div
         class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay pointer-events-none"
     ></div>
-    <div class="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02] pointer-events-none"></div>
+    <div class="absolute inset-0 pointer-events-none"></div>
 
     <div
         class="absolute bottom-[-200px] left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-indigo-900/20 blur-[100px] rounded-full pointer-events-none"

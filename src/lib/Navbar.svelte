@@ -73,10 +73,7 @@
         class="fixed inset-0 z-40 bg-[#050505]/98 backdrop-blur-2xl flex flex-col items-center justify-center"
         transition:fade={{ duration: 400, easing: cubicInOut }}
     >
-        <div
-            class="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.05]"
-            in:scale={{ start: 1.1, duration: 800, easing: cubicOut }}
-        ></div>
+        <div class="absolute inset-0" in:scale={{ start: 1.1, duration: 800, easing: cubicOut }}></div>
         <div
             class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-indigo-500/20 blur-[100px] rounded-full animate-pulse"
         ></div>

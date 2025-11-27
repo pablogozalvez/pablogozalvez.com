@@ -79,7 +79,7 @@
     use:viewport
     on:enterViewport={() => (visible = true)}
 >
-    <div class="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02]" style="background-size: 30px 30px;"></div>
+    <div class="absolute inset-0 bg-[url('/img/grid.svg')] opacity-[0.05]" style="background-size: 30px 30px;"></div>
     <div
         class="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay"
         style="background-image: url('/img/noise-transparent.webp');"
@@ -105,7 +105,7 @@
                 class="pointer-events-none absolute -inset-px opacity-0 transition duration-300 group-hover:opacity-100 z-0"
                 style="background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.06), transparent 40%);"
             ></div>
-            <div class="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-[0.03] pointer-events-none z-0"></div>
+            <div class="absolute inset-0 pointer-events-none z-0"></div>
 
             <div class="relative z-10 grid lg:grid-cols-5 gap-0">
                 <div
