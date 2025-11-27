@@ -111,8 +111,16 @@
                 </button>
             {/each}
             <div class="mt-8 pt-8 border-t border-white/10 w-20 flex justify-center">
-                <button on:click={toggleLanguage} class="text-gray-400 hover:text-white transition-colors">
-                    {$locale === "en" ? "ES" : "EN"}
+                <button
+                    on:click={toggleLanguage}
+                    class="text-sm font-mono text-gray-400 border border-white/10 rounded-full px-4 py-3 hover:bg-white/10 hover:text-white transition-all hover:scale-105 active:scale-95 flex items-center gap-3"
+                >
+                    <img
+                        src={$locale === "en" ? "/img/icons/es.png" : "/img/icons/us.png"}
+                        alt={$locale === "en" ? "Spanish" : "English"}
+                        class="w-5 h-5 object-contain"
+                    />
+                    <span>{$locale === "en" ? "ES" : "EN"}</span>
                 </button>
             </div>
         </nav>
