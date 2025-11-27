@@ -5,6 +5,9 @@
     import Contact from "../lib/Contact.svelte";
     import Footer from "../lib/Footer.svelte";
 
+    export const hydrate = false;
+    export const router = false;
+
     let showPdfModal = false;
 </script>
 
