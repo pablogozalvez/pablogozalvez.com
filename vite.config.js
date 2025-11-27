@@ -1,5 +1,6 @@
 import { sveltekit } from "@sveltejs/kit/vite";
 import tailwindcss from "@tailwindcss/vite";
+import obfuscatorPlugin from "vite-plugin-javascript-obfuscator";
 
 export default {
     plugins: [
