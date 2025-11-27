@@ -3,69 +3,78 @@
     import { onMount } from "svelte";
     import { t } from "./i18n";
     import { fly } from "svelte/transition";
-    import { cubicOut } from "svelte/easing";
+    import { cubicOut, cubicInOut } from "svelte/easing";
 
     let visible = false;
     let scrollY = 0;
+    let innerWidth = 0;
     let innerHeight = 0;
     let mouseX = 0;
     let mouseY = 0;
-    let isMobile = false;
 
-    $: rawProgress = Math.min(scrollY / innerHeight, 1);
+    $: isMobile = innerWidth < 1024;
 
-    $: progress = 1 - Math.pow(1 - rawProgress, 3);
+    $: rawProgress = Math.min((scrollY / innerHeight) * 1.5, 1);
+    $: progress = cubicInOut(rawProgress);
 
-    $: opacity = isMobile ? 1 : Math.max(0, 1 - rawProgress * 1.2);
-
+    // En móvil, la opacidad es casi 1 para mantener el brillo
+    $: opacity = isMobile ? 0.9 : Math.max(0, 1 - rawProgress);
     $: scale = isMobile ? 1 : 1 - progress * 0.05;
-
     $: blur = isMobile ? 0 : rawProgress * rawProgress * 10;
 
+    // Parallax del Contenido de Texto (Solo en Desktop)
     $: titleY = isMobile ? 0 : progress * -150;
     $: textY = isMobile ? 0 : progress * -100;
     $: btnY = isMobile ? 0 : progress * -50;
 
-    $: codeParallax = isMobile ? 0 : progress * -300;
-
-    $: codeScale = isMobile ? 1 : 1 + progress * 0.25;
-
-    $: codeRotateX = isMobile ? 0 : 10 + mouseY * 0.5 + progress * 25;
-    $: codeRotateY = isMobile ? 0 : -10 + mouseX * 0.5 - progress * 10;
+    // Parallax del Bloque de Código
+    $: codeParallax = progress * -200;
+    $: codeScale = 1 + progress * 0.2;
+    $: codeRotateX = 10 + mouseY * 0.5 + progress * 15;
+    $: codeRotateY = -10 + mouseX * 0.5 - progress * 8;
 
     function handleMouseMove(e) {
         if (isMobile) return;
-        mouseX = (e.clientX / window.innerWidth - 0.5) * 15;
-        mouseY = (e.clientY / window.innerHeight - 0.5) * 15;
+        mouseX = (e.clientX / innerWidth - 0.5) * 10;
+        mouseY = (e.clientY / innerHeight - 0.5) * 10;
     }
 
     function scrollTo(id) {
-        const element = document.getElementById(id);
-        if (element) {
-            element.scrollIntoView({ behavior: "smooth" });
-        }
+        document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
     }
 
     onMount(() => {
-        isMobile = window.innerWidth < 1024;
-        window.addEventListener("resize", () => {
-            isMobile = window.innerWidth < 1024;
-        });
+        innerWidth = window.innerWidth;
+        innerHeight = window.innerHeight;
+        isMobile = innerWidth < 1024;
+
+        function updateDimensions() {
+            innerWidth = window.innerWidth;
+            innerHeight = window.innerHeight;
+            isMobile = innerWidth < 1024;
+        }
+
+        window.addEventListener("resize", updateDimensions);
         window.addEventListener("mousemove", handleMouseMove);
 
         return () => {
+            window.removeEventListener("resize", updateDimensions);
             window.removeEventListener("mousemove", handleMouseMove);
-            window.removeEventListener("resize", () => {});
         };
     });
 </script>
 
-<svelte:window bind:scrollY bind:innerHeight />
+<svelte:window bind:scrollY bind:innerWidth bind:innerHeight />
 
 <section
     id="home"
     class="h-screen sticky top-0 flex items-center relative overflow-hidden bg-[#0a0a0a]"
-    style="opacity: {opacity}; transform: scale({scale}); filter: blur({blur}px); will-change: transform, opacity, filter;"
+    style="
+        opacity: {opacity}; 
+        transform: scale({scale}); 
+        filter: blur({blur}px); 
+        will-change: transform, opacity, filter;
+    "
     use:viewport
     on:enterViewport={() => (visible = true)}
 >
@@ -74,27 +83,27 @@
     <div class="absolute inset-0 bg-[url('/img/grid.svg')] opacity-[0.05]" style="background-size: 65px 65px;"></div>
 
     <div
-        class="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,#000000_120%)] transition-opacity duration-300"
-        style="opacity: {0.6 + progress * 0.4}"
+        class="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,#000000_120%)] will-change-opacity"
+        style="opacity: {0.6 + progress * 0.4}; transition: opacity 500ms cubic-bezier(0.4, 0, 0.2, 1);"
     ></div>
 
     <div
-        class="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-indigo-950/30 rounded-full filter blur-[120px] pointer-events-none animate-float-slow transition-transform duration-[2000ms] cubic-bezier(0.2, 0.8, 0.2, 1)"
+        class="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-indigo-950/30 rounded-full filter blur-[120px] pointer-events-none animate-float-slow will-change-transform"
         style={!isMobile ? `transform: translate3d(${mouseX * 3}px, ${mouseY * 3}px, 0)` : ""}
     ></div>
     <div
-        class="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-slate-900/40 rounded-full filter blur-[100px] pointer-events-none animate-float-medium transition-transform duration-[2500ms] cubic-bezier(0.2, 0.8, 0.2, 1)"
+        class="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-slate-900/40 rounded-full filter blur-[100px] pointer-events-none animate-float-medium will-change-transform"
         style={!isMobile ? `transform: translate3d(${mouseX * -3}px, ${mouseY * -3}px, 0)` : ""}
     ></div>
 
     <div
         class="absolute inset-0 pointer-events-none transition-all duration-700 ease-out {!isMobile ? '' : 'hidden'}"
         style="background: radial-gradient(1000px circle at {mouseX * 15 + 50}% {mouseY * 15 +
-            50}%, rgba(255,255,255,0.03), rgba(139,92,246,0.01) 40%, transparent 70%);"
+            50}%, rgba(255,255,255,0.03), rgba(139,92,246,0.01) 40%, transparent 70%); will-change: background;"
     ></div>
 
     <div
-        class="absolute inset-0 pointer-events-none transition-all duration-[1200ms] ease-out mix-blend-screen"
+        class="absolute inset-0 pointer-events-none transition-all duration-[1200ms] ease-out mix-blend-screen will-change-background"
         style="background: radial-gradient(400px circle at {mouseX * 1.2 + 50}% {mouseY * 1.2 +
             50}%, rgba(99, 102, 241, 0.04), transparent 50%);"
     ></div>
@@ -103,11 +112,11 @@
         class="w-full max-w-7xl mx-auto px-6 lg:px-8 relative z-10 flex flex-col justify-center lg:grid lg:grid-cols-2 gap-12 items-center h-full"
     >
         <div
-            class="order-1 flex flex-col items-center lg:items-start text-center lg:text-left w-full max-w-2xl lg:max-w-[700px] -ml-2 sm:-ml-4 md:-ml-8 lg:-ml-12 perspective-container"
+            class="order-1 flex flex-col items-center lg:items-start text-center lg:text-left w-full max-w-2xl lg:max-w-[700px] lg:-ml-12 perspective-container"
         >
             {#if visible}
                 <h1
-                    in:fly={{ y: 50, duration: 1000, delay: 0, easing: cubicOut }}
+                    in:fly={{ y: 50, duration: 1000, delay: 100, easing: cubicOut }}
                     class="text-6xl sm:text-7xl lg:text-8xl font-extrabold tracking-tighter mb-8 leading-[0.85] text-transparent bg-clip-text bg-gradient-to-b from-white via-gray-100 to-gray-500 drop-shadow-lg select-none will-change-transform"
                     style="transform: translate3d(0, {titleY}px, 0)"
                 >
@@ -115,8 +124,8 @@
                 </h1>
 
                 <p
-                    in:fly={{ y: 30, duration: 1000, delay: 200, easing: cubicOut }}
-                    class="text-lg sm:text-xl text-gray-400 mb-10 max-w-lg leading-relaxed font-light will-change-transform border-l-4 border-indigo-500 pl-6 italic bg-gradient-to-r from-indigo-900/15 via-transparent to-transparent"
+                    in:fly={{ y: 30, duration: 1000, delay: 300, easing: cubicOut }}
+                    class="text-lg sm:text-xl text-gray-200 mb-10 max-w-xs sm:max-w-lg leading-relaxed font-light will-change-transform border-l-4 border-indigo-500 pl-6 italic mx-auto lg:mx-0 bg-gradient-to-r from-indigo-900/30 via-transparent to-transparent py-2 rounded-r-lg"
                     style="transform: translate3d(0, {textY}px, 0)"
                 >
                     <span class="text-indigo-400 text-2xl font-serif select-none mr-2">“</span>{$t(
@@ -125,13 +134,13 @@
                 </p>
 
                 <div
-                    in:fly={{ y: 20, duration: 1000, delay: 400, easing: cubicOut }}
-                    class="flex flex-col sm:flex-row gap-5 w-auto will-change-transform"
+                    in:fly={{ y: 20, duration: 1000, delay: 500, easing: cubicOut }}
+                    class="flex flex-col sm:flex-row gap-5 w-full max-w-xs sm:max-w-lg mx-auto lg:mx-0 will-change-transform"
                     style="transform: translate3d(0, {btnY}px, 0)"
                 >
                     <button
                         on:click={() => scrollTo("projects")}
-                        class="group relative px-8 py-4 bg-white text-black font-bold rounded-full overflow-hidden transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 hover:shadow-[0_20px_40px_-15px_rgba(255,255,255,0.3)] flex items-center justify-center gap-3 focus:outline-none"
+                        class="group relative px-8 py-4 bg-white text-black font-bold rounded-full overflow-hidden transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 hover:shadow-[0_20px_40px_-15px_rgba(255,255,255,0.3)] flex items-center justify-center gap-3 focus:outline-none w-full sm:w-auto"
                     >
                         <span class="relative z-10">{$t("hero.viewProjects")}</span>
                         <svg
@@ -154,7 +163,7 @@
 
                     <button
                         on:click={() => scrollTo("contact")}
-                        class="group relative px-8 py-4 bg-white/5 backdrop-blur-md border border-white/10 text-white font-medium rounded-full transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 hover:shadow-[0_20px_40px_-15px_rgba(99,102,241,0.2)] flex items-center justify-center gap-3 focus:outline-none"
+                        class="group relative px-8 py-4 bg-white/5 backdrop-blur-md border border-white/10 text-white font-medium rounded-full transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 hover:shadow-[0_20px_40px_-15px_rgba(99,102,241,0.2)] flex items-center justify-center gap-3 focus:outline-none w-full sm:w-auto"
                     >
                         <span class="relative z-10">{$t("hero.contactMe")}</span>
                         <svg
@@ -178,20 +187,25 @@
         <div class="order-2 h-0 lg:h-auto"></div>
 
         <div
-            class="absolute top-1/2 left-1/2 lg:left-[70%] w-[90%] sm:w-[80%] lg:w-[55%] max-w-3xl opacity-25 lg:opacity-100 blur-[2px] lg:blur-none select-none pointer-events-none transition-transform duration-[50ms] ease-out z-0 will-change-transform"
-            style="transform: 
-            translate3d(-50%, -50%, 0) 
-            perspective(1200px) 
-            rotateX({codeRotateX}deg) 
-            rotateY({codeRotateY}deg) 
-            rotateZ(-2deg) 
-            translate3d({isMobile ? 0 : mouseX * -2}px, {isMobile ? 0 : mouseY * -2 + codeParallax}px, -50px) 
-            scale({codeScale});"
+            class="absolute top-1/2 left-1/2 w-[90%] sm:w-[80%] lg:w-[55%] max-w-3xl select-none pointer-events-none transition-transform duration-[50ms] ease-out z-0 will-change-transform
+            {isMobile
+                ? 'opacity-50 blur-[6px] transform -translate-x-1/2 -translate-y-[40%] animate-float-code'
+                : 'lg:left-[70%] opacity-100 blur-none'}"
+            style={!isMobile
+                ? `
+                transform: 
+                translate3d(-50%, -50%, 0) 
+                perspective(1200px) 
+                rotateX(${codeRotateX}deg) 
+                rotateY(${codeRotateY}deg) 
+                rotateZ(-2deg) 
+                translate3d(${mouseX * -2}px, ${mouseY * -2 + codeParallax}px, -50px) 
+                scale(${codeScale});
+            `
+                : ""}
         >
             <div
-                class="bg-[#0f111a] rounded-xl border border-white/10 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] overflow-hidden backdrop-blur-sm {isMobile
-                    ? 'animate-float-code'
-                    : ''}"
+                class="bg-[#0f111a] rounded-xl border border-white/10 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] overflow-hidden backdrop-blur-sm"
             >
                 <div class="flex items-center px-4 py-3 bg-[#1a1d2d] border-b border-white/5">
                     <div class="flex gap-2">
@@ -259,7 +273,7 @@
             <div class="relative flex items-center justify-center">
                 <div class="absolute inset-0 rounded-full bg-indigo-500/20 animate-ping pointer-events-none"></div>
                 <svg
-                    class="w-7 h-7 text-indigo-400 relative z-10 animate-bounce-smooth transition-all duration-200 group-hover:text-indigo-300 group-hover:scale-110 drop-shadow-[0_4px_12px_rgba(99,102,241,0.25)]"
+                    class="w-7 h-7 text-indigo-400 relative z-10 animate-smoothBounce transition-all duration-200 group-hover:text-indigo-300 group-hover:scale-110 drop-shadow-[0_4px_12px_rgba(99,102,241,0.25)]"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -280,25 +294,13 @@
 </section>
 
 <style>
-    @keyframes bounce-smooth {
-        0%,
-        100% {
-            transform: translateY(0);
-        }
-        50% {
-            transform: translateY(10px);
-        }
-    }
-
     @keyframes smoothBounce {
         0%,
         100% {
             transform: translateY(0);
-            opacity: 0.5;
         }
         50% {
-            transform: translateY(-8px);
-            opacity: 0.8;
+            transform: translateY(8px);
         }
     }
 
@@ -329,13 +331,16 @@
     @keyframes float-code {
         0%,
         100% {
-            transform: translateY(0);
+            transform: translateY(0) rotate(-2deg);
         }
         50% {
-            transform: translateY(-15px);
+            transform: translateY(-15px) rotate(-3deg);
         }
     }
 
+    .animate-smoothBounce {
+        animation: smoothBounce 1.5s infinite cubic-bezier(0.4, 0, 0.6, 1);
+    }
     .animate-float-slow {
         animation: float-slow 15s ease-in-out infinite;
     }
@@ -344,7 +349,7 @@
         animation-delay: 2s;
     }
     .animate-float-code {
-        animation: float-code 6s ease-in-out infinite;
+        animation: float-code 8s ease-in-out infinite;
     }
 
     .perspective-container {
