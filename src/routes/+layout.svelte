@@ -8,6 +8,9 @@
     import { fly } from "svelte/transition";
     import "../app.css";
 
+    export const hydrate = false;
+    export const router = false;
+
     let isPageLoaded = false;
     let scrollY = 0;
     let innerHeight = 0;
