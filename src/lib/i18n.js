@@ -2,14 +2,24 @@ import { writable, derived, get } from "svelte/store";
 
 export const AVAILABLE_LOCALES = ["en", "es"];
 
+// Cache para evitar lecturas repetidas de localStorage
+let cachedLocale = null;
+
 function getInitialLocale() {
     if (typeof window !== "undefined") {
+        if (cachedLocale) return cachedLocale;
+
         const stored = localStorage.getItem("locale");
-        if (AVAILABLE_LOCALES.includes(stored)) return stored;
+        if (AVAILABLE_LOCALES.includes(stored)) {
+            cachedLocale = stored;
+            return stored;
+        }
         const navLang = navigator.language?.slice(0, 2) || "en";
         if (AVAILABLE_LOCALES.includes(navLang)) {
+            cachedLocale = navLang;
             return navLang;
         }
+        cachedLocale = "en";
         return "en";
     }
     return "en";
@@ -22,14 +32,31 @@ if (typeof window !== "undefined") {
 export const locale = writable(initialLocale);
 export const translations = writable({});
 
-export const t = derived([locale, translations], ([$locale, $translations]) => (key) => {
-    const keys = key.split(".");
-    let text = $translations[$locale];
-    for (const k of keys) {
-        if (text === undefined) break;
-        text = text[k];
+// Cache para traducciones ya resueltas
+const translationCache = new Map();
+
+export const t = derived([locale, translations], ([$locale, $translations]) => {
+    // Limpiar cache cuando cambia el idioma
+    if (translationCache.size > 0 && !translationCache.has($locale)) {
+        translationCache.clear();
     }
-    return text || key;
+
+    return (key) => {
+        const cacheKey = `${$locale}:${key}`;
+        if (translationCache.has(cacheKey)) {
+            return translationCache.get(cacheKey);
+        }
+
+        const keys = key.split(".");
+        let text = $translations[$locale];
+        for (const k of keys) {
+            if (text === undefined) break;
+            text = text[k];
+        }
+        const result = text || key;
+        translationCache.set(cacheKey, result);
+        return result;
+    };
 });
 
 export async function loadTranslations(lang) {
@@ -54,6 +81,7 @@ export async function setLocale(lang) {
         await loadTranslations(lang);
     }
     locale.set(lang);
+    cachedLocale = lang;
     if (typeof window !== "undefined") {
         localStorage.setItem("locale", lang);
     }

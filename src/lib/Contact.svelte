@@ -1,5 +1,5 @@
 <script>
-    import { viewport } from "./actions";
+    import { viewport, rafThrottle } from "./actions";
     import { onMount } from "svelte";
     import { t } from "./i18n";
 
@@ -49,14 +49,14 @@
         setTimeout(() => (formState = "idle"), 3000);
     };
 
-    function handleMouseMove(e) {
+    const handleMouseMove = rafThrottle((e) => {
         if (!containerRef) return;
         const rect = containerRef.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
         containerRef.style.setProperty("--mouse-x", `${x}px`);
         containerRef.style.setProperty("--mouse-y", `${y}px`);
-    }
+    });
 
     onMount(() => {
         const updateTime = () => {

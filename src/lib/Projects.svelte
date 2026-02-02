@@ -1,5 +1,5 @@
 <script>
-    import { viewport } from "./actions";
+    import { viewport, rafThrottle } from "./actions";
     import { t } from "./i18n";
 
     let visible = false;
@@ -64,7 +64,7 @@
         },
     ];
 
-    function handleMouseMove(e) {
+    const handleMouseMove = rafThrottle((e) => {
         if (!containerRef) return;
         const cards = containerRef.getElementsByClassName("project-card");
 
@@ -76,7 +76,7 @@
             card.style.setProperty("--mouse-x", `${x}px`);
             card.style.setProperty("--mouse-y", `${y}px`);
         }
-    }
+    });
 </script>
 
 <section
@@ -182,6 +182,8 @@
                         <img
                             src={project.image}
                             alt={project.title}
+                            loading="lazy"
+                            decoding="async"
                             class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out filter grayscale-[0.3] group-hover:grayscale-0"
                         />
 

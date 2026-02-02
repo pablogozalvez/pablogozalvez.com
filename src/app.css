@@ -1,5 +1,38 @@
 @import "tailwindcss";
 
+html {
+    scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    * {
+        scroll-behavior: smooth;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+        /* Desactivar efectos costosos */
+        filter: none !important;
+        backdrop-filter: none !important;
+    }
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+    .backdrop-blur-md,
+    .backdrop-blur-sm,
+    .backdrop-blur {
+        backdrop-filter: none !important;
+        background-color: rgba(0, 0, 0, 0.9) !important;
+    }
+}
+
 ::-webkit-scrollbar {
     width: 8px;
 }
@@ -20,4 +53,23 @@
 ::selection {
     background-color: rgba(59, 130, 246, 0.3);
     color: white;
+}
+
+img {
+    content-visibility: auto;
+}
+
+body {
+    text-rendering: optimizeSpeed;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.static-layer {
+    contain: layout style paint;
+}
+
+.gpu-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
 }

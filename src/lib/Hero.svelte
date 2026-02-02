@@ -3,298 +3,235 @@
     import { onMount } from "svelte";
     import { t } from "./i18n";
     import { fly } from "svelte/transition";
-    import { cubicOut, cubicInOut } from "svelte/easing";
+    import { cubicOut } from "svelte/easing";
 
     let visible = false;
+    let isMobile = false;
+
+    let heroOpacity = 1;
     let scrollY = 0;
-    let innerWidth = 0;
-    let innerHeight = 0;
-    let mouseX = 0;
-    let mouseY = 0;
-
-    $: isMobile = innerWidth < 1024;
-
-    $: rawProgress = Math.min((scrollY / innerHeight) * 1.5, 1);
-    $: progress = cubicInOut(rawProgress);
-
-    // En móvil, la opacidad es casi 1 para mantener el brillo
-    $: opacity = isMobile ? 0.9 : Math.max(0, 1 - rawProgress);
-    $: scale = isMobile ? 1 : 1 - progress * 0.05;
-    $: blur = isMobile ? 0 : rawProgress * rawProgress * 10;
-
-    // Parallax del Contenido de Texto (Solo en Desktop)
-    $: titleY = isMobile ? 0 : progress * -150;
-    $: textY = isMobile ? 0 : progress * -100;
-    $: btnY = isMobile ? 0 : progress * -50;
-
-    // Parallax del Bloque de Código
-    $: codeParallax = progress * -200;
-    $: codeScale = 1 + progress * 0.2;
-    $: codeRotateX = 10 + mouseY * 0.5 + progress * 15;
-    $: codeRotateY = -10 + mouseX * 0.5 - progress * 8;
-
-    function handleMouseMove(e) {
-        if (isMobile) return;
-        mouseX = (e.clientX / innerWidth - 0.5) * 10;
-        mouseY = (e.clientY / innerHeight - 0.5) * 10;
-    }
+    let innerHeight = 1;
 
     function scrollTo(id) {
         document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
     }
 
+    $: heroOpacity = Math.max(0, 1 - (scrollY / innerHeight) * 1.5);
+
     onMount(() => {
-        innerWidth = window.innerWidth;
-        innerHeight = window.innerHeight;
-        isMobile = innerWidth < 1024;
-
-        function updateDimensions() {
-            innerWidth = window.innerWidth;
+        const handleResize = () => {
+            isMobile = window.innerWidth < 1024;
             innerHeight = window.innerHeight;
-            isMobile = innerWidth < 1024;
-        }
-
-        window.addEventListener("resize", updateDimensions);
-        window.addEventListener("mousemove", handleMouseMove);
-
-        return () => {
-            window.removeEventListener("resize", updateDimensions);
-            window.removeEventListener("mousemove", handleMouseMove);
         };
+        handleResize();
+        window.addEventListener("resize", handleResize, { passive: true });
+        return () => window.removeEventListener("resize", handleResize);
     });
 </script>
 
-<svelte:window bind:scrollY bind:innerWidth bind:innerHeight />
+<svelte:window bind:scrollY />
 
 <section
     id="home"
-    class="h-screen sticky top-0 flex items-center relative overflow-hidden bg-[#0a0a0a]"
-    style="
-        opacity: {opacity}; 
-        transform: scale({scale}); 
-        filter: blur({blur}px); 
-        will-change: transform, opacity, filter;
-    "
+    class="relative min-h-screen flex items-center overflow-hidden bg-[#0a0a0a]"
+    style="opacity: {heroOpacity};"
     use:viewport
     on:enterViewport={() => (visible = true)}
 >
-    <div class="absolute inset-0 bg-[#0a0a0a]"></div>
-    <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,#1a1a1a_0%,#0a0a0a_50%,#000000_100%)]"></div>
-    <div class="absolute inset-0 bg-[url('/img/grid.svg')] opacity-[0.05]" style="background-size: 65px 65px;"></div>
-
+    <div class="absolute inset-0 bg-[#0a0a0a] z-0"></div>
+    <div class="absolute inset-0 hero-grid opacity-[0.2] z-0 pointer-events-none"></div>
     <div
-        class="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,#000000_120%)] will-change-opacity"
-        style="opacity: {0.6 + progress * 0.4}; transition: opacity 500ms cubic-bezier(0.4, 0, 0.2, 1);"
+        class="absolute inset-0 bg-gradient-to-b from-transparent via-[#0a0a0a]/50 to-[#0a0a0a] z-0 pointer-events-none"
     ></div>
 
-    <div
-        class="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-indigo-950/30 rounded-full filter blur-[120px] pointer-events-none animate-float-slow will-change-transform"
-        style={!isMobile ? `transform: translate3d(${mouseX * 3}px, ${mouseY * 3}px, 0)` : ""}
-    ></div>
-    <div
-        class="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-slate-900/40 rounded-full filter blur-[100px] pointer-events-none animate-float-medium will-change-transform"
-        style={!isMobile ? `transform: translate3d(${mouseX * -3}px, ${mouseY * -3}px, 0)` : ""}
-    ></div>
-
-    <div
-        class="absolute inset-0 pointer-events-none transition-all duration-700 ease-out {!isMobile ? '' : 'hidden'}"
-        style="background: radial-gradient(1000px circle at {mouseX * 15 + 50}% {mouseY * 15 +
-            50}%, rgba(255,255,255,0.03), rgba(139,92,246,0.01) 40%, transparent 70%); will-change: background;"
-    ></div>
-
-    <div
-        class="absolute inset-0 pointer-events-none transition-all duration-[1200ms] ease-out mix-blend-screen will-change-background"
-        style="background: radial-gradient(400px circle at {mouseX * 1.2 + 50}% {mouseY * 1.2 +
-            50}%, rgba(99, 102, 241, 0.04), transparent 50%);"
-    ></div>
-
-    <div
-        class="w-full max-w-7xl mx-auto px-6 lg:px-8 relative z-10 flex flex-col justify-center lg:grid lg:grid-cols-2 gap-12 items-center h-full"
-    >
+    {#if !isMobile}
         <div
-            class="order-1 flex flex-col items-center lg:items-start text-center lg:text-left w-full max-w-2xl lg:max-w-[700px] lg:-ml-12 perspective-container"
-        >
-            {#if visible}
-                <h1
-                    in:fly={{ y: 50, duration: 1000, delay: 100, easing: cubicOut }}
-                    class="text-6xl sm:text-7xl lg:text-8xl font-extrabold tracking-tighter mb-8 leading-[0.85] text-transparent bg-clip-text bg-gradient-to-b from-white via-gray-100 to-gray-500 drop-shadow-lg select-none will-change-transform"
-                    style="transform: translate3d(0, {titleY}px, 0)"
-                >
-                    {@html $t("hero.title")}
-                </h1>
+            class="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-indigo-900/10 rounded-full blur-[120px] pointer-events-none select-none z-0"
+        ></div>
+        <div
+            class="absolute bottom-[-10%] left-[-5%] w-[600px] h-[600px] bg-blue-900/5 rounded-full blur-[100px] pointer-events-none select-none z-0"
+        ></div>
+    {/if}
 
-                <p
-                    in:fly={{ y: 30, duration: 1000, delay: 300, easing: cubicOut }}
-                    class="text-lg sm:text-xl text-gray-200 mb-10 max-w-xs sm:max-w-lg leading-relaxed font-light will-change-transform border-l-4 border-indigo-500 pl-6 italic mx-auto lg:mx-0 bg-gradient-to-r from-indigo-900/30 via-transparent to-transparent py-2 rounded-r-lg"
-                    style="transform: translate3d(0, {textY}px, 0)"
-                >
-                    <span class="text-indigo-400 text-2xl font-serif select-none mr-2">“</span>{$t(
-                        "hero.subtitle"
-                    )}<span class="text-indigo-400 text-2xl font-serif select-none ml-2">”</span>
-                </p>
+    <div class="w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10 h-full py-20 lg:py-0 flex items-center">
+        <div class="flex flex-col items-center lg:items-start text-center lg:text-left w-full lg:w-1/2">
+            {#if visible}
+                <div in:fly={{ y: 30, duration: 800, easing: cubicOut }}>
+                    <h1
+                        class="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-extrabold tracking-tighter mb-6 lg:mb-8 leading-[0.95] text-white drop-shadow-lg"
+                    >
+                        {@html $t("hero.title")}
+                    </h1>
+                </div>
 
                 <div
-                    in:fly={{ y: 20, duration: 1000, delay: 500, easing: cubicOut }}
-                    class="flex flex-col sm:flex-row gap-5 w-full max-w-xs sm:max-w-lg mx-auto lg:mx-0 will-change-transform"
-                    style="transform: translate3d(0, {btnY}px, 0)"
+                    in:fly={{ y: 20, duration: 800, delay: 150, easing: cubicOut }}
+                    class="w-full flex justify-center lg:justify-start"
+                >
+                    <p
+                        class="text-base sm:text-lg lg:text-xl text-gray-400 mb-8 lg:mb-10 max-w-lg leading-relaxed font-light border-l-0 lg:border-l-2 border-indigo-500/50 pl-0 lg:pl-6 lg:pr-6 lg:py-4 lg:bg-gradient-to-r lg:from-indigo-950/20 lg:via-indigo-950/5 lg:to-transparent lg:rounded-r-lg backdrop-blur-sm"
+                    >
+                        {$t("hero.subtitle")}
+                    </p>
+                </div>
+
+                <div
+                    in:fly={{ y: 20, duration: 800, delay: 300, easing: cubicOut }}
+                    class="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 justify-center lg:justify-start w-full"
                 >
                     <button
                         on:click={() => scrollTo("projects")}
-                        class="group relative px-8 py-4 bg-white text-black font-bold rounded-full overflow-hidden transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 hover:shadow-[0_20px_40px_-15px_rgba(255,255,255,0.3)] flex items-center justify-center gap-3 focus:outline-none w-full sm:w-auto"
+                        class="px-8 py-4 bg-gradient-to-r from-white to-gray-100 text-black font-bold rounded-full hover:from-gray-100 hover:to-white hover:shadow-lg hover:shadow-white/20 transition-all duration-300 flex items-center justify-center gap-2 group will-change-transform"
                     >
-                        <span class="relative z-10">{$t("hero.viewProjects")}</span>
+                        <span>{$t("hero.viewProjects")}</span>
                         <svg
-                            class="w-5 h-5 relative z-10 transition-transform duration-300 group-hover:translate-x-1"
+                            class="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
-                        >
-                            <path
+                            ><path
                                 stroke-linecap="round"
                                 stroke-linejoin="round"
                                 stroke-width="2"
                                 d="M17 8l4 4m0 0l-4 4m4-4H3"
-                            />
-                        </svg>
-                        <div
-                            class="absolute inset-0 bg-gradient-to-r from-transparent via-white/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-                        ></div>
+                            /></svg
+                        >
                     </button>
 
                     <button
                         on:click={() => scrollTo("contact")}
-                        class="group relative px-8 py-4 bg-white/5 backdrop-blur-md border border-white/10 text-white font-medium rounded-full transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 hover:shadow-[0_20px_40px_-15px_rgba(99,102,241,0.2)] flex items-center justify-center gap-3 focus:outline-none w-full sm:w-auto"
+                        class="px-8 py-4 bg-white/5 border border-white/10 text-white font-medium rounded-full hover:bg-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-indigo-500/10 transition-all duration-300 backdrop-blur-sm will-change-transform"
                     >
-                        <span class="relative z-10">{$t("hero.contactMe")}</span>
-                        <svg
-                            class="w-5 h-5 relative z-10 transition-transform duration-300 group-hover:translate-x-1"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                            />
-                        </svg>
+                        {$t("hero.contactMe")}
                     </button>
                 </div>
             {/if}
         </div>
 
-        <div class="order-2 h-0 lg:h-auto"></div>
-
-        <div
-            class="absolute top-1/2 left-1/2 w-[90%] sm:w-[80%] lg:w-[55%] max-w-3xl select-none pointer-events-none transition-transform duration-[50ms] ease-out z-0 will-change-transform
-            {isMobile
-                ? 'opacity-50 blur-[6px] transform -translate-x-1/2 -translate-y-[40%] animate-float-code'
-                : 'lg:left-[70%] opacity-100 blur-none'}"
-            style={!isMobile
-                ? `
-                transform: 
-                translate3d(-50%, -50%, 0) 
-                perspective(1200px) 
-                rotateX(${codeRotateX}deg) 
-                rotateY(${codeRotateY}deg) 
-                rotateZ(-2deg) 
-                translate3d(${mouseX * -2}px, ${mouseY * -2 + codeParallax}px, -50px) 
-                scale(${codeScale});
-            `
-                : ""}
-        >
+        {#if visible}
             <div
-                class="bg-[#0f111a] rounded-xl border border-white/10 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] overflow-hidden backdrop-blur-sm"
+                in:fly={{ y: 40, duration: 1000, delay: 150, easing: cubicOut }}
+                class="absolute top-1/2 w-[85%] sm:w-[70%] lg:w-[48%] max-w-2xl select-none pointer-events-auto z-0
+                {isMobile
+                    ? 'left-1/2 -translate-x-1/2 -translate-y-[40%] opacity-40'
+                    : 'left-1/2 lg:left-[70%] -translate-x-1/2 -translate-y-1/2 opacity-90 code-tilt'}"
             >
-                <div class="flex items-center px-4 py-3 bg-[#1a1d2d] border-b border-white/5">
-                    <div class="flex gap-2">
-                        <div class="w-3 h-3 rounded-full bg-[#ff5f56]"></div>
-                        <div class="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
-                        <div class="w-3 h-3 rounded-full bg-[#27c93f]"></div>
-                    </div>
-                    <div class="flex-1 text-center text-sm text-gray-400 font-mono">Main.java</div>
-                </div>
-                <div class="flex p-6 font-mono text-sm sm:text-base leading-relaxed relative group">
+                <div
+                    class="bg-[#0f111a] rounded-xl border border-white/10 shadow-lg overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-indigo-500/30 hover:border-white/25 hover:backdrop-blur-lg group"
+                >
                     <div
-                        class="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/5 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
-                    ></div>
-
-                    <div class="flex flex-col text-right text-gray-600 mr-4 select-none opacity-50">
-                        <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span
-                            >7</span
-                        ><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span>
+                        class="flex items-center px-4 py-3 bg-gradient-to-r from-[#1a1d2d] to-[#1e2136] border-b border-white/5 group-hover:border-white/10 transition-colors duration-500"
+                    >
+                        <div class="flex gap-2">
+                            <div
+                                class="w-3 h-3 rounded-full bg-[#ff5f56] hover:shadow-lg hover:shadow-red-500/60 transition-all duration-300 cursor-pointer"
+                            ></div>
+                            <div
+                                class="w-3 h-3 rounded-full bg-[#ffbd2e] hover:shadow-lg hover:shadow-yellow-500/60 transition-all duration-300 cursor-pointer"
+                            ></div>
+                            <div
+                                class="w-3 h-3 rounded-full bg-[#27c93f] hover:shadow-lg hover:shadow-green-500/60 transition-all duration-300 cursor-pointer"
+                            ></div>
+                        </div>
+                        <div class="flex-1 text-center text-sm text-gray-400 font-mono">Main.java</div>
                     </div>
-                    <pre class="text-gray-500 whitespace-pre-wrap break-words"><code
-                            ><span class="text-purple-400">public record</span> <span class="text-yellow-200"
-                                >{$t("hero.code.class")}</span
-                            >(
+                    <div class="flex p-5 font-mono text-xs sm:text-sm leading-relaxed">
+                        <div class="flex flex-col text-right text-gray-600 mr-4 select-none opacity-50">
+                            <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span
+                                >7</span
+                            ><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span>
+                        </div>
+                        <pre class="text-gray-500 whitespace-pre-wrap break-words"><code
+                                ><span class="text-purple-400">public record</span> <span class="text-yellow-200"
+                                    >{$t("hero.code.class")}</span
+                                >(
     <span class="text-blue-300">String</span> <span class="text-gray-300">{$t("hero.code.varName")}</span>,
     <span class="text-blue-300">String</span>[] <span class="text-gray-300">{$t("hero.code.varStack")}</span>,
     <span class="text-blue-300">String</span> <span class="text-gray-300">{$t("hero.code.varMood")}</span>,
     <span class="text-blue-300">String</span> <span class="text-gray-300">{$t("hero.code.varGoal")}</span>
 ) <span class="text-gray-400">&lbrace;</span>
     <span class="text-purple-400">public void</span> <span class="text-yellow-200">{$t("hero.code.method")}</span
-                            >() <span class="text-gray-400">&lbrace;</span>
+                                >() <span class="text-gray-400">&lbrace;</span>
         <span class="text-blue-300">System</span>.<span class="text-purple-400">out</span>.<span class="text-yellow-200"
-                                >println</span
-                            >(<span class="text-green-400">"{$t("hero.code.hello")}"</span> + {$t(
-                                "hero.code.varName"
-                            )} + <span class="text-green-400">"."</span>);
+                                    >println</span
+                                >(<span class="text-green-400">"{$t("hero.code.hello")}"</span> + {$t(
+                                    "hero.code.varName",
+                                )} + <span class="text-green-400">"."</span>);
         <span class="text-blue-300">System</span>.<span class="text-purple-400">out</span>.<span class="text-yellow-200"
-                                >println</span
-                            >(<span class="text-green-400">"{$t("hero.code.stack")}"</span> + <span
-                                class="text-blue-300">String</span
-                            >.join(<span class="text-green-400">", "</span>, {$t("hero.code.varStack")}));
+                                    >println</span
+                                >(<span class="text-green-400">"{$t("hero.code.stack")}"</span> + <span
+                                    class="text-blue-300">String</span
+                                >.join(<span class="text-green-400">", "</span>, {$t("hero.code.varStack")}));
         <span class="text-blue-300">System</span>.<span class="text-purple-400">out</span>.<span class="text-yellow-200"
-                                >println</span
-                            >(<span class="text-green-400">"{$t("hero.code.mood")}"</span> + {$t("hero.code.varMood")});
+                                    >println</span
+                                >(<span class="text-green-400">"{$t("hero.code.mood")}"</span> + {$t(
+                                    "hero.code.varMood",
+                                )});
         <span class="text-blue-300">System</span>.<span class="text-purple-400">out</span>.<span class="text-yellow-200"
-                                >println</span
-                            >(<span class="text-green-400">"{$t("hero.code.goal")}"</span> + {$t("hero.code.varGoal")});
+                                    >println</span
+                                >(<span class="text-green-400">"{$t("hero.code.goal")}"</span> + {$t(
+                                    "hero.code.varGoal",
+                                )});
     <span class="text-gray-400">&rbrace;</span>
 <span class="text-gray-400">&rbrace;</span><span class="animate-pulse text-blue-400 font-bold">|</span></code
-                        ></pre>
+                            ></pre>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <button
-            type="button"
-            class="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-3 cursor-pointer group opacity-80 hover:opacity-100 transition-opacity focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-            on:click={() => scrollTo("about")}
-            aria-label="Scroll to about section"
-        >
-            <span
-                class="text-xs font-mono text-gray-400 uppercase tracking-widest transition-all duration-300 group-hover:text-gray-300 group-hover:tracking-[0.2em] drop-shadow-[0_2px_8px_rgba(99,102,241,0.15)]"
-            >
-                {$t("hero.scroll")}
-            </span>
-            <div class="relative flex items-center justify-center">
-                <div class="absolute inset-0 rounded-full bg-indigo-500/20 animate-ping pointer-events-none"></div>
-                <svg
-                    class="w-7 h-7 text-indigo-400 relative z-10 animate-smoothBounce transition-all duration-200 group-hover:text-indigo-300 group-hover:scale-110 drop-shadow-[0_4px_12px_rgba(99,102,241,0.25)]"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M19 14l-7 7m0 0l-7-7m7 7V3"
-                    />
-                </svg>
-            </div>
-            <div
-                class="w-px h-12 bg-gradient-to-b from-indigo-400/0 via-indigo-400/60 to-indigo-400/0 group-hover:h-16 transition-all duration-700 ease-in-out"
-            ></div>
-        </button>
+        {/if}
     </div>
+
+    <button
+        on:click={() => scrollTo("about")}
+        class="absolute bottom-6 left-1/2 -translate-x-1/2 text-gray-500 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.5)] transition-all duration-300 animate-bounce-slow z-20 will-change-transform"
+        aria-label="Scroll down"
+    >
+        <svg class="w-6 h-6 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            ><path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 14l-7 7m0 0l-7-7m7 7V3"
+            /></svg
+        >
+    </button>
 </section>
 
 <style>
-    @keyframes smoothBounce {
+    .hero-grid {
+        background-size: 40px 40px;
+        background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+        mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+    }
+
+    .perspective-container {
+        perspective: 1200px;
+    }
+
+    .code-tilt {
+        transform: perspective(1200px) rotateY(-5deg) rotateX(2deg);
+        transition:
+            transform 0.5s ease,
+            filter 0.5s ease;
+        will-change: transform, filter;
+    }
+
+    .code-tilt:hover {
+        transform: perspective(1200px) rotateY(0deg) rotateX(0deg) scale(1.05);
+        filter: brightness(1.1);
+    }
+
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    @keyframes bounce-slow {
         0%,
         100% {
             transform: translateY(0);
@@ -303,56 +240,7 @@
             transform: translateY(8px);
         }
     }
-
-    @keyframes float-slow {
-        0%,
-        100% {
-            transform: translateY(0) scale(1);
-            opacity: 0.3;
-        }
-        50% {
-            transform: translateY(-20px) scale(1.02);
-            opacity: 0.4;
-        }
-    }
-
-    @keyframes float-medium {
-        0%,
-        100% {
-            transform: translateY(0) scale(1);
-            opacity: 0.4;
-        }
-        50% {
-            transform: translateY(-30px) scale(1.05);
-            opacity: 0.5;
-        }
-    }
-
-    @keyframes float-code {
-        0%,
-        100% {
-            transform: translateY(0) rotate(-2deg);
-        }
-        50% {
-            transform: translateY(-15px) rotate(-3deg);
-        }
-    }
-
-    .animate-smoothBounce {
-        animation: smoothBounce 1.5s infinite cubic-bezier(0.4, 0, 0.6, 1);
-    }
-    .animate-float-slow {
-        animation: float-slow 15s ease-in-out infinite;
-    }
-    .animate-float-medium {
-        animation: float-medium 10s ease-in-out infinite;
-        animation-delay: 2s;
-    }
-    .animate-float-code {
-        animation: float-code 8s ease-in-out infinite;
-    }
-
-    .perspective-container {
-        transform-style: preserve-3d;
+    .animate-bounce-slow {
+        animation: bounce-slow 2s ease-in-out infinite;
     }
 </style>

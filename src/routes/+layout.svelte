@@ -15,6 +15,11 @@
     let scrollY = 0;
     let innerHeight = 0;
     let showPdfModal = false;
+    let showScrollTop = false;
+
+    $: if (innerHeight > 0) {
+        showScrollTop = scrollY > innerHeight * 0.8;
+    }
 
     onMount(() => {
         // Esperar a que se cargue la ventana (imágenes, estilos, etc)
@@ -23,11 +28,15 @@
                 isPageLoaded = true;
             }, 100);
         } else {
-            window.addEventListener("load", () => {
-                setTimeout(() => {
-                    isPageLoaded = true;
-                }, 100);
-            });
+            window.addEventListener(
+                "load",
+                () => {
+                    setTimeout(() => {
+                        isPageLoaded = true;
+                    }, 100);
+                },
+                { once: true },
+            );
         }
     });
 
@@ -39,7 +48,6 @@
     }
 
     $: isLoading = !$isLocaleLoaded || !isPageLoaded;
-    $: showScrollTop = scrollY > innerHeight * 0.8;
 </script>
 
 <svelte:window bind:scrollY bind:innerHeight />

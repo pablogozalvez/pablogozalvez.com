@@ -2,6 +2,7 @@
     import { t, locale, setLocale } from "./i18n";
     import { fade, fly, scale } from "svelte/transition";
     import { cubicOut, cubicInOut } from "svelte/easing";
+    import { rafThrottle } from "./actions";
 
     export let activeSection = "home";
     export let hideNav = false;
@@ -23,30 +24,33 @@
     $: rawProgress = Math.min(scrollY / SCROLL_THRESHOLD, 1);
     $: progress = 1 - Math.pow(1 - rawProgress, 3);
 
-    $: targetWidth = isMobile ? "92%" : "680px";
-    $: currentWidth = isMenuOpen ? "100%" : `calc(100% - (${progress} * (100% - ${targetWidth})))`;
+    // Cachear cálculos de estilos
+    let navStylesCache = "";
 
-    $: marginTop = isMenuOpen ? 0 : progress * 24;
+    function updateNavStyles() {
+        const targetWidth = isMobile ? "92%" : "680px";
+        const currentWidth = isMenuOpen ? "100%" : `calc(100% - (${progress} * (100% - ${targetWidth})))`;
+        const marginTop = isMenuOpen ? 0 : progress * 24;
+        const borderRadius = isMenuOpen ? 0 : progress * 50;
+        const paddingY = isMenuOpen ? 24 : 24 - progress * 10;
+        const paddingX = isMenuOpen ? 32 : 32 - progress * 8;
+        const bgOpacity = isMenuOpen ? 0.98 : progress * 0.7;
+        const borderOpacity = isMenuOpen ? 0 : progress * 0.12;
+        const blurAmount = isMenuOpen ? 20 : progress * 12;
 
-    $: borderRadius = isMenuOpen ? 0 : progress * 50;
+        navStylesCache = `
+            width: ${currentWidth};
+            margin-top: ${marginTop}px;
+            border-radius: ${borderRadius}px;
+            padding: ${paddingY}px ${paddingX}px;
+            background-color: rgba(5, 5, 5, ${bgOpacity});
+            border-color: rgba(255, 255, 255, ${borderOpacity});
+            backdrop-filter: blur(${blurAmount}px);
+            transform: translate3d(0,0,0);
+        `;
+    }
 
-    $: paddingY = isMenuOpen ? 24 : 24 - progress * 10;
-    $: paddingX = isMenuOpen ? 32 : 32 - progress * 8;
-
-    $: bgOpacity = isMenuOpen ? 0.98 : progress * 0.7;
-    $: borderOpacity = isMenuOpen ? 0 : progress * 0.12;
-    $: blurAmount = isMenuOpen ? 20 : progress * 12;
-
-    $: navStyles = `
-        width: ${currentWidth};
-        margin-top: ${marginTop}px;
-        border-radius: ${borderRadius}px;
-        padding: ${paddingY}px ${paddingX}px;
-        background-color: rgba(5, 5, 5, ${bgOpacity});
-        border-color: rgba(255, 255, 255, ${borderOpacity});
-        backdrop-filter: blur(${blurAmount}px);
-        transform: translate3d(0,0,0);
-    `;
+    $: progress, isMobile, isMenuOpen, updateNavStyles();
 
     $: sections = [
         { id: "home", label: $t("nav.home") },
@@ -66,24 +70,33 @@
     }
 
     // Detección de sección
+    let lastScrollCheck = 0;
     $: if (typeof document !== "undefined" && innerHeight && scrollY >= 0) {
-        const center = innerHeight / 3;
-        for (const section of sections) {
-            const el = document.getElementById(section.id);
-            if (el) {
-                const rect = el.getBoundingClientRect();
-                if (rect.top < center && rect.bottom > center) activeSection = section.id;
+        const now = Date.now();
+        if (now - lastScrollCheck > 100) {
+            // Throttle a 100ms
+            lastScrollCheck = now;
+            const center = innerHeight / 3;
+            for (const section of sections) {
+                const el = document.getElementById(section.id);
+                if (el) {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.top < center && rect.bottom > center) {
+                        activeSection = section.id;
+                        break;
+                    }
+                }
             }
         }
     }
 
-    function handleMouseMove(e) {
+    const handleMouseMove = rafThrottle((e) => {
         if (navElement) {
             const rect = navElement.getBoundingClientRect();
             mouseX = e.clientX - rect.left;
             mouseY = e.clientY - rect.top;
         }
-    }
+    });
 </script>
 
 <svelte:window bind:scrollY bind:innerWidth bind:innerHeight />
@@ -136,8 +149,8 @@
         bind:this={navElement}
         on:mousemove={handleMouseMove}
         role="none"
-        class="pointer-events-auto relative group/nav flex items-center justify-between border border-transparent overflow-hidden shadow-2xl will-change-auto"
-        style={navStyles}
+        class="pointer-events-auto relative group/nav flex items-center justify-between border border-transparent overflow-hidden shadow-2xl"
+        style={navStylesCache}
     >
         <div
             class="hidden md:block absolute inset-0 pointer-events-none transition-opacity duration-300"
