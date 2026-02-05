@@ -23,7 +23,7 @@
     ></div>
 
     <div
-        class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay pointer-events-none"
+        class="absolute inset-0 bg-[url('/img/noise-transparent.webp')] opacity-[0.03] mix-blend-overlay pointer-events-none"
     ></div>
     <div class="absolute inset-0 pointer-events-none"></div>
 

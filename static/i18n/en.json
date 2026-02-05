@@ -31,7 +31,7 @@
         "stats": {
             "projects": "Projects",
             "releases": "Releases",
-            "commitment": "Commitment"
+            "experience": "Years of Experience"
         },
         "skills": {
             "frontend": "Frontend",

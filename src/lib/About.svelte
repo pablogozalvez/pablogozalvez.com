@@ -10,7 +10,7 @@
     $: stats = [
         { label: $t("about.stats.projects"), value: "20+" },
         { label: $t("about.stats.releases"), value: "5+" },
-        { label: $t("about.stats.commitment"), value: "100%" },
+        { label: $t("about.stats.experience"), value: "+2" },
     ];
 
     $: skills = [

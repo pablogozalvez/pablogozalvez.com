@@ -53,12 +53,14 @@
         ></div>
     {/if}
 
-    <div class="w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10 h-full py-20 lg:py-0 flex items-center">
+    <div
+        class="w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10 h-full py-20 lg:py-0 flex flex-col lg:flex-row items-center justify-center lg:justify-between"
+    >
         <div class="flex flex-col items-center lg:items-start text-center lg:text-left w-full lg:w-1/2">
             {#if visible}
                 <div in:fly={{ y: 30, duration: 800, easing: cubicOut }}>
                     <h1
-                        class="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-extrabold tracking-tighter mb-6 lg:mb-8 leading-[0.95] text-white drop-shadow-lg"
+                        class="text-6xl sm:text-6xl lg:text-7xl xl:text-8xl font-extrabold tracking-tighter mb-6 lg:mb-8 leading-[0.95] text-white drop-shadow-lg"
                     >
                         {@html $t("hero.title")}
                     </h1>
@@ -69,7 +71,7 @@
                     class="w-full flex justify-center lg:justify-start"
                 >
                     <p
-                        class="text-base sm:text-lg lg:text-xl text-gray-400 mb-8 lg:mb-10 max-w-lg leading-relaxed font-light border-l-0 lg:border-l-2 border-indigo-500/50 pl-0 lg:pl-6 lg:pr-6 lg:py-4 lg:bg-gradient-to-r lg:from-indigo-950/20 lg:via-indigo-950/5 lg:to-transparent lg:rounded-r-lg backdrop-blur-sm"
+                        class="text-lg sm:text-lg lg:text-xl text-gray-300 lg:text-gray-400 mb-12 lg:mb-10 max-w-lg leading-relaxed font-light border-l-0 lg:border-l-2 border-indigo-500/50 p-6 lg:p-0 lg:pl-6 lg:pr-6 lg:py-4 bg-white/5 lg:bg-transparent lg:bg-gradient-to-r lg:from-indigo-950/20 lg:via-indigo-950/5 lg:to-transparent rounded-xl lg:rounded-none lg:rounded-r-lg backdrop-blur-md lg:backdrop-blur-sm shadow-lg lg:shadow-none"
                     >
                         {$t("hero.subtitle")}
                     </p>
@@ -111,10 +113,10 @@
         {#if visible}
             <div
                 in:fly={{ y: 40, duration: 1000, delay: 150, easing: cubicOut }}
-                class="absolute top-1/2 w-[85%] sm:w-[70%] lg:w-[48%] max-w-2xl select-none pointer-events-auto z-0
+                class="w-[85%] sm:w-[70%] lg:w-[48%] max-w-2xl select-none z-0
                 {isMobile
-                    ? 'left-1/2 -translate-x-1/2 -translate-y-[40%] opacity-40'
-                    : 'left-1/2 lg:left-[70%] -translate-x-1/2 -translate-y-1/2 opacity-90 code-tilt'}"
+                    ? 'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-45 blur-sm scale-110 pointer-events-none'
+                    : 'absolute top-1/2 left-1/2 lg:left-[70%] -translate-x-1/2 -translate-y-1/2 opacity-90 code-tilt pointer-events-auto'}"
             >
                 <div
                     class="bg-[#0f111a] rounded-xl border border-white/10 shadow-lg overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-indigo-500/30 hover:border-white/25 hover:backdrop-blur-lg group"
