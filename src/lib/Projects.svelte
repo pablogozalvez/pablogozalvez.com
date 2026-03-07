@@ -1,9 +1,13 @@
 <script>
-    import { viewport, rafThrottle } from "./actions";
+    import { rafThrottle } from "./actions";
+    import { onMount } from "svelte";
     import { t } from "./i18n";
 
-    let visible = false;
+    let sectionRef;
     let containerRef;
+    let revealed = false;
+    let isScrolling = false;
+    let scrollTimer;
 
     $: projects = [
         {
@@ -65,17 +69,43 @@
     ];
 
     const handleMouseMove = rafThrottle((e) => {
-        if (!containerRef) return;
+        if (!containerRef || isScrolling) return;
         const cards = containerRef.getElementsByClassName("project-card");
-
         for (const card of cards) {
             const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-
-            card.style.setProperty("--mouse-x", `${x}px`);
-            card.style.setProperty("--mouse-y", `${y}px`);
+            card.style.setProperty("--mouse-x", `${e.clientX - rect.left}px`);
+            card.style.setProperty("--mouse-y", `${e.clientY - rect.top}px`);
         }
+    });
+
+    onMount(() => {
+        // Single-fire observer: once visible, reveal and never toggle back
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    revealed = true;
+                    observer.disconnect();
+                }
+            },
+            { threshold: 0.05, rootMargin: "0px 0px -50px 0px" },
+        );
+        observer.observe(sectionRef);
+
+        // Detect scrolling to pause mousemove handler
+        const onScroll = () => {
+            isScrolling = true;
+            clearTimeout(scrollTimer);
+            scrollTimer = setTimeout(() => {
+                isScrolling = false;
+            }, 150);
+        };
+        window.addEventListener("scroll", onScroll, { passive: true });
+
+        return () => {
+            observer.disconnect();
+            window.removeEventListener("scroll", onScroll);
+            clearTimeout(scrollTimer);
+        };
     });
 </script>
 
@@ -83,39 +113,35 @@
     id="projects"
     class="py-32 relative bg-gradient-to-b from-[#080808] to-[#050505] -mt-px overflow-hidden"
     aria-label="Projects"
-    use:viewport
-    on:enterViewport={() => (visible = true)}
+    bind:this={sectionRef}
     on:mousemove={handleMouseMove}
-    bind:this={containerRef}
 >
-    <div class="absolute inset-0 bg-[url('/img/grid.svg')] opacity-[0.05]"></div>
+    <div class="absolute inset-0 bg-[url('/img/grid.svg')] opacity-[0.05]" style="background-size: 30px 30px;"></div>
+
     <div
         class="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay"
-        style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"
+        style="background-image: url('/img/noise-transparent.webp');"
     ></div>
 
     <div
         class="absolute -top-[300px] -right-20 w-[600px] h-[600px] bg-purple-900/20 blur-[120px] rounded-full pointer-events-none"
     ></div>
-
     <div
         class="absolute -top-[250px] -left-20 w-[500px] h-[500px] bg-blue-900/10 blur-[120px] rounded-full pointer-events-none"
     ></div>
-
     <div
-        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-indigo-950/20 blur-[150px] rounded-full pointer-events-none"
+        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-indigo-950/15 blur-[150px] rounded-full pointer-events-none"
+    ></div>
+    <div
+        class="absolute -bottom-[300px] -left-20 w-[600px] h-[600px] bg-emerald-900/10 blur-[120px] rounded-full pointer-events-none"
+    ></div>
+    <div
+        class="absolute -bottom-[250px] -right-20 w-[500px] h-[500px] bg-blue-900/10 blur-[120px] rounded-full pointer-events-none"
     ></div>
 
-    <div
-        class="absolute -bottom-40 -left-20 w-[600px] h-[600px] bg-emerald-900/10 blur-[120px] rounded-full pointer-events-none"
-    ></div>
-
-    <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-        <div
-            class="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-6 transition-all duration-1000 transform {visible
-                ? 'opacity-100 translate-y-0'
-                : 'opacity-0 translate-y-10'}"
-        >
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10" bind:this={containerRef}>
+        <!-- Header -->
+        <div class="proj-header flex flex-col md:flex-row md:items-end justify-between mb-20 gap-6" class:revealed>
             <div>
                 <h2 class="text-4xl md:text-5xl font-black text-white mb-4 tracking-tight">
                     {@html $t("projects.title")}
@@ -142,7 +168,8 @@
             </a>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
+        <!-- Cards grid — NO auto-rows-fr, fixed card heights via min-h -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {#each projects as project, i}
                 <a
                     href={project.link}
@@ -150,20 +177,21 @@
                     rel="noopener noreferrer"
                     class="project-card group relative flex flex-col {project.featured
                         ? 'md:col-span-2 md:flex-row'
-                        : ''} overflow-hidden rounded-3xl bg-[#0F1115] border border-white/5 hover:border-white/10 transition-all duration-500 {visible
-                        ? 'opacity-100 translate-y-0'
-                        : 'opacity-0 translate-y-10'}"
-                    style="transition-delay: {i * 100}ms"
+                        : ''} overflow-hidden rounded-3xl bg-[#0F1115] border border-white/5 hover:border-white/10"
+                    class:revealed
+                    style="--reveal-delay: {i * 80}ms"
                 >
+                    <!-- Mouse spotlight -->
                     <div
-                        class="pointer-events-none absolute -inset-px opacity-0 transition duration-300 group-hover:opacity-100 z-30"
-                        style="background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.08), transparent 40%);"
+                        class="pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-100 z-30"
+                        style="background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.08), transparent 40%); transition: opacity 0.3s;"
                     ></div>
 
+                    <!-- Image — fixed height, no flex-basis, shrink-0 prevents layout recalc -->
                     <div
-                        class="relative overflow-hidden w-full {project.featured
+                        class="relative overflow-hidden w-full flex-shrink-0 {project.featured
                             ? 'h-72 md:h-auto md:w-1/2'
-                            : 'h-56 basis-1/2'}"
+                            : 'h-56'}"
                     >
                         {#if project.featured}
                             <span
@@ -173,7 +201,8 @@
                             </span>
                         {/if}
                         <div
-                            class="absolute inset-0 bg-indigo-900/10 group-hover:bg-transparent transition-colors duration-500 z-10 mix-blend-overlay"
+                            class="absolute inset-0 bg-indigo-900/10 group-hover:bg-transparent z-10 mix-blend-overlay"
+                            style="transition: background-color 0.5s;"
                         ></div>
                         <div
                             class="absolute inset-0 bg-gradient-to-t from-[#0F1115] via-transparent to-transparent z-20 opacity-80"
@@ -182,13 +211,16 @@
                         <img
                             src={project.image}
                             alt={project.title}
-                            loading="lazy"
+                            loading="eager"
                             decoding="async"
-                            class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out filter grayscale-[0.3] group-hover:grayscale-0"
+                            width="600"
+                            height="400"
+                            class="project-img w-full h-full object-cover"
                         />
 
                         <div
-                            class="absolute top-4 right-4 z-30 w-10 h-10 rounded-full bg-black/50 backdrop-blur-md border border-white/10 flex items-center justify-center text-white opacity-0 -translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300"
+                            class="absolute top-4 right-4 z-30 w-10 h-10 rounded-full bg-black/50 backdrop-blur-md border border-white/10 flex items-center justify-center text-white opacity-0 -translate-y-2 group-hover:opacity-100 group-hover:translate-y-0"
+                            style="transition: opacity 0.3s, transform 0.3s;"
                         >
                             <svg
                                 class="w-4 h-4 transform -rotate-45"
@@ -205,10 +237,11 @@
                         </div>
                     </div>
 
+                    <!-- Content — flex-grow fills remaining space -->
                     <div
-                        class="relative z-20 p-8 flex flex-col justify-between w-full {project.featured
+                        class="relative z-20 p-8 flex flex-col justify-between w-full flex-grow {project.featured
                             ? 'md:w-1/2'
-                            : 'basis-1/2'} bg-[#0F1115]"
+                            : ''} bg-[#0F1115]"
                     >
                         <div
                             class="absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"
@@ -218,7 +251,8 @@
                             <h3
                                 class="{project.featured
                                     ? 'text-3xl md:text-4xl font-extrabold text-white mb-4'
-                                    : 'text-xl md:text-2xl font-bold text-white mb-3'} group-hover:text-indigo-400 transition-colors"
+                                    : 'text-xl md:text-2xl font-bold text-white mb-3'} group-hover:text-indigo-400"
+                                style="transition: color 0.3s;"
                             >
                                 {project.title}
                             </h3>
@@ -234,7 +268,8 @@
                         <div class="flex flex-wrap gap-2 mt-auto">
                             {#each project.tags as tag}
                                 <span
-                                    class="px-2.5 py-1 text-[10px] uppercase tracking-wider font-mono text-gray-500 bg-white/5 border border-white/5 rounded transition-colors group-hover:text-gray-300 group-hover:border-white/10"
+                                    class="px-2.5 py-1 text-[10px] uppercase tracking-wider font-mono text-gray-500 bg-white/5 border border-white/5 rounded group-hover:text-gray-300 group-hover:border-white/10"
+                                    style="transition: color 0.3s, border-color 0.3s;"
                                 >
                                     {tag}
                                 </span>
@@ -251,5 +286,59 @@
     .project-card {
         --mouse-x: 0px;
         --mouse-y: 0px;
+        opacity: 0;
+        border-color: rgba(255, 255, 255, 0.05);
+        transition: border-color 0.3s;
+        contain: layout style;
+    }
+
+    .project-card.revealed {
+        animation: cardReveal 0.6s ease-out forwards;
+        animation-delay: var(--reveal-delay, 0ms);
+    }
+
+    /* Override app.css content-visibility: auto on project images to prevent CLS */
+    .project-img {
+        content-visibility: visible !important;
+    }
+
+    /* Hover scale via CSS only — no JS involved, GPU-composited */
+    .project-card:hover .project-img {
+        transform: scale(1.05);
+        filter: grayscale(0);
+    }
+
+    .project-img {
+        filter: grayscale(0.3);
+        transition:
+            transform 0.7s ease-out,
+            filter 0.7s ease-out;
+        will-change: transform;
+    }
+
+    .proj-header {
+        opacity: 0;
+    }
+
+    .proj-header.revealed {
+        animation: fadeIn 0.8s ease-out forwards;
+    }
+
+    @keyframes cardReveal {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
     }
 </style>

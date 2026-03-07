@@ -34,11 +34,13 @@ export const translations = writable({});
 
 // Cache para traducciones ya resueltas
 const translationCache = new Map();
+let lastTranslationsRef = null;
 
 export const t = derived([locale, translations], ([$locale, $translations]) => {
-    // Limpiar cache cuando cambia el idioma
-    if (translationCache.size > 0 && !translationCache.has($locale)) {
+    // Invalidar cache si las traducciones o el locale cambian
+    if ($translations !== lastTranslationsRef) {
         translationCache.clear();
+        lastTranslationsRef = $translations;
     }
 
     return (key) => {
@@ -53,9 +55,13 @@ export const t = derived([locale, translations], ([$locale, $translations]) => {
             if (text === undefined) break;
             text = text[k];
         }
-        const result = text || key;
-        translationCache.set(cacheKey, result);
-        return result;
+
+        if (text !== undefined && text !== key) {
+            translationCache.set(cacheKey, text);
+            return text;
+        }
+
+        return key;
     };
 });
 

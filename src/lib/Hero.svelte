@@ -49,7 +49,7 @@
             class="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-indigo-900/10 rounded-full blur-[120px] pointer-events-none select-none z-0"
         ></div>
         <div
-            class="absolute bottom-[-10%] left-[-5%] w-[600px] h-[600px] bg-blue-900/5 rounded-full blur-[100px] pointer-events-none select-none z-0"
+            class="absolute bottom-[-10%] left-[-5%] w-[600px] h-[600px] bg-blue-900/10 rounded-full blur-[120px] pointer-events-none select-none z-0"
         ></div>
     {/if}
 

@@ -47,7 +47,25 @@
 
     $: dispatch("showPdfModalChange", showPdfModal);
 
-    // Deshabilitar scroll cuando el modal de pdf esté abierto
+    let zoomLevel = 100;
+    const ZOOM_MIN = 50;
+    const ZOOM_MAX = 300;
+    const ZOOM_STEP = 25;
+
+    $: pdfSrc = `/media/pdf/cv.pdf#toolbar=0&navpanes=0&zoom=${zoomLevel}`;
+
+    function zoomIn() {
+        zoomLevel = Math.min(ZOOM_MAX, zoomLevel + ZOOM_STEP);
+    }
+    function zoomOut() {
+        zoomLevel = Math.max(ZOOM_MIN, zoomLevel - ZOOM_STEP);
+    }
+    function zoomReset() {
+        zoomLevel = 100;
+    }
+
+    $: if (!showPdfModal) zoomLevel = 100;
+
     $: {
         if (typeof window !== "undefined") {
             document.body.style.overflow = showPdfModal ? "hidden" : "";
@@ -83,13 +101,47 @@
             class="relative w-full max-w-6xl h-full bg-[#1a1a1a] rounded-2xl overflow-hidden shadow-2xl flex flex-col border border-white/10"
             in:scale={{ start: 0.95, duration: 200, easing: cubicOut }}
         >
-            <div class="flex items-center justify-between px-6 py-4 bg-[#2a2a2a] border-b border-white/10">
+            <div class="flex items-center justify-between px-6 py-3 bg-[#2a2a2a] border-b border-white/10">
                 <h3 class="text-white font-medium text-lg">Curriculum Vitae</h3>
-                <div class="flex items-center gap-3">
+
+                <!-- Zoom controls -->
+                <div class="flex items-center gap-1.5">
+                    <button
+                        on:click={zoomOut}
+                        disabled={zoomLevel <= ZOOM_MIN}
+                        class="p-1.5 text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                        title="Zoom out"
+                    >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+                        </svg>
+                    </button>
+
+                    <button
+                        on:click={zoomReset}
+                        class="px-2 py-1 text-xs font-mono text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors min-w-[52px] text-center"
+                        title="Reset zoom"
+                    >
+                        {zoomLevel}%
+                    </button>
+
+                    <button
+                        on:click={zoomIn}
+                        disabled={zoomLevel >= ZOOM_MAX}
+                        class="p-1.5 text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                        title="Zoom in"
+                    >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                    </button>
+
+                    <div class="w-px h-5 bg-white/10 mx-1.5"></div>
+
                     <a
                         href="/media/pdf/cv.pdf"
                         download
-                        class="p-2 text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+                        class="p-1.5 text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
                         title="Download PDF"
                     >
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -103,7 +155,7 @@
                     </a>
                     <button
                         on:click={() => (showPdfModal = false)}
-                        class="p-2 text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+                        class="p-1.5 text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
                         title="Close"
                     >
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -118,11 +170,9 @@
                 </div>
             </div>
             <div class="flex-1 bg-[#333] relative">
-                <iframe
-                    src="/media/pdf/cv.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH"
-                    class="w-full h-full border-0"
-                    title="CV Viewer"
-                ></iframe>
+                {#key pdfSrc}
+                    <iframe src={pdfSrc} class="w-full h-full border-0" title="CV Viewer"></iframe>
+                {/key}
             </div>
         </div>
     </div>
@@ -140,14 +190,14 @@
     <div class="absolute inset-0 bg-[url('/img/grid.svg')] opacity-[0.05]" style="background-size: 30px 30px;"></div>
     <div
         class="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay"
-        style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"
+        style="background-image: url('/img/noise-transparent.webp');"
     ></div>
 
     <div
         class="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-900/20 blur-[120px] rounded-full pointer-events-none"
     ></div>
     <div
-        class="absolute -top-20 -left-20 w-[500px] h-[500px] bg-slate-900/20 blur-[120px] rounded-full pointer-events-none"
+        class="absolute -top-20 -left-20 w-[500px] h-[500px] bg-blue-900/15 blur-[120px] rounded-full pointer-events-none"
     ></div>
 
     <div

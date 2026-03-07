@@ -88,6 +88,9 @@
         class="absolute -top-40 -left-20 w-[600px] h-[600px] bg-emerald-900/10 blur-[120px] rounded-full pointer-events-none"
     ></div>
     <div
+        class="absolute -top-[250px] -right-20 w-[500px] h-[500px] bg-blue-900/10 blur-[120px] rounded-full pointer-events-none"
+    ></div>
+    <div
         class="absolute bottom-[-20%] left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-indigo-600/10 blur-[120px] rounded-full pointer-events-none"
     ></div>
 

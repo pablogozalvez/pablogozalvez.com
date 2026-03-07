@@ -88,7 +88,9 @@
     </button>
 {/if}
 
-<slot />
+{#if $isLocaleLoaded}
+    <slot />
+{/if}
 
 <!--<div class="min-h-screen text-white font-sans overflow-x-hidden"></div>-->
 
