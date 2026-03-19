@@ -1,10 +1,9 @@
 <script>
-    import { viewport, rafThrottle } from "./actions";
+    import { reveal, rafThrottle } from "./actions";
     import { t } from "./i18n";
     import { fade, scale } from "svelte/transition";
     import { cubicOut } from "svelte/easing";
 
-    let visible = false;
     let containerRef;
 
     $: stats = [
@@ -182,8 +181,6 @@
     id="about"
     aria-label="About"
     class="py-32 relative overflow-hidden bg-gradient-to-b from-[#050505] to-[#080808]"
-    use:viewport
-    on:enterViewport={() => (visible = true)}
     on:mousemove={handleMouseMove}
     bind:this={containerRef}
 >
@@ -209,22 +206,14 @@
     ></div>
 
     <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-        <div
-            class="mb-16 md:mb-24 transition-all duration-1000 transform {visible
-                ? 'opacity-100 translate-y-0'
-                : 'opacity-0 translate-y-10'}"
-        >
+        <div class="mb-16 md:mb-24 about-header" use:reveal>
             <h2 class="text-4xl md:text-5xl font-black text-white mb-6 tracking-tight">
                 {@html $t("about.title")}
             </h2>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-            <div
-                class="lg:col-span-5 flex flex-col justify-between transition-all duration-1000 delay-200 {visible
-                    ? 'opacity-100 translate-x-0'
-                    : 'opacity-0 -translate-x-10'}"
-            >
+            <div class="lg:col-span-5 flex flex-col justify-between about-left" use:reveal>
                 <div class="prose prose-invert prose-lg">
                     <p class="text-gray-400 leading-relaxed text-lg">
                         {@html $t("about.p1")}
@@ -235,8 +224,8 @@
                 </div>
 
                 <div class="grid grid-cols-3 gap-4 mt-12 border-t border-white/10 pt-8">
-                    {#each stats as stat}
-                        <div>
+                    {#each stats as stat, i}
+                        <div class="stat-item" style="--stat-delay: {i * 100}ms" use:reveal>
                             <div class="text-3xl font-bold text-white mb-1">{stat.value}</div>
                             <div class="text-xs text-gray-500 uppercase tracking-wider font-mono">{stat.label}</div>
                         </div>
@@ -247,10 +236,9 @@
             <div class="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-4">
                 {#each skills as skill, i}
                     <div
-                        class="spotlight-card group relative bg-white/[0.02] border border-white/10 p-6 rounded-2xl overflow-hidden transition-all duration-500 {visible
-                            ? 'opacity-100 translate-y-0'
-                            : 'opacity-0 translate-y-10'}"
-                        style="transition-delay: {300 + i * 100}ms"
+                        class="spotlight-card group relative bg-white/[0.02] border border-white/10 p-6 rounded-2xl overflow-hidden skill-card"
+                        style="--skill-delay: {i * 100}ms"
+                        use:reveal
                     >
                         <div
                             class="pointer-events-none absolute -inset-px opacity-0 transition duration-300 group-hover:opacity-100"
@@ -287,10 +275,8 @@
                 {/each}
 
                 <div
-                    class="md:col-span-2 mt-4 p-6 rounded-2xl bg-gradient-to-r from-indigo-900/20 to-blue-900/20 border border-white/10 flex items-center justify-between group cursor-pointer hover:border-white/20 transition-all {visible
-                        ? 'opacity-100 translate-y-0'
-                        : 'opacity-0 translate-y-10'}"
-                    style="transition-delay: 800ms"
+                    class="md:col-span-2 mt-4 p-6 rounded-2xl bg-gradient-to-r from-indigo-900/20 to-blue-900/20 border border-white/10 flex items-center justify-between group cursor-pointer hover:border-white/20 resume-card"
+                    use:reveal
                     on:click={() => (showPdfModal = true)}
                     on:keydown={(e) => e.key === "Enter" && (showPdfModal = true)}
                     role="button"
@@ -322,5 +308,111 @@
     .spotlight-card {
         --mouse-x: 0px;
         --mouse-y: 0px;
+    }
+
+    .about-header {
+        opacity: 0;
+    }
+    .about-header:global([data-revealed]) {
+        animation: aboutFadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .about-left {
+        opacity: 0;
+    }
+    .about-left:global([data-revealed]) {
+        animation: aboutSlideRight 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .stat-item {
+        opacity: 0;
+    }
+    .stat-item:global([data-revealed]) {
+        animation: statPop 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        animation-delay: var(--stat-delay, 0ms);
+    }
+
+    .skill-card {
+        opacity: 0;
+        transition:
+            border-color 0.3s,
+            box-shadow 0.4s ease,
+            transform 0.4s ease;
+    }
+    .skill-card:global([data-revealed]) {
+        animation: skillReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        animation-delay: var(--skill-delay, 0ms);
+    }
+    .skill-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .resume-card {
+        opacity: 0;
+        transition:
+            border-color 0.3s,
+            box-shadow 0.3s,
+            transform 0.3s;
+    }
+    .resume-card:global([data-revealed]) {
+        animation: skillReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    .resume-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 30px rgba(79, 70, 229, 0.15);
+    }
+
+    @keyframes aboutFadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+            filter: blur(3px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+            filter: blur(0);
+        }
+    }
+
+    @keyframes aboutSlideRight {
+        from {
+            opacity: 0;
+            transform: translateX(-30px);
+            filter: blur(3px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+            filter: blur(0);
+        }
+    }
+
+    @keyframes statPop {
+        0% {
+            opacity: 0;
+            transform: scale(0.8) translateY(10px);
+        }
+        70% {
+            transform: scale(1.05) translateY(-2px);
+        }
+        100% {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+    }
+
+    @keyframes skillReveal {
+        from {
+            opacity: 0;
+            transform: translateY(30px) scale(0.97);
+            filter: blur(3px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0);
+        }
     }
 </style>

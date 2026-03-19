@@ -107,3 +107,44 @@ export function rafThrottle(fn) {
         }
     };
 }
+
+let _revealObserver = null;
+const _revealCallbacks = new WeakMap();
+
+function getRevealObserver() {
+    if (_revealObserver) return _revealObserver;
+    _revealObserver = new IntersectionObserver(
+        (entries) => {
+            for (const entry of entries) {
+                if (entry.isIntersecting) {
+                    const cb = _revealCallbacks.get(entry.target);
+                    if (cb) cb();
+                }
+            }
+        },
+        { threshold: 0.1, rootMargin: "0px 0px -40px 0px" },
+    );
+    return _revealObserver;
+}
+
+export function reveal(element) {
+    if (typeof IntersectionObserver === "undefined") {
+        element.dataset.revealed = "";
+        return;
+    }
+
+    const observer = getRevealObserver();
+    _revealCallbacks.set(element, () => {
+        element.dataset.revealed = "";
+        observer.unobserve(element);
+        _revealCallbacks.delete(element);
+    });
+    observer.observe(element);
+
+    return {
+        destroy() {
+            observer.unobserve(element);
+            _revealCallbacks.delete(element);
+        },
+    };
+}

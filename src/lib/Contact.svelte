@@ -1,9 +1,8 @@
 <script>
-    import { viewport, rafThrottle } from "./actions";
+    import { reveal, rafThrottle } from "./actions";
     import { onMount } from "svelte";
     import { t } from "./i18n";
 
-    let visible = false;
     let containerRef;
     let copied = false;
     let currentTime = "";
@@ -76,8 +75,6 @@
 <section
     id="contact"
     class="py-32 relative flex items-center justify-center overflow-hidden bg-gradient-to-b from-[#050505] to-black -mt-px"
-    use:viewport
-    on:enterViewport={() => (visible = true)}
 >
     <div class="absolute inset-0 bg-[url('/img/grid.svg')] opacity-[0.05]" style="background-size: 30px 30px;"></div>
     <div
@@ -85,7 +82,7 @@
         style="background-image: url('/img/noise-transparent.webp');"
     ></div>
     <div
-        class="absolute -top-40 -left-20 w-[600px] h-[600px] bg-emerald-900/10 blur-[120px] rounded-full pointer-events-none"
+        class="absolute -top-[300px] -left-20 w-[600px] h-[600px] bg-emerald-900/10 blur-[120px] rounded-full pointer-events-none"
     ></div>
     <div
         class="absolute -top-[250px] -right-20 w-[500px] h-[500px] bg-blue-900/10 blur-[120px] rounded-full pointer-events-none"
@@ -100,9 +97,8 @@
             on:mousemove={handleMouseMove}
             role="region"
             aria-label="Contact card"
-            class="contact-card group relative w-full bg-[#0F1115] border border-white/5 rounded-[2rem] overflow-hidden transition-all duration-1000 transform {visible
-                ? 'opacity-100 translate-y-0'
-                : 'opacity-0 translate-y-10'}"
+            class="contact-card group relative w-full bg-[#0F1115] border border-white/5 rounded-[2rem] overflow-hidden"
+            use:reveal
         >
             <div
                 class="pointer-events-none absolute -inset-px opacity-0 transition duration-300 group-hover:opacity-100 z-0"
@@ -177,7 +173,7 @@
                                 <a
                                     href={social.href}
                                     target="_blank"
-                                    class="p-3 rounded-lg bg-white/5 border border-white/5 hover:bg-white/10 hover:scale-105 transition-all text-gray-400 hover:text-white"
+                                    class="social-icon p-3 rounded-lg bg-white/5 border border-white/5 hover:bg-white/10 transition-all text-gray-400 hover:text-white"
                                 >
                                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"
                                         ><path d={social.icon} /></svg
@@ -332,5 +328,46 @@
     .contact-card {
         --mouse-x: 0px;
         --mouse-y: 0px;
+        opacity: 0;
+        transition:
+            border-color 0.3s,
+            box-shadow 0.5s ease;
+    }
+
+    .contact-card:global([data-revealed]) {
+        animation: contactReveal 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .contact-card:hover {
+        box-shadow:
+            0 0 60px rgba(99, 102, 241, 0.06),
+            0 25px 80px rgba(0, 0, 0, 0.3);
+    }
+
+    .social-icon {
+        transition:
+            transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+            background-color 0.3s,
+            border-color 0.3s,
+            color 0.3s,
+            box-shadow 0.3s;
+    }
+    .social-icon:hover {
+        transform: translateY(-3px) scale(1.08);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    @keyframes contactReveal {
+        from {
+            opacity: 0;
+            transform: translateY(40px) scale(0.98);
+            filter: blur(4px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0);
+        }
     }
 </style>

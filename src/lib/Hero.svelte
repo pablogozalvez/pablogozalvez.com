@@ -60,7 +60,7 @@
             {#if visible}
                 <div in:fly={{ y: 30, duration: 800, easing: cubicOut }}>
                     <h1
-                        class="text-6xl sm:text-6xl lg:text-7xl xl:text-8xl font-extrabold tracking-tighter mb-6 lg:mb-8 leading-[0.95] text-white drop-shadow-lg"
+                        class="hero-title text-6xl sm:text-6xl lg:text-7xl xl:text-8xl font-extrabold tracking-tighter mb-6 lg:mb-8 leading-[0.95] text-white drop-shadow-lg"
                     >
                         {@html $t("hero.title")}
                     </h1>
@@ -83,7 +83,7 @@
                 >
                     <button
                         on:click={() => scrollTo("projects")}
-                        class="px-8 py-4 bg-gradient-to-r from-white to-gray-100 text-black font-bold rounded-full hover:from-gray-100 hover:to-white hover:shadow-lg hover:shadow-white/20 transition-all duration-300 flex items-center justify-center gap-2 group will-change-transform"
+                        class="hero-cta px-8 py-4 bg-gradient-to-r from-white to-gray-100 text-black font-bold rounded-full hover:from-gray-100 hover:to-white hover:shadow-lg hover:shadow-white/25 transition-all duration-300 flex items-center justify-center gap-2 group will-change-transform"
                     >
                         <span>{$t("hero.viewProjects")}</span>
                         <svg
@@ -206,17 +206,25 @@
             linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
         -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
         mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+        animation: gridPulse 8s ease-in-out infinite;
     }
 
-    .perspective-container {
-        perspective: 1200px;
+    @keyframes gridPulse {
+        0%,
+        100% {
+            opacity: 0.2;
+        }
+        50% {
+            opacity: 0.12;
+        }
     }
 
     .code-tilt {
         transform: perspective(1200px) rotateY(-5deg) rotateX(2deg);
         transition:
-            transform 0.5s ease,
-            filter 0.5s ease;
+            transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+            filter 0.6s ease,
+            box-shadow 0.6s ease;
         will-change: transform, filter;
     }
 
@@ -225,24 +233,55 @@
         filter: brightness(1.1);
     }
 
-    .scrollbar-hide::-webkit-scrollbar {
-        display: none;
-    }
-    .scrollbar-hide {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-    }
-
     @keyframes bounce-slow {
         0%,
         100% {
             transform: translateY(0);
+            opacity: 0.5;
         }
         50% {
-            transform: translateY(8px);
+            transform: translateY(10px);
+            opacity: 1;
         }
     }
     .animate-bounce-slow {
-        animation: bounce-slow 2s ease-in-out infinite;
+        animation: bounce-slow 2.5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+    }
+
+    .hero-title {
+        background: linear-gradient(90deg, #ffffff 0%, #ffffff 40%, #a5b4fc 50%, #ffffff 60%, #ffffff 100%);
+        background-size: 200% 100%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: titleShimmer 6s ease-in-out infinite;
+    }
+
+    @keyframes titleShimmer {
+        0%,
+        100% {
+            background-position: 100% 0;
+        }
+        50% {
+            background-position: -100% 0;
+        }
+    }
+
+    .hero-cta {
+        position: relative;
+    }
+    .hero-cta::after {
+        content: "";
+        position: absolute;
+        inset: -2px;
+        border-radius: 9999px;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), transparent, rgba(255, 255, 255, 0.1));
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        z-index: -1;
+        filter: blur(8px);
+    }
+    .hero-cta:hover::after {
+        opacity: 1;
     }
 </style>

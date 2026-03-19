@@ -1,4 +1,5 @@
 <script>
+    import { reveal } from "./actions";
     import { t } from "./i18n";
     const currentYear = new Date().getFullYear();
 
@@ -33,7 +34,7 @@
 
     <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
-            <div class="lg:col-span-2 space-y-4">
+            <div class="lg:col-span-2 space-y-4 footer-item" style="--footer-delay: 0ms" use:reveal>
                 <a href="#home" class="inline-block" on:click|preventDefault={scrollToTop}>
                     <h2 class="text-2xl font-black text-white tracking-tighter">
                         PABLO<span class="text-gray-500">GOZÁLVEZ</span>
@@ -44,7 +45,7 @@
                 </p>
             </div>
 
-            <div>
+            <div class="footer-item" style="--footer-delay: 120ms" use:reveal>
                 <h3 class="text-xs font-mono font-semibold text-gray-500 uppercase tracking-wider mb-6">
                     {$t("footer.navigation")}
                 </h3>
@@ -53,7 +54,7 @@
                         <li>
                             <a
                                 href={link.href}
-                                class="text-sm text-gray-400 hover:text-white hover:translate-x-1 transition-all duration-200 inline-block"
+                                class="footer-link text-sm text-gray-400 hover:text-white transition-all duration-200 inline-block"
                             >
                                 {link.name}
                             </a>
@@ -62,7 +63,7 @@
                 </ul>
             </div>
 
-            <div>
+            <div class="footer-item" style="--footer-delay: 240ms" use:reveal>
                 <h3 class="text-xs font-mono font-semibold text-gray-500 uppercase tracking-wider mb-6">
                     {$t("footer.connect")}
                 </h3>
@@ -142,7 +143,11 @@
             </div>
         </div>
 
-        <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-6">
+        <div
+            class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-6 footer-item"
+            style="--footer-delay: 360ms"
+            use:reveal
+        >
             <div class="flex items-center gap-4">
                 <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/5">
                     <div class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
@@ -161,3 +166,44 @@
         </div>
     </div>
 </footer>
+
+<style>
+    .footer-item {
+        opacity: 0;
+    }
+    .footer-item:global([data-revealed]) {
+        animation: footerReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        animation-delay: var(--footer-delay, 0ms);
+    }
+
+    .footer-link {
+        position: relative;
+    }
+    .footer-link::after {
+        content: "";
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background: linear-gradient(90deg, rgba(99, 102, 241, 0.6), transparent);
+        transition: width 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .footer-link:hover::after {
+        width: 100%;
+    }
+    .footer-link:hover {
+        transform: translateX(4px);
+    }
+
+    @keyframes footerReveal {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>

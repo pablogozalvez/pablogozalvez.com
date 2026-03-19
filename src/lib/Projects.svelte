@@ -1,11 +1,9 @@
 <script>
-    import { rafThrottle } from "./actions";
+    import { reveal, rafThrottle } from "./actions";
     import { onMount } from "svelte";
     import { t } from "./i18n";
 
-    let sectionRef;
     let containerRef;
-    let revealed = false;
     let isScrolling = false;
     let scrollTimer;
 
@@ -79,18 +77,6 @@
     });
 
     onMount(() => {
-        // Single-fire observer: once visible, reveal and never toggle back
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    revealed = true;
-                    observer.disconnect();
-                }
-            },
-            { threshold: 0.05, rootMargin: "0px 0px -50px 0px" },
-        );
-        observer.observe(sectionRef);
-
         // Detect scrolling to pause mousemove handler
         const onScroll = () => {
             isScrolling = true;
@@ -102,7 +88,6 @@
         window.addEventListener("scroll", onScroll, { passive: true });
 
         return () => {
-            observer.disconnect();
             window.removeEventListener("scroll", onScroll);
             clearTimeout(scrollTimer);
         };
@@ -113,7 +98,6 @@
     id="projects"
     class="py-32 relative bg-gradient-to-b from-[#080808] to-[#050505] -mt-px overflow-hidden"
     aria-label="Projects"
-    bind:this={sectionRef}
     on:mousemove={handleMouseMove}
 >
     <div class="absolute inset-0 bg-[url('/img/grid.svg')] opacity-[0.05]" style="background-size: 30px 30px;"></div>
@@ -141,7 +125,7 @@
 
     <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10" bind:this={containerRef}>
         <!-- Header -->
-        <div class="proj-header flex flex-col md:flex-row md:items-end justify-between mb-20 gap-6" class:revealed>
+        <div class="proj-header flex flex-col md:flex-row md:items-end justify-between mb-20 gap-6" use:reveal>
             <div>
                 <h2 class="text-4xl md:text-5xl font-black text-white mb-4 tracking-tight">
                     {@html $t("projects.title")}
@@ -178,7 +162,7 @@
                     class="project-card group relative flex flex-col {project.featured
                         ? 'md:col-span-2 md:flex-row'
                         : ''} overflow-hidden rounded-3xl bg-[#0F1115] border border-white/5 hover:border-white/10"
-                    class:revealed
+                    use:reveal
                     style="--reveal-delay: {i * 80}ms"
                 >
                     <!-- Mouse spotlight -->
@@ -288,13 +272,23 @@
         --mouse-y: 0px;
         opacity: 0;
         border-color: rgba(255, 255, 255, 0.05);
-        transition: border-color 0.3s;
+        transition:
+            border-color 0.3s,
+            box-shadow 0.4s ease,
+            transform 0.4s ease;
         contain: layout style;
     }
 
-    .project-card.revealed {
-        animation: cardReveal 0.6s ease-out forwards;
+    .project-card:global([data-revealed]) {
+        animation: cardReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
         animation-delay: var(--reveal-delay, 0ms);
+    }
+
+    .project-card:hover {
+        box-shadow:
+            0 0 40px rgba(99, 102, 241, 0.08),
+            0 20px 60px rgba(0, 0, 0, 0.3);
+        transform: translateY(-4px);
     }
 
     /* Override app.css content-visibility: auto on project images to prevent CLS */
@@ -304,41 +298,82 @@
 
     /* Hover scale via CSS only — no JS involved, GPU-composited */
     .project-card:hover .project-img {
-        transform: scale(1.05);
-        filter: grayscale(0);
+        transform: scale(1.08);
+        filter: grayscale(0) brightness(1.05);
     }
 
     .project-img {
         filter: grayscale(0.3);
         transition:
-            transform 0.7s ease-out,
+            transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
             filter 0.7s ease-out;
         will-change: transform;
+    }
+
+    /* Shimmer sweep on featured cards */
+    .project-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 35;
+        background: linear-gradient(
+            105deg,
+            transparent 40%,
+            rgba(255, 255, 255, 0.03) 45%,
+            rgba(255, 255, 255, 0.06) 50%,
+            rgba(255, 255, 255, 0.03) 55%,
+            transparent 60%
+        );
+        background-size: 200% 100%;
+        background-position: 200% 0;
+        pointer-events: none;
+        transition: none;
+    }
+
+    .project-card:hover::after {
+        animation: shimmerSweep 0.8s ease-out forwards;
     }
 
     .proj-header {
         opacity: 0;
     }
 
-    .proj-header.revealed {
-        animation: fadeIn 0.8s ease-out forwards;
+    .proj-header:global([data-revealed]) {
+        animation: headerReveal 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
 
     @keyframes cardReveal {
         from {
             opacity: 0;
+            transform: translateY(40px) scale(0.97);
+            filter: blur(4px);
         }
         to {
             opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0);
         }
     }
 
-    @keyframes fadeIn {
+    @keyframes headerReveal {
         from {
             opacity: 0;
+            transform: translateY(30px);
+            filter: blur(3px);
         }
         to {
             opacity: 1;
+            transform: translateY(0);
+            filter: blur(0);
+        }
+    }
+
+    @keyframes shimmerSweep {
+        from {
+            background-position: 200% 0;
+        }
+        to {
+            background-position: -200% 0;
         }
     }
 </style>
