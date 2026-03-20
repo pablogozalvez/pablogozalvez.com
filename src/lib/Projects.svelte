@@ -2,18 +2,44 @@
     import { reveal, rafThrottle } from "./actions";
     import { onMount } from "svelte";
     import { t } from "./i18n";
+    import PdfViewer from "./PdfViewer.svelte";
 
     let containerRef;
     let isScrolling = false;
     let scrollTimer;
 
+    let showPdfModal = false;
+
+    $: {
+        if (typeof document !== "undefined") {
+            if (showPdfModal) {
+                document.body.classList.add("hide-global-cursor");
+            } else {
+                document.body.classList.remove("hide-global-cursor");
+            }
+        }
+    }
+
+    let currentPdfUrl = "";
+    let currentPdfTitle = "";
+    let currentPdfDownloadName = "";
+
+    function openPdf(url, title) {
+        currentPdfUrl = url;
+        currentPdfTitle = title;
+        currentPdfDownloadName = title.replace(/\s+/g, "_") + ".pdf";
+        showPdfModal = true;
+    }
+
     $: projects = [
         {
-            title: "Tricky Mansion",
-            description: $t("projects.items.trickyMansion.description"),
-            image: "/img/tricky-mansion.webp",
-            link: "https://play.google.com/store/apps/details?id=com.ChapayPinturaJorgeRal.TrickyMansion",
-            tags: ["Unity", "C#", "Game Dev", "Procedural Gen"],
+            title: "OutReal",
+            description:
+                $t("projects.items.outreal.description") ||
+                "Virtual Reality environment focused on realistic interactions.",
+            image: "/img/outreal.webp",
+            pdf: "/media/pdf/OutReal-Memoria.pdf",
+            tags: ["Ionic", "Angular", "PostGIS", "Full Stack"],
             featured: true,
         },
         {
@@ -28,32 +54,44 @@
             title: "Scroll Carousel",
             description: $t("projects.items.scrollCarousel.description"),
             image: "/img/scroll-carousel.webp",
-            link: "https://github.com/pablogozalvez/ScrollCarousel",
+            link: "https://assetstore.unity.com/packages/tools/gui/scroll-carousel-306533",
+            linkType: "demo",
+            article: "https://github.com/pablogozalvez/ScrollCarousel",
+            articleType: "Source Code",
             tags: ["Open Source", "UI Tooling", "Unity"],
             featured: false,
         },
         {
-            title: "Clumsy Mimics",
-            description: $t("projects.items.clumsyMimics.description"),
-            image: "/img/clumsy-mimics.webp",
-            link: "https://github.com/pablogozalvez/ClumsyMimics",
-            tags: ["Game Jam", "Rapid Dev", "Unity", "C#"],
+            title: "Recorridos virtuales de guiado intrahospitalario",
+            description: $t("projects.items.hospitalXyz.description"),
+            image: "/img/hospitalxyz.webp",
+            link: "https://hospital.fernandoruizrico.com/",
+            linkType: "demo",
+            article:
+                "https://portal.edu.gva.es/cipfpcanastell/2025/04/15/el-cipfp-canastell-se-engalana-de-innovacion/",
+            tags: ["Three.js", "WebGL", "Virtual Tours", "Healthcare"],
+            featured: true,
+        },
+        {
+            title: "Tricky Mansion",
+            description: $t("projects.items.trickyMansion.description"),
+            image: "/img/tricky-mansion.webp",
+            link: "https://jayoru.itch.io/tricky-mansion",
+            linkType: "demo",
+            article: "https://play.google.com/store/apps/details?id=com.ChapayPinturaJorgeRal.TrickyMansion",
+            articleType: "Google Play",
+            tags: ["Unity", "C#", "Game Dev", "Procedural Gen"],
             featured: true,
         },
         {
             title: "Super Mario Phaser",
             description: $t("projects.items.superMarioPhaser.description"),
             image: "/img/super-mario-phaser.webp",
-            link: "https://github.com/pablogozalvez/Super-Mario-Phaser",
+            link: "https://pablogozalvez.github.io/Super-Mario-Phaser/",
+            linkType: "demo",
+            article: "https://github.com/pablogozalvez/Super-Mario-Phaser",
+            articleType: "Source Code",
             tags: ["Phaser", "JavaScript", "WebGame", "Procedural Gen"],
-            featured: false,
-        },
-        {
-            title: "Space Invaders",
-            description: $t("projects.items.spaceInvaders.description"),
-            image: "/img/space-invaders.webp",
-            link: "https://github.com/pablogozalvez/Space-Invaders",
-            tags: ["C#", "Console", "Low Level", "Game Dev"],
             featured: false,
         },
         {
@@ -63,6 +101,15 @@
             link: "https://github.com/pablogozalvez/Joker-Assistant",
             tags: ["AI", "Speech Rec", "WinForms", "C#"],
             featured: false,
+        },
+        {
+            title: "Clumsy Mimics",
+            description: $t("projects.items.clumsyMimics.description"),
+            image: "/img/clumsy-mimics.webp",
+            link: "https://github.com/pablogozalvez/ClumsyMimics",
+            linkType: "demo",
+            tags: ["Game Jam", "Rapid Dev", "Unity", "C#"],
+            featured: true,
         },
     ];
 
@@ -100,6 +147,10 @@
     aria-label="Projects"
     on:mousemove={handleMouseMove}
 >
+    <!-- Mantenemos oculto el cursor principal cuando el PDF Modal esté abierto, 
+         para ello inyectamos en el DOM una clase manejada por style global o usamos hidden desde el layout -->
+    <PdfViewer bind:showPdfModal pdfUrl={currentPdfUrl} title={currentPdfTitle} downloadName={currentPdfDownloadName} />
+
     <div class="absolute inset-0 bg-[url('/img/grid.svg')] opacity-[0.05]" style="background-size: 30px 30px;"></div>
 
     <div
@@ -155,11 +206,18 @@
         <!-- Cards grid — NO auto-rows-fr, fixed card heights via min-h -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {#each projects as project, i}
+                <!-- svelte-ignore a11y-invalid-attribute -->
                 <a
-                    href={project.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="project-card group relative flex flex-col {project.featured
+                    href={project.link || project.article || "#"}
+                    target={project.link || project.article ? "_blank" : undefined}
+                    rel={project.link || project.article ? "noopener noreferrer" : undefined}
+                    on:click={(e) => {
+                        if (project.pdf) {
+                            e.preventDefault();
+                            openPdf(project.pdf, project.title);
+                        }
+                    }}
+                    class="project-card group cursor-pointer text-left relative flex flex-col {project.featured
                         ? 'md:col-span-2 md:flex-row'
                         : ''} overflow-hidden rounded-3xl bg-[#0F1115] border border-white/5 hover:border-white/10"
                     use:reveal
@@ -177,13 +235,29 @@
                             ? 'h-72 md:h-auto md:w-1/2'
                             : 'h-56'}"
                     >
-                        {#if project.featured}
-                            <span
-                                class="absolute top-4 left-4 z-40 px-3 py-1 text-xs font-bold uppercase rounded-full border border-white/10 tracking-wider bg-gradient-to-r from-indigo-600/80 to-purple-600/80 text-white shadow-lg"
-                            >
-                                Featured
-                            </span>
-                        {/if}
+                        <div class="absolute top-4 left-4 z-40 flex flex-wrap gap-2">
+                            {#if project.featured}
+                                <span
+                                    class="px-3 py-1 text-[10px] font-bold uppercase rounded-full border border-white/20 tracking-wider bg-gradient-to-r from-indigo-500/90 to-purple-500/90 backdrop-blur-md text-white shadow-[0_4px_12px_rgba(0,0,0,0.5)]"
+                                >
+                                    Featured
+                                </span>
+                            {/if}
+                            {#if project.linkType === "demo"}
+                                <span
+                                    class="px-3 py-1 text-[10px] font-bold uppercase rounded-full border border-emerald-400/30 tracking-wider bg-emerald-950/80 backdrop-blur-md text-emerald-300 shadow-[0_4px_12px_rgba(0,0,0,0.5)]"
+                                >
+                                    Demo
+                                </span>
+                            {/if}
+                            {#if project.article}
+                                <span
+                                    class="px-3 py-1 text-[10px] font-bold uppercase rounded-full border border-blue-400/30 tracking-wider bg-blue-950/80 backdrop-blur-md text-blue-300 shadow-[0_4px_12px_rgba(0,0,0,0.5)]"
+                                >
+                                    {project.articleType || "Artículo"}
+                                </span>
+                            {/if}
+                        </div>
                         <div
                             class="absolute inset-0 bg-indigo-900/10 group-hover:bg-transparent z-10 mix-blend-overlay"
                             style="transition: background-color 0.5s;"
@@ -203,11 +277,10 @@
                         />
 
                         <div
-                            class="absolute top-4 right-4 z-30 w-10 h-10 rounded-full bg-black/50 backdrop-blur-md border border-white/10 flex items-center justify-center text-white opacity-0 -translate-y-2 group-hover:opacity-100 group-hover:translate-y-0"
-                            style="transition: opacity 0.3s, transform 0.3s;"
+                            class="absolute top-4 right-4 z-30 w-10 h-10 rounded-full bg-black/50 backdrop-blur-md border border-white/10 flex items-center justify-center text-white opacity-0 translate-x-3 -translate-y-3 scale-75 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:scale-100 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] shadow-lg"
                         >
                             <svg
-                                class="w-4 h-4 transform -rotate-45"
+                                class="w-5 h-5 ml-[2px] -mt-[2px] transform -rotate-45 transition-transform duration-500 group-hover:translate-x-[2px] group-hover:-translate-y-[2px]"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -219,6 +292,33 @@
                                 ></path></svg
                             >
                         </div>
+
+                        {#if project.article}
+                            <button
+                                on:click|preventDefault|stopPropagation={() => window.open(project.article, "_blank")}
+                                class="absolute bottom-4 right-4 z-40 group/btn flex items-center justify-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 text-[10px] sm:text-xs font-semibold tracking-wide text-indigo-50 bg-[#0F1115]/80 hover:bg-black/90 border border-indigo-500/30 hover:border-indigo-400/50 rounded-lg backdrop-blur-md transition-all overflow-hidden w-auto max-w-[calc(100%-2rem)]"
+                            >
+                                <span class="relative z-10 whitespace-nowrap truncate"
+                                    >{project.articleType || "Más info"}</span
+                                >
+                                <svg
+                                    class="w-3.5 h-3.5 relative z-10 flex-shrink-0 transition-transform duration-300 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                    />
+                                </svg>
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-r from-indigo-500/0 via-indigo-500/10 to-indigo-500/0 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700"
+                                ></div>
+                            </button>
+                        {/if}
                     </div>
 
                     <!-- Content — flex-grow fills remaining space -->
@@ -249,15 +349,19 @@
                             </p>
                         </div>
 
-                        <div class="flex flex-wrap gap-2 mt-auto">
-                            {#each project.tags as tag}
-                                <span
-                                    class="px-2.5 py-1 text-[10px] uppercase tracking-wider font-mono text-gray-500 bg-white/5 border border-white/5 rounded group-hover:text-gray-300 group-hover:border-white/10"
-                                    style="transition: color 0.3s, border-color 0.3s;"
-                                >
-                                    {tag}
-                                </span>
-                            {/each}
+                        <div
+                            class="flex flex-col sm:flex-row sm:items-end justify-between mt-auto pt-6 border-t border-white/5 gap-4"
+                        >
+                            <div class="flex flex-wrap gap-1.5 w-full">
+                                {#each project.tags as tag}
+                                    <span
+                                        class="px-2.5 py-1 text-[10px] font-medium tracking-wide text-gray-400 bg-white/5 border border-white/10 rounded-md group-hover:text-gray-200 group-hover:border-white/20"
+                                        style="transition: color 0.3s, border-color 0.3s, background-color 0.3s;"
+                                    >
+                                        {tag}
+                                    </span>
+                                {/each}
+                            </div>
                         </div>
                     </div>
                 </a>

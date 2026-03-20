@@ -49,6 +49,12 @@
         "subtitle": "A showcase of my completed projects, technical experiments, and contributions.",
         "viewArchive": "View full archive",
         "items": {
+            "outreal": {
+                "description": "Mobile application that connects people through spontaneous social activities. Social map, proximity notifications. With a trust system and gamification, the app promotes safe and fun meetups, offering a real alternative to social networks centered only on digital interactions."
+            },
+            "hospitalXyz": {
+                "description": "Colaborative project between Hospital General Universitario Dr. Balmis and educational centers CIPFP Canastell and IES San Vicente to facilitate patient assistance during their journey to the hospital, specifically in the radiodiagnosis area, providing prior information that generates comfort and security."
+            },
             "trickyMansion": {
                 "description": "A 2D platformer game developed in Unity. Features a random vertical scrolling level generation, various enemies and traps. It has been showcased at several game development events and is published on platforms like Google Play and Itch.io."
             },
@@ -63,9 +69,6 @@
             },
             "superMarioPhaser": {
                 "description": "Browser-based recreation of the classic using Phaser 3. Demonstrates JS physics engines and tilemap management."
-            },
-            "spaceInvaders": {
-                "description": "Low-level console implementation focusing on memory management and rendering loop optimization."
             },
             "jokerAssistant": {
                 "description": "Desktop voice assistant integrating Microsoft Speech API for command recognition and automation."

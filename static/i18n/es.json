@@ -49,6 +49,12 @@
         "subtitle": "Una muestra de mis proyectos completados, experimentos técnicos y contribuciones.",
         "viewArchive": "Ver archivo completo",
         "items": {
+            "outreal": {
+                "description": "Aplicación móvil que conecta a personas mediante planes espontáneos de ocio. Mapa social, notificaciones de proximidad. Con un sistema de confianza y gamificación, la app promueve encuentros seguros y divertidos, ofreciendo una alternativa real a las redes sociales centradas únicamente en lo digital."
+            },
+            "hospitalXyz": {
+                "description": "Proyecto colaborativo entre el Hospital General Universitario Dr. Balmis y los centros educativos CIPFP Canastell e IES San Vicente para Facilitar la asistencia del paciente en su trayecto hasta el lugar de exploración en el hospital, específicamente en el área de radiodiagnóstico, proveyendo información previa que genere comodidad y seguridad."
+            },
             "trickyMansion": {
                 "description": "Un juego de plataformas 2D desarrollado en Unity. Cuenta con generación aleatoria de niveles con desplazamiento vertical, varios enemigos y trampas. Ha sido presentado en varios eventos de desarrollo de juegos y se encuentra publicado en plataformas como Google Play e Itch.io."
             },
@@ -56,16 +62,13 @@
                 "description": "Entorno de programación visual construido desde cero con C# WinForms. Incluye un lexer/parser personalizado para interpretar la lógica de bloques."
             },
             "clumsyMimics": {
-                "description": "Entrada ganadora de Game Jam creada en 48h. Se centra en el prototipado rápido y una sensación mecánica pulida."
+                "description": "Videojuego ganador de Game Jam creado en 48h. Se centra en el prototipado rápido y una sensación mecánica pulida."
             },
             "scrollCarousel": {
                 "description": "Componente de UI de Unity de código abierto que proporciona desplazamiento basado en inercia de alto rendimiento para elementos de canvas."
             },
             "superMarioPhaser": {
                 "description": "Recreación basada en navegador del clásico usando Phaser 3. Demuestra motores de física JS y gestión de mapas de tiles."
-            },
-            "spaceInvaders": {
-                "description": "Implementación de consola de bajo nivel centrada en la gestión de memoria y la optimización del bucle de renderizado."
             },
             "jokerAssistant": {
                 "description": "Asistente de voz de escritorio que integra Microsoft Speech API para el reconocimiento de comandos y automatización."

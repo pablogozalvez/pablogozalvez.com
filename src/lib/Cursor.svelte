@@ -16,7 +16,9 @@
 
     function updateBodyCursor() {
         if (typeof document !== "undefined") {
-            if (!hidden && !isText && !isTouchDevice) {
+            const externalHide = document.body.classList.contains("hide-global-cursor");
+
+            if (!hidden && !externalHide && !isText && !isTouchDevice) {
                 document.body.classList.add("custom-cursor-active");
             } else {
                 document.body.classList.remove("custom-cursor-active");
@@ -26,7 +28,21 @@
 
     $: updateBodyCursor();
 
-    // Shared hover detection logic
+    let externalHideToggle = false;
+    onMount(() => {
+        if (typeof document !== "undefined") {
+            const observer = new MutationObserver(() => {
+                const isHiddenNow = document.body.classList.contains("hide-global-cursor");
+                if (externalHideToggle !== isHiddenNow) {
+                    externalHideToggle = isHiddenNow;
+                    updateBodyCursor();
+                }
+            });
+            observer.observe(document.body, { attributes: true, attributeFilter: ["class"] });
+            return () => observer.disconnect();
+        }
+    });
+
     function createHoverHandler(onUpdate) {
         let lastTarget = null;
         let lastResult = { isInput: false, isClickable: false };
@@ -71,8 +87,6 @@
         lowPerfMode = isLowPerformanceMode();
 
         if (lowPerfMode) {
-            // Lightweight mode: direct position updates, CSS transitions handle smoothing
-            // No RAF loop, no mix-blend-difference (expensive without GPU)
             const handleMouseMove = (e) => {
                 x = e.clientX;
                 y = e.clientY;
@@ -118,7 +132,6 @@
             };
         }
 
-        // Full performance mode: RAF lerp for buttery smooth tracking
         let rafId = null;
         let targetX = -100;
         let targetY = -100;
@@ -203,18 +216,16 @@
         class="cursor-root fixed top-0 left-0 pointer-events-none z-[9999] flex items-center justify-center"
         class:mix-blend-difference={!lowPerfMode}
         class:cursor-low-perf={lowPerfMode}
-        class:opacity-0={!isVisible || isText || hidden}
-        class:opacity-100={isVisible && !isText && !hidden}
+        class:opacity-0={!isVisible || isText || hidden || externalHideToggle}
+        class:opacity-100={isVisible && !isText && !hidden && !externalHideToggle}
         style="transform: translate3d({x}px, {y}px, 0) translate(-50%, -50%);"
     >
-        <!-- Dot center -->
         <div
             class="absolute bg-white rounded-full transition-opacity duration-150"
             class:opacity-5={isHovering}
             style="width: 8px; height: 8px;"
         ></div>
 
-        <!-- Ring -->
         <div
             class="cursor-ring border rounded-full"
             style="
@@ -234,7 +245,6 @@
         will-change: transform;
     }
 
-    /* Low-perf mode: let CSS handle position smoothing, skip mix-blend-difference */
     .cursor-low-perf {
         transition:
             opacity 0.2s ease-out,
