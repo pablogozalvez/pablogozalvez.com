@@ -21,5 +21,8 @@
         "@vercel/analytics": "^2.0.1",
         "intersection-observer": "^0.12.2",
         "tailwindcss": "^4.1.17"
+    },
+    "overrides": {
+        "esbuild": "0.28.1"
     }
 }
