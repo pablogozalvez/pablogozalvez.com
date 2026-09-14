@@ -3,9 +3,4 @@ import tailwindcss from "@tailwindcss/vite";
 
 export default {
     plugins: [sveltekit(), tailwindcss()],
-    esbuild: {
-        supported: {
-            'destructuring': true
-        }
-    }
 };
