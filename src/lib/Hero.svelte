@@ -1,11 +1,13 @@
 <script>
     import { viewport } from "./actions";
     import { onMount } from "svelte";
-    import { t } from "./i18n";
+    import { getI18n } from "./i18n";
     import { fly } from "svelte/transition";
     import { cubicOut } from "svelte/easing";
 
-    let visible = false;
+    const { t } = getI18n();
+
+    let visible = true;
     let isMobile = false;
 
     let heroOpacity = 1;
@@ -70,6 +72,12 @@
                     in:fly={{ y: 20, duration: 800, delay: 150, easing: cubicOut }}
                     class="w-full flex justify-center lg:justify-start"
                 >
+                    <p
+                        class="mb-5 text-sm font-mono font-semibold uppercase tracking-[0.18em] text-indigo-300"
+                    >
+                        {$t("hero.role")}
+                    </p>
+
                     <p
                         class="text-lg sm:text-lg lg:text-xl text-gray-300 lg:text-gray-400 mb-12 lg:mb-10 max-w-lg leading-relaxed font-light border-l-0 lg:border-l-2 border-indigo-500/50 p-6 lg:p-0 lg:pl-6 lg:pr-6 lg:py-4 bg-white/5 lg:bg-transparent lg:bg-gradient-to-r lg:from-indigo-950/20 lg:via-indigo-950/5 lg:to-transparent rounded-xl lg:rounded-none lg:rounded-r-lg backdrop-blur-md lg:backdrop-blur-sm shadow-lg lg:shadow-none"
                     >

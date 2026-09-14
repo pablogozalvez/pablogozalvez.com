@@ -1,11 +1,13 @@
 <script>
-    import { t, locale, setLocale } from "./i18n";
+    import { getI18n } from "./i18n";
     import { fade, fly, scale } from "svelte/transition";
     import { cubicOut, cubicInOut } from "svelte/easing";
     import { rafThrottle } from "./actions";
 
     export let activeSection = "home";
     export let hideNav = false;
+
+    const { t, locale, setLocale } = getI18n();
 
     let scrollY = 0;
     let innerWidth = 0;
@@ -65,9 +67,7 @@
         else document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
     };
 
-    function toggleLanguage() {
-        setLocale($locale === "en" ? "es" : "en");
-    }
+    $: alternateLanguageUrl = $locale === "en" ? "/es" : "/";
 
     // Detección de sección
     let lastScrollCheck = 0;
@@ -124,8 +124,11 @@
                 </button>
             {/each}
             <div class="mt-8 pt-8 border-t border-white/10 w-20 flex justify-center">
-                <button
-                    on:click={toggleLanguage}
+                <a
+                    href={alternateLanguageUrl}
+                    on:click|preventDefault={() => setLocale($locale === "en" ? "es" : "en")}
+                    hreflang={$locale === "en" ? "es" : "en"}
+                    lang={$locale === "en" ? "es" : "en"}
                     class="text-sm font-mono text-gray-400 border border-white/10 rounded-full px-4 py-3 hover:bg-white/10 hover:text-white transition-all hover:scale-105 active:scale-95 flex items-center gap-3"
                 >
                     <img
@@ -134,7 +137,7 @@
                         class="w-5 h-5 object-contain"
                     />
                     <span>{$locale === "en" ? "ES" : "EN"}</span>
-                </button>
+                </a>
             </div>
         </nav>
     </div>
@@ -221,8 +224,11 @@
                     </button>
                 {/each}
 
-                <button
-                    on:click={toggleLanguage}
+                <a
+                    href={alternateLanguageUrl}
+                    on:click|preventDefault={() => setLocale($locale === "en" ? "es" : "en")}
+                    hreflang={$locale === "en" ? "es" : "en"}
+                    lang={$locale === "en" ? "es" : "en"}
                     class="ml-2 relative px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-gray-400 hover:text-white transition-all duration-300 border border-white/10 rounded-full hover:bg-white/10 flex items-center gap-2"
                 >
                     <img
@@ -231,7 +237,7 @@
                         class="w-3 h-3 object-contain"
                     />
                     <span>{$locale === "en" ? "ES" : "EN"}</span>
-                </button>
+                </a>
             </div>
 
             <button

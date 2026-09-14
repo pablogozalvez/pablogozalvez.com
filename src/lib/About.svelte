@@ -1,8 +1,10 @@
 <script>
     import { reveal, rafThrottle } from "./actions";
-    import { t } from "./i18n";
+    import { getI18n } from "./i18n";
     import { fade, scale } from "svelte/transition";
     import { cubicOut } from "svelte/easing";
+
+    const { t } = getI18n();
 
     let containerRef;
 

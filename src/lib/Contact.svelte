@@ -1,11 +1,13 @@
 <script>
     import { reveal, rafThrottle } from "./actions";
     import { onMount } from "svelte";
-    import { t } from "./i18n";
+    import { getI18n } from "./i18n";
 
     let containerRef;
     let copied = false;
     let currentTime = "";
+
+    const { t } = getI18n();
 
     let formState = "idle";
     let formData = { name: "", email: "", message: "" };
@@ -173,6 +175,8 @@
                                 <a
                                     href={social.href}
                                     target="_blank"
+                                    rel="me noopener noreferrer"
+                                    aria-label={social.name}
                                     class="social-icon p-3 rounded-lg bg-white/5 border border-white/5 hover:bg-white/10 transition-all text-gray-400 hover:text-white"
                                 >
                                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"

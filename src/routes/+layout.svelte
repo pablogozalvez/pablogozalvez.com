@@ -3,8 +3,9 @@
     import Navbar from "../lib/Navbar.svelte";
     import Cursor from "../lib/Cursor.svelte";
     import Loader from "../lib/Loader.svelte";
-    import { isLocaleLoaded } from "../lib/i18n";
+    import { getLocaleFromPath, provideI18n } from "../lib/i18n";
     import { onMount } from "svelte";
+    import { page } from "$app/stores";
     import { fly } from "svelte/transition";
     import "../app.css";
 
@@ -17,11 +18,18 @@
     let showPdfModal = false;
     let showScrollTop = false;
 
+    const i18n = provideI18n(getLocaleFromPath($page.url.pathname));
+    const { initializeBrowserLocale, isLocaleLoaded, syncLocaleFromPath } = i18n;
+
+    $: syncLocaleFromPath($page.url.pathname);
+
     $: if (innerHeight > 0) {
         showScrollTop = scrollY > innerHeight * 0.8;
     }
 
     onMount(() => {
+        initializeBrowserLocale();
+
         // Esperar a que se cargue la ventana (imágenes, estilos, etc)
         if (document.readyState === "complete") {
             setTimeout(() => {
@@ -52,10 +60,7 @@
 
 <svelte:window bind:scrollY bind:innerHeight />
 
-<SEO
-    title="Pablo Gozálvez - Portfolio"
-    description="Portfolio of Pablo Gozálvez, Full Stack Developer specialized in multiplatform development and videogames."
-/>
+<SEO />
 
 <Loader {isLoading} />
 

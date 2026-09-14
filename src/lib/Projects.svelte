@@ -1,8 +1,10 @@
 <script>
     import { reveal, rafThrottle } from "./actions";
     import { onMount } from "svelte";
-    import { t } from "./i18n";
+    import { getI18n } from "./i18n";
     import PdfViewer from "./PdfViewer.svelte";
+
+    const { t } = getI18n();
 
     let containerRef;
     let isScrolling = false;

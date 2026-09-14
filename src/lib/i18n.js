@@ -1,103 +1,71 @@
-import { writable, derived, get } from "svelte/store";
+import { getContext, setContext } from "svelte";
+import { goto } from "$app/navigation";
+import { writable, derived } from "svelte/store";
+import en from "../../static/i18n/en.json";
+import es from "../../static/i18n/es.json";
+import { AVAILABLE_LOCALES, getLocaleFromPath, localizePath } from "./locales";
 
-export const AVAILABLE_LOCALES = ["en", "es"];
+export { AVAILABLE_LOCALES, getLocaleFromPath, localizePath } from "./locales";
 
-// Cache para evitar lecturas repetidas de localStorage
-let cachedLocale = null;
+const I18N_CONTEXT = Symbol("i18n");
+const initialTranslations = { en, es };
 
-function getInitialLocale() {
-    if (typeof window !== "undefined") {
-        if (cachedLocale) return cachedLocale;
-
-        const stored = localStorage.getItem("locale");
-        if (AVAILABLE_LOCALES.includes(stored)) {
-            cachedLocale = stored;
-            return stored;
-        }
-        const navLang = navigator.language?.slice(0, 2) || "en";
-        if (AVAILABLE_LOCALES.includes(navLang)) {
-            cachedLocale = navLang;
-            return navLang;
-        }
-        cachedLocale = "en";
-        return "en";
-    }
-    return "en";
-}
-
-const initialLocale = getInitialLocale();
-if (typeof window !== "undefined") {
-    localStorage.setItem("locale", initialLocale);
-}
-export const locale = writable(initialLocale);
-export const translations = writable({});
-
-// Cache para traducciones ya resueltas
-const translationCache = new Map();
-let lastTranslationsRef = null;
-
-export const t = derived([locale, translations], ([$locale, $translations]) => {
-    // Invalidar cache si las traducciones o el locale cambian
-    if ($translations !== lastTranslationsRef) {
-        translationCache.clear();
-        lastTranslationsRef = $translations;
-    }
-
-    return (key) => {
-        const cacheKey = `${$locale}:${key}`;
-        if (translationCache.has(cacheKey)) {
-            return translationCache.get(cacheKey);
-        }
-
+export function createI18n(initialLocale = "en") {
+    const locale = writable(initialLocale);
+    const translations = writable(initialTranslations);
+    const isLocaleLoaded = writable(true);
+    const t = derived([locale, translations], ([$locale, $translations]) => (key) => {
         const keys = key.split(".");
         let text = $translations[$locale];
-        for (const k of keys) {
+        for (const keyPart of keys) {
             if (text === undefined) break;
-            text = text[k];
+            text = text[keyPart];
         }
-
-        if (text !== undefined && text !== key) {
-            translationCache.set(cacheKey, text);
-            return text;
-        }
-
-        return key;
-    };
-});
-
-export async function loadTranslations(lang) {
-    if (!AVAILABLE_LOCALES.includes(lang)) return;
-    try {
-        const res = await fetch(`/i18n/${lang}.json`);
-        if (res.ok) {
-            const data = await res.json();
-            translations.update((t) => ({ ...t, [lang]: data }));
-        } else {
-            console.error(`Could not load translations for ${lang}`);
-        }
-    } catch (e) {
-        console.error(`Error loading translations for ${lang}:`, e);
-    }
-}
-
-export async function setLocale(lang) {
-    if (!AVAILABLE_LOCALES.includes(lang)) return;
-    const currentTranslations = get(translations);
-    if (!currentTranslations[lang]) {
-        await loadTranslations(lang);
-    }
-    locale.set(lang);
-    cachedLocale = lang;
-    if (typeof window !== "undefined") {
-        localStorage.setItem("locale", lang);
-    }
-}
-
-export const isLocaleLoaded = writable(false);
-
-// Initial load only in browser
-if (typeof window !== "undefined") {
-    Promise.all(AVAILABLE_LOCALES.map(loadTranslations)).then(() => {
-        isLocaleLoaded.set(true);
+        return text || key;
     });
+
+    function syncLocaleFromPath(pathname) {
+        const nextLocale = getLocaleFromPath(pathname);
+        locale.set(nextLocale);
+        if (typeof document !== "undefined") document.documentElement.lang = nextLocale;
+    }
+
+    async function initializeBrowserLocale() {
+        if (typeof window === "undefined") return;
+
+        const routeLocale = getLocaleFromPath(window.location.pathname);
+        if (routeLocale !== "en") {
+            localStorage.setItem("locale", routeLocale);
+            return;
+        }
+
+        const storedLocale = localStorage.getItem("locale");
+        const browserLocale = navigator.language?.slice(0, 2);
+        const preferredLocale = AVAILABLE_LOCALES.includes(storedLocale)
+            ? storedLocale
+            : AVAILABLE_LOCALES.includes(browserLocale)
+                ? browserLocale
+                : "en";
+
+        localStorage.setItem("locale", preferredLocale);
+        if (preferredLocale !== "en") {
+            await goto(localizePath(`${window.location.pathname}${window.location.search}${window.location.hash}`, preferredLocale));
+        }
+    }
+
+    async function setLocale(nextLocale) {
+        if (!AVAILABLE_LOCALES.includes(nextLocale) || typeof window === "undefined") return;
+        localStorage.setItem("locale", nextLocale);
+        await goto(localizePath(`${window.location.pathname}${window.location.search}${window.location.hash}`, nextLocale));
+    }
+
+    return { locale, t, isLocaleLoaded, initializeBrowserLocale, setLocale, syncLocaleFromPath };
+}
+
+export function provideI18n(initialLocale) {
+    return setContext(I18N_CONTEXT, createI18n(initialLocale));
+}
+
+export function getI18n() {
+    return getContext(I18N_CONTEXT);
 }

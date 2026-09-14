@@ -1,6 +1,7 @@
 <script>
     import { reveal } from "./actions";
-    import { t } from "./i18n";
+    import { getI18n } from "./i18n";
+    const { t } = getI18n();
     const currentYear = new Date().getFullYear();
 
     function scrollToTop() {
@@ -70,8 +71,9 @@
                 <ul class="space-y-3">
                     <li>
                         <a
-                            href="https://linkedin.com/in/pablogozálvez/"
+                            href="https://www.linkedin.com/in/pablogozalvez/"
                             target="_blank"
+                            rel="me noopener noreferrer"
                             class="text-sm text-gray-400 hover:text-indigo-400 transition-colors flex items-center gap-2 group"
                         >
                             LinkedIn
@@ -93,6 +95,7 @@
                         <a
                             href="https://github.com/pablogozalvez"
                             target="_blank"
+                            rel="me noopener noreferrer"
                             class="text-sm text-gray-400 hover:text-purple-400 transition-colors flex items-center gap-2 group"
                         >
                             GitHub
@@ -114,6 +117,7 @@
                         <a
                             href="https://pablogozalvez.itch.io/"
                             target="_blank"
+                            rel="me noopener noreferrer"
                             class="text-sm text-gray-400 hover:text-pink-400 transition-colors flex items-center gap-2 group"
                         >
                             Itch.io
