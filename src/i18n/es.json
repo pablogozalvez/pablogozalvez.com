@@ -22,6 +22,27 @@
             "varStack": "stack",
             "varMood": "estado",
             "varGoal": "objetivo"
+        },
+        "preview": {
+            "tabAbout": "Sobre mí",
+            "tabProjects": "Proyectos",
+            "available": "Disponible para proyectos",
+            "location": "Alicante, ES",
+            "role": "Full Stack & Software Dev",
+            "summary": "Desarrollo plataformas web, aplicaciones móviles y experiencias interactivas, uniendo frontend moderno con arquitecturas backend sólidas y Unity.",
+            "statExp": "Años exp.",
+            "statProjects": "Proyectos",
+            "statReleases": "Lanzamientos",
+            "viewAbout": "Más sobre mí",
+            "featuredProject": "Proyecto destacado",
+            "viewInProjects": "Ver en proyectos",
+            "allProjects": "Ver todos los proyectos",
+            "seeNext": "Siguiente proyecto",
+            "seePrev": "Proyecto anterior",
+            "switchTab": "Explorar proyectos",
+            "techStack": "Tecnologías clave",
+            "highlightArchitecture": "Arquitectura limpia, APIs REST y bases de datos",
+            "highlightInteractive": "Frontend reactivo, WebGL y experiencias 3D"
         }
     },
     "about": {

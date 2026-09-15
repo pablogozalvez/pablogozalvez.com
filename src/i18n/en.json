@@ -22,6 +22,27 @@
             "varStack": "stack",
             "varMood": "mood",
             "varGoal": "goal"
+        },
+        "preview": {
+            "tabAbout": "About Me",
+            "tabProjects": "Projects",
+            "available": "Available for projects",
+            "location": "Alicante, ES",
+            "role": "Full Stack & Software Dev",
+            "summary": "Building web platforms, mobile applications, and interactive experiences, connecting modern frontend with solid backend architectures and Unity.",
+            "statExp": "Years exp.",
+            "statProjects": "Projects",
+            "statReleases": "Releases",
+            "viewAbout": "More about me",
+            "featuredProject": "Featured project",
+            "viewInProjects": "View in projects",
+            "allProjects": "View all projects",
+            "seeNext": "Next project",
+            "seePrev": "Previous project",
+            "switchTab": "Explore projects",
+            "techStack": "Key Technologies",
+            "highlightArchitecture": "Clean architecture, REST APIs & databases",
+            "highlightInteractive": "Reactive frontend, WebGL & 3D experiences"
         }
     },
     "about": {
