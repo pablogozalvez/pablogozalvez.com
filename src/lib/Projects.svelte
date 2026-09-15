@@ -160,21 +160,7 @@
         style="background-image: url('/img/noise-transparent.webp');"
     ></div>
 
-    <div
-        class="absolute -top-[300px] -right-20 w-[600px] h-[600px] bg-purple-900/20 blur-[120px] rounded-full pointer-events-none"
-    ></div>
-    <div
-        class="absolute -top-[250px] -left-20 w-[500px] h-[500px] bg-blue-900/10 blur-[120px] rounded-full pointer-events-none"
-    ></div>
-    <div
-        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-indigo-950/15 blur-[150px] rounded-full pointer-events-none"
-    ></div>
-    <div
-        class="absolute -bottom-[300px] -left-20 w-[600px] h-[600px] bg-emerald-900/10 blur-[120px] rounded-full pointer-events-none"
-    ></div>
-    <div
-        class="absolute -bottom-[250px] -right-20 w-[500px] h-[500px] bg-blue-900/10 blur-[120px] rounded-full pointer-events-none"
-    ></div>
+
 
     <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10" bind:this={containerRef}>
         <!-- Header -->

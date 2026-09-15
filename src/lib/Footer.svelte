@@ -29,9 +29,7 @@
     ></div>
     <div class="absolute inset-0 pointer-events-none"></div>
 
-    <div
-        class="absolute bottom-[-200px] left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-indigo-900/20 blur-[100px] rounded-full pointer-events-none"
-    ></div>
+
 
     <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">

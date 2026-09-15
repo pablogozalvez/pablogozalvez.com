@@ -79,20 +79,7 @@
         style="background-image: url('/img/noise-transparent.webp');"
     ></div>
 
-    <div
-        class="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-900/20 blur-[120px] rounded-full pointer-events-none"
-    ></div>
-    <div
-        class="absolute -top-20 -left-20 w-[500px] h-[500px] bg-blue-900/15 blur-[120px] rounded-full pointer-events-none"
-    ></div>
 
-    <div
-        class="absolute -bottom-[300px] -right-20 w-[600px] h-[600px] bg-purple-900/20 blur-[120px] rounded-full pointer-events-none"
-    ></div>
-
-    <div
-        class="absolute -bottom-[250px] -left-20 w-[500px] h-[500px] bg-blue-900/10 blur-[120px] rounded-full pointer-events-none"
-    ></div>
 
     <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         <div class="mb-16 md:mb-24 about-header" use:reveal>

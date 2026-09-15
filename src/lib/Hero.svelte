@@ -164,16 +164,7 @@
         style="opacity: {dimOpacity};"
     ></div>
 
-    {#if !isMobile}
-        <div
-            class="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-indigo-900/10 rounded-full blur-[120px] pointer-events-none select-none z-0 will-change-transform"
-            style="transform: translateY({bgParallax}px);"
-        ></div>
-        <div
-            class="absolute bottom-[-10%] left-[-5%] w-[600px] h-[600px] bg-blue-900/10 rounded-full blur-[120px] pointer-events-none select-none z-0 will-change-transform"
-            style="transform: translateY({bgParallax * 0.8}px);"
-        ></div>
-    {/if}
+
 
     <div
         class="w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10 h-full py-24 lg:py-0 flex flex-col lg:flex-row items-center justify-center lg:justify-between gap-12 lg:gap-8 will-change-transform origin-center transition-all duration-75 ease-out"
