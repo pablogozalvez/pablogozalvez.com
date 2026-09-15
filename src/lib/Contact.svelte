@@ -209,7 +209,36 @@
         style="background-image: url('/img/noise-transparent.webp');"
     ></div>
 
-    <div class="max-w-6xl w-full mx-auto px-4 sm:px-6 relative z-10">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+
+        <!-- Section Header — outside the card, consistent with About & Projects -->
+        <div class="mb-16 md:mb-20" use:reveal>
+            <div class="flex items-center gap-3 mb-4">
+                <span class="text-[11px] font-mono font-semibold text-gray-500 uppercase tracking-widest">03 —</span>
+                <div class="h-px w-12 bg-gradient-to-r from-white/20 to-transparent"></div>
+            </div>
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div>
+                    <h2 class="text-4xl md:text-5xl font-black text-white mb-4 tracking-tight">
+                        {$t("contact.title")}
+                    </h2>
+                    <p class="text-lg text-gray-400 max-w-xl font-light leading-relaxed">
+                        {$t("contact.subtitle")}
+                    </p>
+                </div>
+                <div
+                    class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono shrink-0 self-start md:self-auto"
+                >
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                    {$t("contact.openForOpportunities")}
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Card -->
         <div
             bind:this={containerRef}
             on:mousemove={handleMouseMove}
@@ -218,6 +247,7 @@
             class="contact-card group relative w-full bg-[#0F1115] border border-white/5 rounded-[2rem] overflow-hidden"
             use:reveal
         >
+            <!-- Mouse follow glow -->
             <div
                 class="pointer-events-none absolute -inset-px opacity-0 transition duration-300 group-hover:opacity-100 z-0"
                 style="background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.06), transparent 40%);"
@@ -225,42 +255,23 @@
             <div class="absolute inset-0 pointer-events-none z-0"></div>
 
             <div class="relative z-10 grid lg:grid-cols-5 gap-0">
-                <div
-                    class="lg:col-span-2 p-8 md:p-12 border-b lg:border-b-0 lg:border-r border-white/5 flex flex-col justify-between bg-black/20"
-                >
-                    <div>
-                        <div class="flex items-center gap-3 mb-5">
-                            <span class="text-[11px] font-mono font-semibold text-gray-500 uppercase tracking-widest">03 —</span>
-                            <div class="h-px w-12 bg-gradient-to-r from-white/20 to-transparent"></div>
-                        </div>
 
-                        <div
-                            class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono mb-8 animate-fade-in-up"
-                        >
-                            <span class="relative flex h-2 w-2">
-                                <span
-                                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"
-                                ></span>
-                                <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                            </span>
-                            {$t("contact.openForOpportunities")}
-                        </div>
-
-                        <h2 class="text-3xl md:text-4xl font-black text-white mb-6 tracking-tight">
-                            {$t("contact.title")}
-                        </h2>
-
-
-                        <div class="relative group/email mb-8">
-                            <span class="block text-xs font-mono text-gray-500 mb-2 uppercase tracking-wider"
+                <!-- Left Panel: Direct Contact Info -->
+                <div class="lg:col-span-2 p-8 md:p-10 lg:p-12 border-b lg:border-b-0 lg:border-r border-white/5 flex flex-col justify-between bg-black/20">
+                    <div class="flex flex-col gap-8">
+                        <!-- Left panel intro text -->
+                        <p class="text-base text-gray-400 leading-relaxed font-light">
+                            {$t("contact.cardIntro")}
+                        </p>
+                        <!-- Email block -->
+                        <div>
+                            <span class="block text-xs font-mono text-gray-500 mb-3 uppercase tracking-wider"
                                 >{$t("contact.directAccess")}</span
                             >
                             <div
-                                class="flex items-center bg-black/40 border border-white/10 rounded-xl p-1.5 transition-colors group-hover/email:border-indigo-500/50"
+                                class="flex items-center bg-black/40 border border-white/10 rounded-xl p-1.5 transition-colors hover:border-indigo-500/50 group/email"
                             >
-                                <div
-                                    class="pl-3 pr-2 font-mono text-gray-300 text-xs sm:text-sm truncate flex-1 select-all"
-                                >
+                                <div class="pl-3 pr-2 font-mono text-gray-300 text-xs sm:text-sm truncate flex-1 select-all">
                                     {email}
                                 </div>
                                 <button
@@ -271,187 +282,162 @@
                                 >
                                     {#if copied}
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                            ><path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                stroke-width="2"
-                                                d="M5 13l4 4L19 7"
-                                            ></path></svg
+                                            ><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg
                                         >
                                     {:else}
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                            ><path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                stroke-width="2"
-                                                d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"
-                                            ></path></svg
+                                            ><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg
                                         >
                                     {/if}
                                 </button>
                             </div>
                         </div>
 
-                        <div class="flex gap-3">
-                            {#each socials as social}
-                                <a
-                                    href={social.href}
-                                    target="_blank"
-                                    rel="me noopener noreferrer"
-                                    aria-label={social.name}
-                                    class="social-icon p-3 rounded-lg bg-white/5 border border-white/5 hover:bg-white/10 transition-all text-gray-400 hover:text-white"
-                                >
-                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"
-                                        ><path d={social.icon} /></svg
+                        <!-- Socials block -->
+                        <div>
+                            <span class="block text-xs font-mono text-gray-500 mb-3 uppercase tracking-wider"
+                                >{$t("footer.connect")}</span
+                            >
+                            <div class="flex gap-3">
+                                {#each socials as social}
+                                    <a
+                                        href={social.href}
+                                        target="_blank"
+                                        rel="me noopener noreferrer"
+                                        aria-label={social.label}
+                                        class="social-icon p-3 rounded-lg bg-white/5 border border-white/5 hover:bg-white/10 transition-all text-gray-400 hover:text-white"
                                     >
-                                </a>
-                            {/each}
+                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"
+                                            ><path d={social.icon} /></svg
+                                        >
+                                    </a>
+                                {/each}
+                            </div>
                         </div>
                     </div>
 
-                    <div class="hidden lg:flex items-center gap-4 text-xs text-gray-600 font-mono mt-12">
+                    <!-- Location & time -->
+                    <div class="flex items-center gap-4 text-xs text-gray-600 font-mono mt-10 lg:mt-12">
                         <span>{currentTime} (CET)</span>
                         <div class="w-1 h-1 bg-gray-700 rounded-full"></div>
                         <span>{$t("contact.location")}</span>
                     </div>
                 </div>
 
-                <div class="lg:col-span-3 p-8 md:p-12 relative">
-                    <form on:submit|preventDefault={handleSubmit} class="space-y-6 relative z-10">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div class="space-y-2">
-                                    <label
-                                        for="name"
-                                        class="text-xs font-mono text-gray-500 uppercase tracking-wider ml-1"
-                                        >{$t("contact.form.name")}</label
-                                    >
-                                    <input
-                                        type="text"
-                                        id="name"
-                                        name="name"
-                                        bind:value={formData.name}
-                                        placeholder={$t("contact.form.namePlaceholder")}
-                                        autocomplete="name"
-                                        maxlength="100"
-                                        required
-                                        class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-indigo-500/50 focus:bg-white/[0.07] transition-all"
-                                    />
-                                </div>
-                                <div class="space-y-2">
-                                    <label
-                                        for="email"
-                                        class="text-xs font-mono text-gray-500 uppercase tracking-wider ml-1"
-                                        >{$t("contact.form.email")}</label
-                                    >
-                                    <input
-                                        type="email"
-                                        id="email"
-                                        name="email"
-                                        bind:value={formData.email}
-                                        placeholder={$t("contact.form.emailPlaceholder")}
-                                        autocomplete="email"
-                                        maxlength="254"
-                                        required
-                                        class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-indigo-500/50 focus:bg-white/[0.07] transition-all"
-                                    />
-                                </div>
-                            </div>
-
-                            <div class="space-y-2">
-                                <label
-                                    for="message"
-                                    class="text-xs font-mono text-gray-500 uppercase tracking-wider ml-1"
-                                    >{$t("contact.form.message")}</label
-                                >
-                                <textarea
-                                    id="message"
-                                    name="message"
-                                    rows="4"
-                                    bind:value={formData.message}
-                                    placeholder={$t("contact.form.messagePlaceholder")}
-                                    minlength="10"
-                                    maxlength="3000"
-                                    required
-                                    class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-indigo-500/50 focus:bg-white/[0.07] transition-all resize-y min-h-[120px] max-h-[300px]"
-                                ></textarea>
-                            </div>
-
-                            <div class="contact-honeypot" aria-hidden="true">
-                                <label for="website">Website</label>
+                <!-- Right Panel: Contact Form -->
+                <div class="lg:col-span-3 p-8 md:p-10 lg:p-12 relative">
+                    <form on:submit|preventDefault={handleSubmit} class="flex flex-col gap-5 relative z-10">
+                        <!-- Name & Email row -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div class="contact-field group/field">
+                                <label for="name" class="contact-label">
+                                    <svg class="w-3.5 h-3.5 text-gray-500 group-focus-within/field:text-indigo-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                                    {$t("contact.form.name")}
+                                </label>
                                 <input
-                                    id="website"
-                                    name="website"
                                     type="text"
-                                    bind:value={honeypot}
-                                    tabindex="-1"
-                                    autocomplete="off"
+                                    id="name"
+                                    name="name"
+                                    bind:value={formData.name}
+                                    placeholder={$t("contact.form.namePlaceholder")}
+                                    autocomplete="name"
+                                    maxlength="100"
+                                    required
+                                    class="contact-input"
                                 />
                             </div>
+                            <div class="contact-field group/field">
+                                <label for="email" class="contact-label">
+                                    <svg class="w-3.5 h-3.5 text-gray-500 group-focus-within/field:text-indigo-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                                    {$t("contact.form.email")}
+                                </label>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    bind:value={formData.email}
+                                    placeholder={$t("contact.form.emailPlaceholder")}
+                                    autocomplete="email"
+                                    maxlength="254"
+                                    required
+                                    class="contact-input"
+                                />
+                            </div>
+                        </div>
 
-                            <div class="min-h-[65px] w-full" bind:this={turnstileElement}></div>
+                        <!-- Message -->
+                        <div class="contact-field group/field">
+                            <label for="message" class="contact-label">
+                                <svg class="w-3.5 h-3.5 text-gray-500 group-focus-within/field:text-indigo-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
+                                {$t("contact.form.message")}
+                            </label>
+                            <textarea
+                                id="message"
+                                name="message"
+                                rows="5"
+                                bind:value={formData.message}
+                                placeholder={$t("contact.form.messagePlaceholder")}
+                                minlength="10"
+                                maxlength="3000"
+                                required
+                                class="contact-input resize-y min-h-[130px] max-h-[300px]"
+                            ></textarea>
+                        </div>
 
-                            <div class="pt-2">
+                        <!-- Honeypot -->
+                        <div class="contact-honeypot" aria-hidden="true">
+                            <label for="website">Website</label>
+                            <input
+                                id="website"
+                                name="website"
+                                type="text"
+                                bind:value={honeypot}
+                                tabindex="-1"
+                                autocomplete="off"
+                            />
+                        </div>
+
+                        <!-- Turnstile -->
+                        <div class="min-h-[65px] w-full" bind:this={turnstileElement}></div>
+
+                        <!-- Divider + Submit -->
+                        <div class="relative pt-4">
+                            <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+                            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                                 <button
                                     type="submit"
                                     disabled={formState === "sending" || formState === "success"}
-                                    class="w-full md:w-auto px-8 py-3.5 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl text-white font-medium hover:shadow-[0_0_20px_rgba(79,70,229,0.3)] hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 min-w-[140px]"
+                                    class="contact-submit group/btn"
                                 >
                                     {#if formState === "success"}
-                                        <span class="text-white">{$t("contact.form.sent")}</span>
-                                        <svg
-                                            class="w-5 h-5 text-white"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                            ><path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                stroke-width="2"
-                                                d="M5 13l4 4L19 7"
-                                            ></path></svg
+                                        <span>{$t("contact.form.sent")}</span>
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                            ><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg
                                         >
                                     {:else if formState === "sending"}
                                         <span>{$t("contact.form.sending")}</span>
-                                        <svg
-                                            class="animate-spin h-5 w-5 text-white"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            ><circle
-                                                class="opacity-25"
-                                                cx="12"
-                                                cy="12"
-                                                r="10"
-                                                stroke="currentColor"
-                                                stroke-width="4"
-                                            ></circle><path
-                                                class="opacity-75"
-                                                fill="currentColor"
-                                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                                            ></path></svg
+                                        <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            ><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle
+                                            ><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg
                                         >
                                     {:else}
                                         <span>{$t("contact.form.send")}</span>
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                            ><path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                stroke-width="2"
-                                                d="M14 5l7 7m0 0l-7 7m7-7H3"
-                                            ></path></svg
+                                        <svg class="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                            ><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg
                                         >
                                     {/if}
                                 </button>
                                 {#if formState === "error"}
-                                    <p class="mt-3 text-sm text-red-300" role="alert">
+                                    <p class="text-sm text-red-300" role="alert">
                                         {$t(`contact.form.errors.${formError}`)}
                                     </p>
                                 {:else if formState === "success"}
-                                    <p class="mt-3 text-sm text-emerald-300" role="status">
+                                    <p class="text-sm text-emerald-300" role="status">
                                         {$t("contact.form.confirmationSent")}
                                     </p>
                                 {/if}
                             </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -476,6 +462,75 @@
         width: 1px;
         height: 1px;
         overflow: hidden;
+    }
+
+    .contact-field {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .contact-label {
+        display: flex;
+        align-items: center;
+        gap: 0.375rem;
+        font-size: 0.7rem;
+        font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+        color: rgb(107 114 128);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-left: 0.125rem;
+    }
+
+    .contact-input {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-left: 2px solid transparent;
+        border-radius: 0.75rem;
+        padding: 0.8rem 1rem;
+        color: white;
+        font-size: 0.9rem;
+        transition: all 0.25s ease;
+    }
+    .contact-input::placeholder {
+        color: rgb(75 85 99);
+    }
+    .contact-input:focus {
+        outline: none;
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(255, 255, 255, 0.12);
+        border-left-color: rgb(99 102 241);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.08);
+    }
+
+    .contact-submit {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.85rem 2rem;
+        min-width: 160px;
+        background: linear-gradient(135deg, rgb(79 70 229), rgb(124 58 237));
+        border-radius: 0.75rem;
+        color: white;
+        font-weight: 500;
+        font-size: 0.9rem;
+        cursor: pointer;
+        border: none;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+    .contact-submit:hover:not(:disabled) {
+        box-shadow: 0 0 24px rgba(99, 102, 241, 0.3), 0 8px 24px rgba(0, 0, 0, 0.3);
+        transform: translateY(-1px);
+    }
+    .contact-submit:active:not(:disabled) {
+        transform: scale(0.98) translateY(0);
+    }
+    .contact-submit:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
     }
 
     .contact-card {

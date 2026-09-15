@@ -99,7 +99,8 @@
     "contact": {
         "openForOpportunities": "Disponible",
         "title": "Contacto",
-        "subtitle": "Ya sea que tengas una idea de juego, una plataforma web en mente o simplemente quieras charlar sobre arquitectura de código, soy todo oídos.",
+        "subtitle": "¿Tienes un proyecto, una propuesta de colaboración o una oportunidad profesional? Cuéntame los detalles y hablamos.",
+        "cardIntro": "Envíame un mensaje a través del formulario o contacta directamente por cualquiera de estas vías.",
         "directAccess": "Acceso Directo",
         "emailCommand": "Comando de Email",
         "copied": "¡Copiado al portapapeles!",

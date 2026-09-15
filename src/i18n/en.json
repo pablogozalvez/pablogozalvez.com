@@ -99,7 +99,8 @@
     "contact": {
         "openForOpportunities": "Available",
         "title": "Contact",
-        "subtitle": "Whether you have a game idea, a web platform in mind, or just want to chat about code architecture, I'm all ears.",
+        "subtitle": "Do you have a project, a collaboration proposal, or a professional opportunity? Tell me the details and let's talk.",
+        "cardIntro": "Send me a message using the form or reach out directly through any of these channels.",
         "directAccess": "Direct Access",
         "emailCommand": "Email Command",
         "copied": "Copied to clipboard!",
