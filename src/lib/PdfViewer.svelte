@@ -42,10 +42,19 @@
         isLoading = true;
     }
 
-    $: {
-        if (typeof window !== "undefined") {
-            document.body.style.overflow = showPdfModal ? "hidden" : "";
-        }
+    function manageModalPage() {
+        const previousOverflow = document.body.style.overflow;
+        const cursorWasHidden = document.body.classList.contains("hide-global-cursor");
+
+        document.body.style.overflow = "hidden";
+        document.body.classList.add("hide-global-cursor");
+
+        return {
+            destroy() {
+                document.body.style.overflow = previousOverflow;
+                if (!cursorWasHidden) document.body.classList.remove("hide-global-cursor");
+            },
+        };
     }
 
     function handleIframeLoad() {
@@ -57,6 +66,7 @@
 
 {#if showPdfModal}
     <div
+        use:manageModalPage
         class="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 md:p-8"
         transition:fade={{ duration: 200 }}
         on:click|self={() => (showPdfModal = false)}

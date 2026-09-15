@@ -398,7 +398,11 @@
                         </div>
 
                         <!-- Turnstile -->
-                        <div class="min-h-[65px] w-full" bind:this={turnstileElement}></div>
+                        <div
+                            class="min-h-[65px] w-full"
+                            data-native-cursor
+                            bind:this={turnstileElement}
+                        ></div>
 
                         <!-- Divider + Submit -->
                         <div class="relative pt-4">

@@ -4,258 +4,225 @@
 
     export let hidden = false;
 
-    let x = -100;
-    let y = -100;
-    let size = 10;
+    let cursorRoot;
+    let cursorRing;
     let isHovering = false;
     let isClicking = false;
     let isVisible = false;
-    let isText = false;
+    let usesNativeCursor = false;
     let isTouchDevice = false;
-    let lowPerfMode = false;
+    let cursorDisabled = false;
+    let externalHideToggle = false;
 
     function updateBodyCursor() {
-        if (typeof document !== "undefined") {
-            const externalHide = document.body.classList.contains("hide-global-cursor");
+        if (typeof document === "undefined") return;
 
-            if (!hidden && !externalHide && !isText && !isTouchDevice) {
-                document.body.classList.add("custom-cursor-active");
-            } else {
-                document.body.classList.remove("custom-cursor-active");
-            }
-        }
+        const shouldUseCustomCursor =
+            !cursorDisabled &&
+            !isTouchDevice &&
+            !hidden &&
+            !externalHideToggle &&
+            !usesNativeCursor &&
+            isVisible;
+
+        document.body.classList.toggle("custom-cursor-active", shouldUseCustomCursor);
     }
 
     $: updateBodyCursor();
 
-    let externalHideToggle = false;
     onMount(() => {
-        if (typeof document !== "undefined") {
-            const observer = new MutationObserver(() => {
-                const isHiddenNow = document.body.classList.contains("hide-global-cursor");
-                if (externalHideToggle !== isHiddenNow) {
-                    externalHideToggle = isHiddenNow;
-                    updateBodyCursor();
-                }
-            });
-            observer.observe(document.body, { attributes: true, attributeFilter: ["class"] });
-            return () => observer.disconnect();
-        }
-    });
+        isTouchDevice = window.matchMedia?.("(pointer: coarse)")?.matches || navigator.maxTouchPoints > 0;
+        cursorDisabled = isTouchDevice || isLowPerformanceMode();
+        updateBodyCursor();
 
-    function createHoverHandler(onUpdate) {
-        let lastTarget = null;
-        let lastResult = { isInput: false, isClickable: false };
-
-        return (e) => {
-            const target = e.target;
-
-            if (target === lastTarget) {
-                isText = lastResult.isInput;
-                if (!lastResult.isInput) {
-                    isHovering = lastResult.isClickable;
-                    onUpdate();
-                }
-                updateBodyCursor();
-                return;
-            }
-
-            lastTarget = target;
-            const tagName = target.tagName.toLowerCase();
-            const inputEl = tagName === "input" || tagName === "textarea" || target.isContentEditable;
-
-            if (inputEl) {
-                isText = true;
-                lastResult = { isInput: true, isClickable: false };
-                updateBodyCursor();
-                return;
-            }
-
-            isText = false;
-            const clickable = !!target.closest('a, button, [role="button"], label, select, .cursor-pointer');
-            lastResult = { isInput: false, isClickable: clickable };
-            isHovering = clickable;
-            onUpdate();
-            updateBodyCursor();
-        };
-    }
-
-    onMount(() => {
-        isTouchDevice = "ontouchstart" in window || navigator.maxTouchPoints > 0;
-        if (isTouchDevice) return;
-
-        lowPerfMode = isLowPerformanceMode();
-
-        if (lowPerfMode) {
-            const handleMouseMove = (e) => {
-                x = e.clientX;
-                y = e.clientY;
-                isVisible = true;
-            };
-
-            const handleMouseDown = () => {
-                isClicking = true;
-                size = isHovering ? 40 : 6;
-            };
-
-            const handleMouseUp = () => {
-                isClicking = false;
-                size = isHovering ? 50 : 10;
-            };
-
-            const handleMouseLeave = () => {
-                isVisible = false;
-            };
-            const handleMouseEnter = () => {
-                isVisible = true;
-            };
-
-            const handleMouseOver = createHoverHandler(() => {
-                if (!isClicking) size = isHovering ? 50 : 10;
-            });
-
-            window.addEventListener("mousemove", handleMouseMove, { passive: true });
-            window.addEventListener("mousedown", handleMouseDown, { passive: true });
-            window.addEventListener("mouseup", handleMouseUp, { passive: true });
-            window.addEventListener("mouseover", handleMouseOver, { passive: true });
-            document.addEventListener("mouseleave", handleMouseLeave, { passive: true });
-            document.addEventListener("mouseenter", handleMouseEnter, { passive: true });
-
-            return () => {
-                window.removeEventListener("mousemove", handleMouseMove);
-                window.removeEventListener("mousedown", handleMouseDown);
-                window.removeEventListener("mouseup", handleMouseUp);
-                window.removeEventListener("mouseover", handleMouseOver);
-                document.removeEventListener("mouseleave", handleMouseLeave);
-                document.removeEventListener("mouseenter", handleMouseEnter);
-                document.body.classList.remove("custom-cursor-active");
-            };
+        if (cursorDisabled) {
+            return () => document.body.classList.remove("custom-cursor-active");
         }
 
-        let rafId = null;
+        let animationFrame = null;
+        let currentX = -100;
+        let currentY = -100;
+        let currentScale = 1;
         let targetX = -100;
         let targetY = -100;
-        let targetSize = 10;
+        let targetScale = 1;
+        let hasPosition = false;
+        let lastTarget = null;
 
-        const lerpFactor = 0.2;
+        const renderCursor = () => {
+            if (!cursorRoot || !cursorRing) return;
+            cursorRoot.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) translate(-50%, -50%)`;
+            cursorRing.style.transform = `scale(${currentScale})`;
+        };
 
-        function animate() {
-            x += (targetX - x) * lerpFactor;
-            y += (targetY - y) * lerpFactor;
-            size += (targetSize - size) * lerpFactor;
+        const animate = () => {
+            currentX += (targetX - currentX) * 0.28;
+            currentY += (targetY - currentY) * 0.28;
+            currentScale += (targetScale - currentScale) * 0.24;
+            renderCursor();
 
-            if (Math.abs(targetX - x) > 0.5 || Math.abs(targetY - y) > 0.5 || Math.abs(targetSize - size) > 0.5) {
-                rafId = requestAnimationFrame(animate);
-            } else {
-                rafId = null;
-            }
-        }
+            const isMoving =
+                Math.abs(targetX - currentX) > 0.2 ||
+                Math.abs(targetY - currentY) > 0.2 ||
+                Math.abs(targetScale - currentScale) > 0.01;
 
-        function startAnimation() {
-            if (!rafId) {
-                rafId = requestAnimationFrame(animate);
-            }
-        }
+            animationFrame = isMoving ? requestAnimationFrame(animate) : null;
+        };
 
-        const handleMouseMove = (e) => {
-            targetX = e.clientX;
-            targetY = e.clientY;
-            isVisible = true;
+        const startAnimation = () => {
+            if (animationFrame === null) animationFrame = requestAnimationFrame(animate);
+        };
+
+        const setInteractionTarget = (target) => {
+            if (!(target instanceof Element) || target === lastTarget) return;
+            lastTarget = target;
+
+            const nativeSurface = target.closest("[data-native-cursor], iframe, embed, object");
+            const textSurface = target.closest('input:not([type="button"]):not([type="submit"]), textarea, [contenteditable="true"]');
+            const nextUsesNativeCursor = Boolean(nativeSurface || textSurface);
+            const nextIsHovering =
+                !nextUsesNativeCursor &&
+                Boolean(target.closest('a, button, [role="button"], label, select, .cursor-pointer'));
+
+            if (usesNativeCursor !== nextUsesNativeCursor) usesNativeCursor = nextUsesNativeCursor;
+            if (isHovering !== nextIsHovering) isHovering = nextIsHovering;
+            if (!isClicking) targetScale = isHovering ? 3.5 : 1;
+
+            updateBodyCursor();
             startAnimation();
         };
 
-        const handleMouseDown = () => {
+        const handlePointerMove = (event) => {
+            targetX = event.clientX;
+            targetY = event.clientY;
+
+            if (!hasPosition) {
+                currentX = targetX;
+                currentY = targetY;
+                hasPosition = true;
+                renderCursor();
+            }
+
+            if (!isVisible) isVisible = true;
+            setInteractionTarget(event.target);
+            updateBodyCursor();
+            startAnimation();
+        };
+
+        const handlePointerDown = () => {
             isClicking = true;
-            targetSize = isHovering ? 45 : 8;
+            targetScale = isHovering ? 2.8 : 0.72;
             startAnimation();
         };
 
-        const handleMouseUp = () => {
+        const handlePointerUp = () => {
             isClicking = false;
-            targetSize = isHovering ? 60 : 10;
+            targetScale = isHovering ? 3.5 : 1;
             startAnimation();
         };
 
-        const handleMouseLeave = () => {
+        const handlePointerOver = (event) => setInteractionTarget(event.target);
+        const handleDocumentLeave = () => {
             isVisible = false;
+            updateBodyCursor();
+        };
+        const handleDocumentEnter = () => {
+            isVisible = hasPosition;
+            updateBodyCursor();
+        };
+        const handleVisibilityChange = () => {
+            if (document.hidden) handleDocumentLeave();
         };
 
-        const handleMouseEnter = () => {
-            isVisible = true;
-        };
-
-        const handleMouseOver = createHoverHandler(() => {
-            if (!isClicking) {
-                targetSize = isHovering ? 60 : 10;
-                startAnimation();
+        const observer = new MutationObserver(() => {
+            const isHiddenNow = document.body.classList.contains("hide-global-cursor");
+            if (externalHideToggle !== isHiddenNow) {
+                externalHideToggle = isHiddenNow;
+                updateBodyCursor();
             }
         });
 
-        window.addEventListener("mousemove", handleMouseMove, { passive: true });
-        window.addEventListener("mousedown", handleMouseDown, { passive: true });
-        window.addEventListener("mouseup", handleMouseUp, { passive: true });
-        window.addEventListener("mouseover", handleMouseOver, { passive: true });
-        document.addEventListener("mouseleave", handleMouseLeave, { passive: true });
-        document.addEventListener("mouseenter", handleMouseEnter, { passive: true });
+        observer.observe(document.body, { attributes: true, attributeFilter: ["class"] });
+        window.addEventListener("pointermove", handlePointerMove, { passive: true });
+        window.addEventListener("pointerdown", handlePointerDown, { passive: true });
+        window.addEventListener("pointerup", handlePointerUp, { passive: true });
+        window.addEventListener("pointerover", handlePointerOver, { passive: true });
+        document.addEventListener("mouseleave", handleDocumentLeave, { passive: true });
+        document.addEventListener("mouseenter", handleDocumentEnter, { passive: true });
+        document.addEventListener("visibilitychange", handleVisibilityChange, { passive: true });
 
         return () => {
-            if (rafId) cancelAnimationFrame(rafId);
-            window.removeEventListener("mousemove", handleMouseMove);
-            window.removeEventListener("mousedown", handleMouseDown);
-            window.removeEventListener("mouseup", handleMouseUp);
-            window.removeEventListener("mouseover", handleMouseOver);
-            document.removeEventListener("mouseleave", handleMouseLeave);
-            document.removeEventListener("mouseenter", handleMouseEnter);
+            if (animationFrame !== null) cancelAnimationFrame(animationFrame);
+            observer.disconnect();
+            window.removeEventListener("pointermove", handlePointerMove);
+            window.removeEventListener("pointerdown", handlePointerDown);
+            window.removeEventListener("pointerup", handlePointerUp);
+            window.removeEventListener("pointerover", handlePointerOver);
+            document.removeEventListener("mouseleave", handleDocumentLeave);
+            document.removeEventListener("mouseenter", handleDocumentEnter);
+            document.removeEventListener("visibilitychange", handleVisibilityChange);
             document.body.classList.remove("custom-cursor-active");
         };
     });
 </script>
 
-{#if !isTouchDevice}
+{#if !cursorDisabled && !isTouchDevice}
     <div
-        class="cursor-root fixed top-0 left-0 pointer-events-none z-[9999] flex items-center justify-center"
-        class:mix-blend-difference={!lowPerfMode}
-        class:cursor-low-perf={lowPerfMode}
-        class:opacity-0={!isVisible || isText || hidden || externalHideToggle}
-        class:opacity-100={isVisible && !isText && !hidden && !externalHideToggle}
-        style="transform: translate3d({x}px, {y}px, 0) translate(-50%, -50%);"
+        bind:this={cursorRoot}
+        class="cursor-root fixed top-0 left-0 pointer-events-none z-[9999] flex items-center justify-center mix-blend-difference"
+        class:opacity-0={!isVisible || usesNativeCursor || hidden || externalHideToggle}
+        class:opacity-100={isVisible && !usesNativeCursor && !hidden && !externalHideToggle}
+        aria-hidden="true"
     >
+        <div class="cursor-dot absolute bg-white rounded-full" class:cursor-dot-hover={isHovering}></div>
         <div
-            class="absolute bg-white rounded-full transition-opacity duration-150"
-            class:opacity-5={isHovering}
-            style="width: 8px; height: 8px;"
-        ></div>
-
-        <div
-            class="cursor-ring border rounded-full"
-            style="
-                width: {size}px;
-                height: {size}px;
-                border-width: {isHovering ? '1.5px' : '2px'};
-                border-color: {isHovering ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.4)'};
-                background-color: {isHovering ? 'rgba(255,255,255,0.08)' : 'transparent'};
-            "
+            bind:this={cursorRing}
+            class="cursor-ring border border-white/50 rounded-full"
+            class:cursor-ring-hover={isHovering}
+            class:cursor-ring-clicking={isClicking}
         ></div>
     </div>
 {/if}
 
 <style>
+    :global(body.custom-cursor-active),
+    :global(body.custom-cursor-active *) {
+        cursor: none !important;
+    }
+
     .cursor-root {
-        transition: opacity 0.2s ease-out;
+        transition: opacity 140ms ease-out;
         will-change: transform;
     }
 
-    .cursor-low-perf {
-        transition:
-            opacity 0.2s ease-out,
-            transform 0.06s linear;
+    .cursor-dot {
+        width: 3px;
+        height: 3px;
+        transition: opacity 140ms ease-out;
+    }
+
+    .cursor-dot-hover {
+        opacity: 0.55;
     }
 
     .cursor-ring {
+        width: 12px;
+        height: 12px;
+        background: transparent;
+        transform: scale(1);
         transition:
-            width 0.2s cubic-bezier(0.22, 1, 0.36, 1),
-            height 0.2s cubic-bezier(0.22, 1, 0.36, 1),
-            border-color 0.15s ease,
-            background-color 0.15s ease;
+            border-color 140ms ease-out,
+            background-color 140ms ease-out,
+            opacity 140ms ease-out;
+        will-change: transform;
+    }
+
+    .cursor-ring-hover {
+        border-color: rgba(255, 255, 255, 0.82);
+        background-color: rgba(255, 255, 255, 0.09);
+    }
+
+    .cursor-ring-clicking {
+        border-color: rgba(255, 255, 255, 0.95);
     }
 </style>

@@ -12,16 +12,6 @@
 
     let showPdfModal = false;
 
-    $: {
-        if (typeof document !== "undefined") {
-            if (showPdfModal) {
-                document.body.classList.add("hide-global-cursor");
-            } else {
-                document.body.classList.remove("hide-global-cursor");
-            }
-        }
-    }
-
     let currentPdfUrl = "";
     let currentPdfTitle = "";
     let currentPdfDownloadName = "";
@@ -151,8 +141,6 @@
 >
     <!-- Section top accent divider -->
     <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-purple-500/15 to-transparent"></div>
-    <!-- Mantenemos oculto el cursor principal cuando el PDF Modal esté abierto, 
-         para ello inyectamos en el DOM una clase manejada por style global o usamos hidden desde el layout -->
     <PdfViewer bind:showPdfModal pdfUrl={currentPdfUrl} title={currentPdfTitle} downloadName={currentPdfDownloadName} />
 
     <!-- Cross-hatch pattern overlay -->
