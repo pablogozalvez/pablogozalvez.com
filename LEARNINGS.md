@@ -2,6 +2,23 @@
 
 ## Web Development
 
+### Actualizaciones coordinadas de dependencias
+
+**Explicación sencilla**
+Las herramientas centrales de un framework forman un bloque compatible. Actualizar solo una puede mantener vulnerabilidades o romper el servidor de desarrollo y el proceso de build.
+
+**Cómo funciona**
+Svelte, SvelteKit, Vite y el plugin oficial de Svelte declaran rangos de compatibilidad entre sí. La actualización debe resolver esos rangos conjuntamente y regenerar el lockfile; después, `npm audit` comprueba el árbol instalado completo, incluidas las dependencias transitivas.
+
+**Por qué importa**
+Un lockfile actualizado hace que desarrollo, CI y producción instalen exactamente el árbol que se ha validado, sin depender de lo que npm considere más reciente en el futuro.
+
+**En este proyecto**
+`package.json` mantiene alineados Svelte 5, SvelteKit 2, Vite 8 y `@sveltejs/vite-plugin-svelte` 7. El override temporal de `cookie` fija la primera línea corregida que elimina el aviso heredado de SvelteKit estable.
+
+**Tradeoffs / pitfalls**
+No se debe usar `npm audit fix --force` como sustituto de revisar compatibilidades. Los overrides transitivos deben ser específicos, probarse con el build y retirarse cuando la dependencia principal adopte directamente una versión corregida.
+
 ### SEO multidioma con rutas indexables
 
 **Explicación sencilla**
