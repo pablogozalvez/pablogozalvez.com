@@ -65,6 +65,25 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+:where(
+    a[href],
+    button:not(:disabled),
+    [role="button"]:not([aria-disabled="true"]),
+    summary,
+    label[for],
+    select:not(:disabled),
+    input[type="button"]:not(:disabled),
+    input[type="submit"]:not(:disabled),
+    input[type="checkbox"]:not(:disabled),
+    input[type="radio"]:not(:disabled)
+) {
+    cursor: pointer;
+}
+
+:where(button:disabled, select:disabled, input:disabled, [aria-disabled="true"]) {
+    cursor: not-allowed;
+}
+
 .static-layer {
     contain: layout style paint;
 }
