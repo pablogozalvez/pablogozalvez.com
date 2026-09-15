@@ -21,6 +21,7 @@
     let bgParallax = 0;
     let dimOpacity = 0;
 
+
     let activeTab = "about"; // "about" | "projects"
     let currentProjectIndex = 0;
     let autoRotateInterval;
@@ -167,13 +168,13 @@
 
 
     <div
-        class="w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10 h-full py-24 lg:py-0 flex flex-col lg:flex-row items-center justify-center lg:justify-between gap-12 lg:gap-8 will-change-transform origin-center transition-all duration-75 ease-out"
-        style="transform: translateY({heroTranslateY}px) scale({heroScale}); filter: blur({heroBlur}px);"
+        class="w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10 h-full py-24 lg:py-0 flex flex-col lg:flex-row items-center justify-center lg:justify-between gap-12 lg:gap-8 will-change-transform origin-center transition-transform duration-75 ease-out"
+        style="transform: translateY({heroTranslateY}px) scale({heroScale}); --hero-blur: {heroBlur}px;"
     >
         <!-- Left Column: Presentation -->
         <div class="flex flex-col items-center lg:items-start text-center lg:text-left w-full lg:w-1/2 max-w-2xl mx-auto lg:mx-0">
             {#if visible}
-                <div in:fly={{ y: 30, duration: 800, easing: cubicOut }}>
+                <div in:fly={{ y: 30, duration: 800, easing: cubicOut }} class="hero-fade">
                     <h1
                         class="hero-title text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-extrabold tracking-tighter mb-6 lg:mb-10 leading-[0.95] text-white drop-shadow-lg"
                     >
@@ -184,7 +185,7 @@
                 <!-- Subtitle: Only shown on mobile/tablet when preview card is hidden -->
                 <div
                     in:fly={{ y: 20, duration: 800, delay: 150, easing: cubicOut }}
-                    class="lg:hidden w-full flex justify-center"
+                    class="lg:hidden w-full flex justify-center hero-fade"
                 >
                     <p
                         class="text-base sm:text-lg text-gray-300 mb-8 max-w-lg leading-relaxed font-light p-6 bg-white/5 rounded-xl backdrop-blur-md shadow-lg"
@@ -196,7 +197,7 @@
                 <!-- Desktop GitHub Real Commits & Activity Heatmap Widget -->
                 <div
                     in:fly={{ y: 20, duration: 800, delay: 180, easing: cubicOut }}
-                    class="hidden lg:block w-full"
+                    class="hidden lg:block w-full hero-fade-interactive"
                 >
                     <GithubActivityWidget />
                 </div>
@@ -207,7 +208,7 @@
                 >
                     <button
                         on:click={() => scrollTo("projects")}
-                        class="hero-cta px-8 py-4 bg-gradient-to-r from-white to-gray-100 text-black font-bold rounded-full hover:from-gray-100 hover:to-white hover:shadow-lg hover:shadow-white/25 transition-all duration-300 flex items-center justify-center gap-2 group will-change-transform cursor-pointer"
+                        class="hero-cta hero-fade-interactive px-8 py-4 bg-gradient-to-r from-white to-gray-100 text-black font-bold rounded-full hover:from-gray-100 hover:to-white hover:shadow-lg hover:shadow-white/25 transition-all duration-300 flex items-center justify-center gap-2 group will-change-transform cursor-pointer"
                     >
                         <span>{$t("hero.viewProjects")}</span>
                         <svg
@@ -226,7 +227,7 @@
 
                     <button
                         on:click={() => scrollTo("contact")}
-                        class="px-8 py-4 bg-white/5 border border-white/10 text-white font-medium rounded-full hover:bg-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-indigo-500/10 transition-all duration-300 backdrop-blur-sm will-change-transform cursor-pointer"
+                        class="hero-fade-interactive px-8 py-4 bg-white/5 border border-white/10 text-white font-medium rounded-full hover:bg-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-indigo-500/10 transition-all duration-300 backdrop-blur-sm will-change-transform cursor-pointer"
                     >
                         {$t("hero.contactMe")}
                     </button>
@@ -241,7 +242,7 @@
                 class="hidden lg:block lg:w-[48%] xl:w-[46%] max-w-xl relative z-10"
             >
                 <div
-                    class="preview-card bg-[#0d0f17]/90 rounded-2xl border border-white/10 shadow-2xl shadow-indigo-950/30 backdrop-blur-xl overflow-hidden transition-all duration-300 hover:border-white/20"
+                    class="preview-card hero-fade-interactive bg-[#0d0f17]/90 rounded-2xl border border-white/10 shadow-2xl shadow-indigo-950/30 backdrop-blur-xl overflow-hidden transition-all duration-300 hover:border-white/20"
                     role="region"
                     aria-label="Preview showcase"
                     on:mouseenter={() => (isPaused = true)}
@@ -537,7 +538,7 @@
     <!-- Scroll down indicator (fades out naturally on scroll) -->
     <button
         on:click={() => scrollTo("about")}
-        class="absolute bottom-6 left-1/2 -translate-x-1/2 text-gray-500 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.5)] transition-all duration-300 animate-bounce-slow z-20 will-change-transform cursor-pointer"
+        class="hero-fade-interactive absolute bottom-6 left-1/2 -translate-x-1/2 text-gray-500 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.5)] transition-all duration-300 animate-bounce-slow z-20 will-change-transform cursor-pointer"
         style="opacity: {Math.max(0, 1 - scrollProgress * 5)}; pointer-events: {scrollProgress > 0.2 ? 'none' : 'auto'};"
         aria-label="Scroll down"
     >
@@ -553,6 +554,22 @@
 </section>
 
 <style>
+    /* Scroll blur por elemento */
+    .hero-fade {
+        filter: blur(var(--hero-blur, 0px));
+        transition: filter 150ms ease-out;
+    }
+
+    /* Elementos interactivos */
+    .hero-fade-interactive {
+        filter: blur(var(--hero-blur, 0px));
+        transition: filter 200ms ease-out;
+    }
+    .hero-fade-interactive:hover,
+    .hero-fade-interactive:focus-within {
+        filter: blur(0px) !important;
+    }
+
     .hero-grid {
         background-size: 40px 40px;
         background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
