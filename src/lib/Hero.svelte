@@ -76,12 +76,6 @@
         };
     });
 
-    $: stats = [
-        { value: "+2", label: $t("hero.preview.statExp"), dot: "bg-indigo-400", labelColor: "text-indigo-200/70" },
-        { value: "20+", label: $t("hero.preview.statProjects"), dot: "bg-cyan-400", labelColor: "text-cyan-200/70" },
-        { value: "5+", label: $t("hero.preview.statReleases"), dot: "bg-emerald-400", labelColor: "text-emerald-200/70" }
-    ];
-
     const keySkills = [
         { name: "TypeScript", color: "border-blue-500/30 text-blue-300 bg-blue-500/10" },
         { name: "Angular / React", color: "border-cyan-500/30 text-cyan-300 bg-cyan-500/10" },
@@ -89,6 +83,15 @@
         { name: "C# / Unity", color: "border-purple-500/30 text-purple-300 bg-purple-500/10" },
         { name: "Node.js", color: "border-emerald-500/30 text-emerald-300 bg-emerald-500/10" },
         { name: "SQL / PostGIS", color: "border-indigo-500/30 text-indigo-300 bg-indigo-500/10" }
+    ];
+
+    $: capabilities = [
+        $t("hero.preview.capabilities.frontend"),
+        $t("hero.preview.capabilities.backend"),
+        $t("hero.preview.capabilities.apis"),
+        $t("hero.preview.capabilities.databases"),
+        $t("hero.preview.capabilities.devops"),
+        $t("hero.preview.capabilities.quality")
     ];
 
     $: featuredProjects = [
@@ -299,72 +302,55 @@
                     </div>
 
                     <!-- Main Panel Content: Fixed Height & Overlapping Grid for zero layout jumps -->
-                    <div class="p-5 sm:p-6 h-[440px] sm:h-[425px] relative grid grid-cols-1 grid-rows-1 overflow-hidden">
+                    <div class="p-5 sm:p-6 h-[440px] sm:h-[445px] relative grid grid-cols-1 grid-rows-1 overflow-hidden">
                         <!-- About Tab Panel -->
                         <div
                             class="col-start-1 row-start-1 flex flex-col justify-between h-full transition-all duration-500 ease-out {activeTab === 'about' ? 'opacity-100 translate-y-0 pointer-events-auto z-10' : 'opacity-0 translate-y-2 pointer-events-none z-0'}"
                         >
                             <!-- Two Column Body: Info on left, Separator, Key Technologies on right -->
                             <div class="flex-1 flex gap-4 sm:gap-5 items-stretch min-h-0 py-1">
-                                <!-- Left Column: Profile & Stats (Optimized and integrated) -->
-                                <div class="flex-1 flex flex-col justify-between min-w-0 pr-1 py-1">
-                                    <!-- Profile Snapshot & Highlights -->
-                                    <div class="flex flex-col">
-                                        <div class="flex items-center justify-between mb-2">
-                                            <div class="flex items-center gap-2.5">
-                                                <div class="w-8 h-8 rounded-xl bg-white/[0.05] border border-white/10 flex items-center justify-center text-gray-200 font-mono font-semibold text-xs tracking-wider shadow-sm shrink-0">
+                                <!-- Left Column: Profile & Focus -->
+                                <div class="flex-[1.55] flex flex-col min-w-0 pr-1 py-1">
+                                    <div class="flex items-center justify-between gap-3">
+                                        <div class="flex items-center gap-3 min-w-0">
+                                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500/20 to-cyan-500/10 border border-indigo-400/20 flex items-center justify-center text-indigo-100 font-mono font-semibold text-xs tracking-wider shadow-inner shrink-0">
                                                     PG
-                                                </div>
-                                                <div class="min-w-0">
-                                                    <h2 class="text-white font-semibold text-sm sm:text-base leading-tight truncate">Pablo Gozálvez</h2>
-                                                    <p class="text-[11px] text-indigo-300/90 font-medium truncate">{$t("hero.preview.role")}</p>
-                                                </div>
                                             </div>
+                                            <div class="min-w-0">
+                                                <h2 class="text-white font-semibold text-sm sm:text-base leading-tight truncate">Pablo Gozálvez</h2>
+                                                <p class="text-[11px] text-indigo-300/90 font-medium truncate mt-0.5">{$t("hero.preview.role")}</p>
+                                            </div>
+                                        </div>
 
-                                            <div class="flex items-center gap-1 text-[11px] text-gray-400 font-mono shrink-0">
+                                        <div class="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-white/[0.03] border border-white/[0.06] text-[10px] text-gray-400 font-mono shrink-0">
                                                 <svg class="w-3 h-3 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                                 </svg>
                                                 <span>{$t("hero.preview.location")}</span>
-                                            </div>
-                                        </div>
-
-                                        <p class="text-xs sm:text-[13px] text-gray-300 leading-relaxed font-light mt-1.5">
-                                            {$t("hero.preview.summary")}
-                                        </p>
-
-                                        <!-- Core Focus Highlights -->
-                                        <div class="mt-3 p-2.5 rounded-xl bg-white/[0.02] border border-white/5 flex flex-col gap-1.5">
-                                            <div class="flex items-center gap-2 text-[11px] text-gray-300">
-                                                <svg class="w-3 h-3 text-emerald-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                                </svg>
-                                                <span class="truncate">{$t("hero.preview.highlightArchitecture")}</span>
-                                            </div>
-                                            <div class="flex items-center gap-2 text-[11px] text-gray-300">
-                                                <svg class="w-3 h-3 text-cyan-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                                                </svg>
-                                                <span class="truncate">{$t("hero.preview.highlightInteractive")}</span>
-                                            </div>
                                         </div>
                                     </div>
 
-                                    <!-- Metrics Ribbon (Seamlessly integrated, cohesive segmented bar with micro dividers) -->
-                                    <div class="mt-2 p-1.5 sm:p-2 rounded-xl bg-gradient-to-r from-white/[0.04] via-white/[0.02] to-white/[0.04] border border-white/10 shadow-inner flex items-center justify-between">
-                                        {#each stats as stat, i}
-                                            {#if i > 0}
-                                                <div class="h-6 w-px bg-gradient-to-b from-transparent via-white/20 to-transparent shrink-0"></div>
-                                            {/if}
-                                            <div class="flex-1 flex flex-col items-center justify-center px-1 text-center group">
-                                                <div class="flex items-center gap-1.5 mb-0.5">
-                                                    <span class="w-1.5 h-1.5 rounded-full {stat.dot} group-hover:scale-125 transition-transform shrink-0"></span>
-                                                    <span class="text-base sm:text-lg font-bold text-white font-mono tracking-tight leading-none">{stat.value}</span>
+                                    <p class="text-xs sm:text-[13px] text-gray-300 leading-relaxed font-light mt-5 max-w-[34rem]">
+                                        {$t("hero.preview.summary")}
+                                    </p>
+
+                                    <!-- Professional Capabilities -->
+                                    <div class="mt-auto pt-4">
+                                        <div class="text-[10px] font-mono uppercase tracking-wider text-gray-400 mb-2 flex items-center gap-1.5">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                                            <span>{$t("hero.preview.capabilitiesTitle")}</span>
+                                        </div>
+                                        <div class="grid grid-cols-2 gap-1.5">
+                                            {#each capabilities as capability}
+                                                <div class="flex items-start gap-1.5 min-h-9 p-2 rounded-lg bg-white/[0.025] border border-white/[0.06] transition-colors hover:border-emerald-400/20">
+                                                    <svg class="w-3 h-3 text-emerald-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                                                    </svg>
+                                                    <span class="text-[10px] sm:text-[10.5px] text-gray-300 leading-snug">{capability}</span>
                                                 </div>
-                                                <span class="text-[10px] {stat.labelColor} font-medium tracking-tight truncate">{stat.label}</span>
-                                            </div>
-                                        {/each}
+                                            {/each}
+                                        </div>
                                     </div>
                                 </div>
 
@@ -373,15 +359,15 @@
                                     <div class="absolute inset-y-0 w-px bg-gradient-to-b from-transparent via-white/25 to-transparent"></div>
                                 </div>
 
-                                <!-- Right Column: Key Technologies (Super compact, never overflows) -->
-                                <div class="w-[145px] sm:w-[155px] flex flex-col justify-center shrink-0 pl-0.5">
-                                    <div class="text-[10px] font-mono uppercase tracking-wider text-gray-400 mb-1.5 flex items-center gap-1.5">
+                                <!-- Right Column: Key Technologies -->
+                                <div class="w-[155px] sm:w-[170px] flex flex-col shrink-0 pl-0.5 py-1">
+                                    <div class="text-[10px] font-mono uppercase tracking-wider text-gray-400 mb-3 flex items-center gap-1.5">
                                         <span class="w-1.5 h-1.5 rounded-full bg-indigo-400"></span>
                                         <span>{$t("hero.preview.techStack")}</span>
                                     </div>
-                                    <div class="flex flex-col gap-1">
+                                    <div class="grid grid-rows-6 gap-2 flex-1 min-h-0">
                                         {#each keySkills as skill}
-                                            <div class="px-2 py-1 text-[11px] rounded-lg border {skill.color} font-medium flex items-center justify-between transition-all hover:translate-x-0.5 leading-tight">
+                                            <div class="px-3 text-[11px] rounded-lg border {skill.color} font-medium flex items-center justify-between transition-all hover:translate-x-0.5 leading-tight">
                                                 <span class="truncate">{skill.name}</span>
                                                 <span class="w-1 h-1 rounded-full bg-current opacity-70 shrink-0 ml-1"></span>
                                             </div>
@@ -391,7 +377,7 @@
                             </div>
 
                             <!-- Footer Links -->
-                            <div class="relative pt-3.5 flex items-center justify-between text-xs">
+                            <div class="relative mt-5 pt-3.5 flex items-center justify-between text-xs">
                                 <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none"></div>
                                 <button
                                     on:click={() => scrollTo("about")}

@@ -41,8 +41,15 @@
             "seePrev": "Previous project",
             "switchTab": "Explore projects",
             "techStack": "Key Technologies",
-            "highlightArchitecture": "Clean architecture, REST APIs & databases",
-            "highlightInteractive": "Reactive frontend, WebGL & 3D experiences"
+            "capabilitiesTitle": "What I bring",
+            "capabilities": {
+                "frontend": "Frontend and mobile apps",
+                "backend": "Backend and microservices",
+                "apis": "REST and SOAP APIs",
+                "databases": "SQL and NoSQL databases",
+                "devops": "Cloud, Docker and CI/CD",
+                "quality": "Testing, debugging and code review"
+            }
         }
     },
     "about": {
