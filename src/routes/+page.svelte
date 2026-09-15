@@ -5,6 +5,8 @@
     import Contact from "../lib/Contact.svelte";
     import Footer from "../lib/Footer.svelte";
 
+    export let data;
+
     export const hydrate = false;
     export const router = false;
 
@@ -16,7 +18,7 @@
 <main class="bg-[#030712] shadow-[0_-20px_50px_rgba(0,0,0,0.5)]">
     <About {showPdfModal} on:showPdfModalChange={(e) => (showPdfModal = e.detail)} />
     <Projects />
-    <Contact />
+    <Contact turnstileSiteKey={data.turnstileSiteKey} />
 </main>
 
 <Footer />

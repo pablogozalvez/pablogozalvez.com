@@ -145,6 +145,8 @@
             "confirmationSent": "Te he enviado un correo de confirmación.",
             "errors": {
                 "invalid": "Revisa los datos introducidos e inténtalo de nuevo.",
+                "verification": "Completa la verificación de seguridad e inténtalo de nuevo.",
+                "verificationUnavailable": "No se ha podido cargar la verificación de seguridad. Recarga la página o utiliza el email directo.",
                 "unavailable": "No se ha podido enviar el mensaje. Inténtalo de nuevo o utiliza el email directo."
             }
         }

@@ -3,6 +3,8 @@
     import { onMount } from "svelte";
     import { getI18n } from "./i18n";
 
+    export let turnstileSiteKey = "";
+
     let containerRef;
     let copied = false;
     let currentTime = "";
@@ -13,6 +15,43 @@
     let formData = { name: "", email: "", message: "" };
     let honeypot = "";
     let formError = "";
+    let turnstileElement;
+    let turnstileToken = "";
+    let turnstileWidgetId;
+
+    const TURNSTILE_SCRIPT_ID = "cloudflare-turnstile-script";
+
+    function loadTurnstile() {
+        if (window.turnstile) return Promise.resolve(window.turnstile);
+
+        return new Promise((resolve, reject) => {
+            const existingScript = document.getElementById(TURNSTILE_SCRIPT_ID);
+            const handleLoad = () =>
+                window.turnstile ? resolve(window.turnstile) : reject(new Error("Turnstile no está disponible."));
+
+            if (existingScript) {
+                existingScript.addEventListener("load", handleLoad, { once: true });
+                existingScript.addEventListener("error", reject, { once: true });
+                return;
+            }
+
+            const script = document.createElement("script");
+            script.id = TURNSTILE_SCRIPT_ID;
+            script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+            script.async = true;
+            script.defer = true;
+            script.addEventListener("load", handleLoad, { once: true });
+            script.addEventListener("error", reject, { once: true });
+            document.head.appendChild(script);
+        });
+    }
+
+    function resetTurnstile() {
+        turnstileToken = "";
+        if (window.turnstile && turnstileWidgetId !== undefined) {
+            window.turnstile.reset(turnstileWidgetId);
+        }
+    }
 
     const email = "pablogozalvezr@gmail.com";
 
@@ -46,6 +85,12 @@
     const handleSubmit = async () => {
         if (formState === "sending" || formState === "success") return;
 
+        if (!turnstileToken) {
+            formError = "verification";
+            formState = "error";
+            return;
+        }
+
         formState = "sending";
         formError = "";
 
@@ -53,23 +98,31 @@
             const response = await fetch("/api/contact", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ ...formData, website: honeypot, locale: $locale }),
+                body: JSON.stringify({
+                    ...formData,
+                    website: honeypot,
+                    locale: $locale,
+                    turnstileToken,
+                }),
             });
             const result = await response.json();
 
             if (!response.ok || !result.success) {
-                formError = result.error === "invalid" ? "invalid" : "unavailable";
+                formError = ["invalid", "verification"].includes(result.error) ? result.error : "unavailable";
                 formState = "error";
+                resetTurnstile();
                 return;
             }
 
             formState = "success";
             formData = { name: "", email: "", message: "" };
             honeypot = "";
+            resetTurnstile();
             setTimeout(() => (formState = "idle"), 3000);
         } catch {
             formError = "unavailable";
             formState = "error";
+            resetTurnstile();
         }
     };
 
@@ -83,6 +136,46 @@
     });
 
     onMount(() => {
+        let isMounted = true;
+
+        if (turnstileSiteKey) {
+            loadTurnstile()
+                .then((turnstile) => {
+                    if (!isMounted || !turnstileElement) return;
+
+                    turnstileWidgetId = turnstile.render(turnstileElement, {
+                        sitekey: turnstileSiteKey,
+                        action: "contact",
+                        language: $locale,
+                        theme: "dark",
+                        size: "flexible",
+                        callback: (token) => {
+                            turnstileToken = token;
+                            if (formError === "verification") {
+                                formError = "";
+                                formState = "idle";
+                            }
+                        },
+                        "expired-callback": () => {
+                            turnstileToken = "";
+                        },
+                        "error-callback": () => {
+                            turnstileToken = "";
+                            formError = "verificationUnavailable";
+                            formState = "error";
+                        },
+                    });
+                })
+                .catch(() => {
+                    if (!isMounted) return;
+                    formError = "verificationUnavailable";
+                    formState = "error";
+                });
+        } else {
+            formError = "verificationUnavailable";
+            formState = "error";
+        }
+
         const updateTime = () => {
             const now = new Date();
             currentTime = now.toLocaleTimeString("es-ES", {
@@ -93,7 +186,13 @@
         };
         updateTime();
         const interval = setInterval(updateTime, 60000);
-        return () => clearInterval(interval);
+        return () => {
+            isMounted = false;
+            clearInterval(interval);
+            if (window.turnstile && turnstileWidgetId !== undefined) {
+                window.turnstile.remove(turnstileWidgetId);
+            }
+        };
     });
 </script>
 
@@ -288,6 +387,8 @@
                                     autocomplete="off"
                                 />
                             </div>
+
+                            <div class="min-h-[65px] w-full" bind:this={turnstileElement}></div>
 
                             <div class="pt-2">
                                 <button

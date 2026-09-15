@@ -145,6 +145,8 @@
             "confirmationSent": "I've sent you a confirmation email.",
             "errors": {
                 "invalid": "Please review the details and try again.",
+                "verification": "Complete the security check and try again.",
+                "verificationUnavailable": "The security check could not be loaded. Refresh the page or use the direct email.",
                 "unavailable": "Your message could not be sent. Please try again or use the direct email."
             }
         }

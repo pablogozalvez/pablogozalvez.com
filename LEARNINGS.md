@@ -48,7 +48,7 @@ El componente publica JSON en `POST /api/contact`. La ruta valida el contenido, 
 La clave de Resend nunca llega al navegador y el HTML indexable no depende de la ejecución de la función. El servidor también es el único lugar fiable para validar datos y aplicar medidas antispam.
 
 **En este proyecto**
-`src/lib/Contact.svelte` controla la interfaz y `src/routes/api/contact/+server.js` contiene la validación, el honeypot y el envío. Las variables `RESEND_API_KEY`, `CONTACT_TO_EMAIL` y `CONTACT_FROM_EMAIL` se configuran fuera del repositorio.
+`src/lib/Contact.svelte` controla la interfaz y obtiene un token de Cloudflare Turnstile. `src/routes/api/contact/+server.js` valida ese token mediante Siteverify antes de enviar nada, además de mantener la validación de campos y el honeypot. Las variables de Resend y `TURNSTILE_SITE_KEY` / `TURNSTILE_SECRET_KEY` se configuran fuera del repositorio.
 
 **Tradeoffs / pitfalls**
-Un honeypot reduce spam básico pero no limita ataques dirigidos. Para protección persistente se necesita un servicio adicional, por ejemplo Cloudflare Turnstile o un limitador distribuido. El correo del visitante debe ser `replyTo`, no el remitente, para no romper la autenticación del dominio.
+Un honeypot reduce spam básico, pero no detiene ataques dirigidos. Turnstile añade una prueba de riesgo sin exponer su clave secreta: la clave de sitio llega al HTML, mientras que la secreta permanece en el servidor. El token caduca, es de un solo uso y siempre debe verificarse en el backend; validar solo el widget del navegador no aporta seguridad real. El correo del visitante debe ser `replyTo`, no el remitente, para no romper la autenticación del dominio.

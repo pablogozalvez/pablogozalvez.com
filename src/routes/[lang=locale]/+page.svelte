@@ -1,5 +1,7 @@
 <script>
     import HomePage from "../+page.svelte";
+
+    export let data;
 </script>
 
-<HomePage />
+<HomePage {data} />
