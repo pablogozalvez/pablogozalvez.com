@@ -46,7 +46,7 @@
         }
     },
     "about": {
-        "title": "A bit about <span class=\"text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400\">what I do</span>",
+        "title": "About me",
         "p1": "I don't just write code; from a very young age I was <strong class=\"text-white font-medium\">building my own programs</strong> and learning on my own. Over time, I decided to dedicate my career to <strong class=\"text-white font-medium\">software development</strong>, deepening my knowledge and improving every day.",
         "p2": "What started as small, self-taught programs in my childhood gradually evolved into more complex and challenging projects. Each challenge taught me how to <strong class=\"text-white font-medium\">solve problems practically</strong> and understand how to connect <strong class=\"text-white font-medium\">frontend and backend</strong> so that everything works together as a coherent whole.",
         "stats": {
@@ -66,7 +66,7 @@
         }
     },
     "projects": {
-        "title": "Selected <span class=\"text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400\">work</span>",
+        "title": "Projects",
         "subtitle": "A showcase of my completed projects, technical experiments, and contributions.",
         "viewArchive": "View full archive",
         "items": {
@@ -98,7 +98,7 @@
     },
     "contact": {
         "openForOpportunities": "Available",
-        "title": "Let's start a <br /><span class=\"text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400\">conversation.</span>",
+        "title": "Contact",
         "subtitle": "Whether you have a game idea, a web platform in mind, or just want to chat about code architecture, I'm all ears.",
         "directAccess": "Direct Access",
         "emailCommand": "Email Command",

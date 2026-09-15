@@ -86,8 +86,12 @@
 
     <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         <div class="mb-16 md:mb-24 about-header" use:reveal>
-            <h2 class="text-4xl md:text-5xl font-black text-white mb-6 tracking-tight">
-                {@html $t("about.title")}
+            <div class="flex items-center gap-3 mb-4">
+                <span class="text-[11px] font-mono font-semibold text-gray-500 uppercase tracking-widest">01 —</span>
+                <div class="h-px w-12 bg-gradient-to-r from-white/20 to-transparent"></div>
+            </div>
+            <h2 class="text-4xl md:text-5xl font-black text-white tracking-tight">
+                {$t("about.title")}
             </h2>
         </div>
 

@@ -168,8 +168,12 @@
         <!-- Header -->
         <div class="proj-header flex flex-col md:flex-row md:items-end justify-between mb-20 gap-6" use:reveal>
             <div>
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="text-[11px] font-mono font-semibold text-gray-500 uppercase tracking-widest">02 —</span>
+                    <div class="h-px w-12 bg-gradient-to-r from-white/20 to-transparent"></div>
+                </div>
                 <h2 class="text-4xl md:text-5xl font-black text-white mb-4 tracking-tight">
-                    {@html $t("projects.title")}
+                    {$t("projects.title")}
                 </h2>
                 <p class="text-xl text-gray-400 max-w-xl font-light leading-relaxed">
                     {$t("projects.subtitle")}

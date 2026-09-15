@@ -107,6 +107,11 @@
                     class="lg:col-span-2 p-8 md:p-12 border-b lg:border-b-0 lg:border-r border-white/5 flex flex-col justify-between bg-black/20"
                 >
                     <div>
+                        <div class="flex items-center gap-3 mb-5">
+                            <span class="text-[11px] font-mono font-semibold text-gray-500 uppercase tracking-widest">03 —</span>
+                            <div class="h-px w-12 bg-gradient-to-r from-white/20 to-transparent"></div>
+                        </div>
+
                         <div
                             class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono mb-8 animate-fade-in-up"
                         >
@@ -120,8 +125,9 @@
                         </div>
 
                         <h2 class="text-3xl md:text-4xl font-black text-white mb-6 tracking-tight">
-                            {@html $t("contact.title")}
+                            {$t("contact.title")}
                         </h2>
+
 
                         <div class="relative group/email mb-8">
                             <span class="block text-xs font-mono text-gray-500 mb-2 uppercase tracking-wider"

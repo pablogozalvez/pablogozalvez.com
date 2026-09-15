@@ -55,10 +55,10 @@
     $: progress, isMobile, isMenuOpen, updateNavStyles();
 
     $: sections = [
-        { id: "home", label: $t("nav.home") },
-        { id: "about", label: $t("nav.about") },
-        { id: "projects", label: $t("nav.projects") },
-        { id: "contact", label: $t("nav.contact") },
+        { id: "home", label: $t("nav.home"), num: null },
+        { id: "about", label: $t("nav.about"), num: "01" },
+        { id: "projects", label: $t("nav.projects"), num: "02" },
+        { id: "contact", label: $t("nav.contact"), num: "03" },
     ];
 
     const scrollTo = (id) => {
@@ -107,9 +107,6 @@
         transition:fade={{ duration: 400, easing: cubicInOut }}
     >
         <div class="absolute inset-0" in:scale={{ start: 1.1, duration: 800, easing: cubicOut }}></div>
-        <div
-            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-indigo-500/20 blur-[100px] rounded-full animate-pulse"
-        ></div>
 
         <nav class="flex flex-col items-center gap-8 relative z-10">
             {#each sections as section, i}
@@ -117,10 +114,13 @@
                     on:click={() => scrollTo(section.id)}
                     in:fly={{ y: 50, delay: 200 + i * 100, duration: 500, easing: cubicOut }}
                     out:fly={{ y: 20, delay: i * 50, duration: 300, easing: cubicOut }}
-                    class="text-5xl md:text-6xl font-black uppercase tracking-tighter transition-all duration-300 hover:scale-110
-                    {activeSection === section.id ? 'text-white scale-105' : 'text-white/40 hover:text-white'}"
+                    class="flex items-baseline gap-3 transition-all duration-300 hover:scale-110
+                    {activeSection === section.id ? 'scale-105' : 'hover:text-white'}"
                 >
-                    {section.label}
+                    {#if section.num}
+                        <span class="text-sm font-mono font-medium tracking-wide {activeSection === section.id ? 'text-gray-400' : 'text-white/20'}">{section.num}</span>
+                    {/if}
+                    <span class="text-5xl md:text-6xl font-black uppercase tracking-tighter {activeSection === section.id ? 'text-white' : 'text-white/40'}">{section.label}</span>
                 </button>
             {/each}
             <div class="mt-8 pt-8 border-t border-white/10 w-20 flex justify-center">
@@ -201,9 +201,12 @@
                 {#each sections as section}
                     <button
                         on:click={() => scrollTo(section.id)}
-                        class="relative px-4 py-2 text-xs font-bold uppercase tracking-wider transition-colors duration-300 rounded-full group
+                        class="relative px-4 py-2 text-xs font-bold uppercase tracking-wider transition-colors duration-300 rounded-full group flex items-center gap-1.5
                         {activeSection === section.id ? 'text-white' : 'text-gray-400 hover:text-white'}"
                     >
+                        {#if section.num}
+                            <span class="relative z-10 text-[9px] font-mono font-medium opacity-40">{section.num}</span>
+                        {/if}
                         <span class="relative z-10">{section.label}</span>
 
                         <div
