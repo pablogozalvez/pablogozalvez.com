@@ -11,7 +11,7 @@
     let isVisible = false;
     let usesNativeCursor = false;
     let isTouchDevice = false;
-    let cursorDisabled = false;
+    let cursorDisabled = true;
     let externalHideToggle = false;
 
     function updateBodyCursor() {
@@ -32,7 +32,9 @@
 
     onMount(() => {
         isTouchDevice = window.matchMedia?.("(pointer: coarse)")?.matches || navigator.maxTouchPoints > 0;
-        cursorDisabled = isTouchDevice || isLowPerformanceMode();
+        /*  Deshabilitado temporalmente por problemas de rendimiento
+            cursorDisabled = isTouchDevice || isLowPerformanceMode();
+        */
         updateBodyCursor();
 
         if (cursorDisabled) {
