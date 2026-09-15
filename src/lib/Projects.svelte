@@ -145,21 +145,23 @@
 
 <section
     id="projects"
-    class="py-32 relative bg-gradient-to-b from-[#080808] to-[#050505] -mt-px overflow-hidden"
+    class="py-32 relative bg-[#0a0a0c] -mt-px overflow-hidden"
     aria-label="Projects"
     on:mousemove={handleMouseMove}
 >
+    <!-- Section top accent divider -->
+    <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-purple-500/15 to-transparent"></div>
     <!-- Mantenemos oculto el cursor principal cuando el PDF Modal esté abierto, 
          para ello inyectamos en el DOM una clase manejada por style global o usamos hidden desde el layout -->
     <PdfViewer bind:showPdfModal pdfUrl={currentPdfUrl} title={currentPdfTitle} downloadName={currentPdfDownloadName} />
 
-    <div class="absolute inset-0 bg-[url('/img/grid.svg')] opacity-[0.05]" style="background-size: 30px 30px;"></div>
+    <!-- Cross-hatch pattern overlay -->
+    <div class="absolute inset-0 opacity-[0.03] pointer-events-none projects-crosshatch"></div>
 
     <div
         class="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay"
         style="background-image: url('/img/noise-transparent.webp');"
     ></div>
-
 
 
     <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10" bind:this={containerRef}>
@@ -359,6 +361,13 @@
 </section>
 
 <style>
+    .projects-crosshatch {
+        background-image:
+            linear-gradient(45deg, rgba(255, 255, 255, 0.4) 1px, transparent 1px),
+            linear-gradient(-45deg, rgba(255, 255, 255, 0.4) 1px, transparent 1px);
+        background-size: 32px 32px;
+    }
+
     .project-card {
         --mouse-x: 0px;
         --mouse-y: 0px;

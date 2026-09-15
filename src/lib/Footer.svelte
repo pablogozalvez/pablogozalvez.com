@@ -19,16 +19,15 @@
     ];
 </script>
 
-<footer class="relative bg-[#050505] pt-20 pb-10 overflow-hidden">
+<footer class="relative bg-[#040406] pt-20 pb-10 overflow-hidden">
+    <!-- Section top accent divider -->
     <div
-        class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent"
+        class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"
     ></div>
 
     <div
         class="absolute inset-0 bg-[url('/img/noise-transparent.webp')] opacity-[0.03] mix-blend-overlay pointer-events-none"
     ></div>
-    <div class="absolute inset-0 pointer-events-none"></div>
-
 
 
     <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">

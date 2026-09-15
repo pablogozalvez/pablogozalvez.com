@@ -69,11 +69,14 @@
 <section
     id="about"
     aria-label="About"
-    class="py-32 relative overflow-hidden bg-gradient-to-b from-[#050505] to-[#080808]"
+    class="py-32 relative overflow-hidden bg-[#08080a]"
     on:mousemove={handleMouseMove}
     bind:this={containerRef}
 >
-    <div class="absolute inset-0 bg-[url('/img/grid.svg')] opacity-[0.05]" style="background-size: 30px 30px;"></div>
+    <!-- Section top accent divider -->
+    <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-indigo-500/20 to-transparent"></div>
+    <!-- Dot pattern overlay -->
+    <div class="absolute inset-0 opacity-[0.04] pointer-events-none about-dots"></div>
     <div
         class="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay"
         style="background-image: url('/img/noise-transparent.webp');"
@@ -181,6 +184,11 @@
 </section>
 
 <style>
+    .about-dots {
+        background-image: radial-gradient(circle, rgba(255, 255, 255, 0.5) 1px, transparent 1px);
+        background-size: 24px 24px;
+    }
+
     .spotlight-card {
         --mouse-x: 0px;
         --mouse-y: 0px;

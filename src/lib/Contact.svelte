@@ -76,14 +76,16 @@
 
 <section
     id="contact"
-    class="py-32 relative flex items-center justify-center overflow-hidden bg-gradient-to-b from-[#050505] to-black -mt-px"
+    class="py-32 relative flex items-center justify-center overflow-hidden bg-[#060608] -mt-px"
 >
-    <div class="absolute inset-0 bg-[url('/img/grid.svg')] opacity-[0.05]" style="background-size: 30px 30px;"></div>
+    <!-- Section top accent divider -->
+    <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-emerald-500/15 to-transparent"></div>
+    <!-- Horizontal line pattern -->
+    <div class="absolute inset-0 opacity-[0.03] pointer-events-none contact-lines"></div>
     <div
         class="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay"
         style="background-image: url('/img/noise-transparent.webp');"
     ></div>
-
 
     <div class="max-w-6xl w-full mx-auto px-4 sm:px-6 relative z-10">
         <div
@@ -321,6 +323,16 @@
 </section>
 
 <style>
+    .contact-lines {
+        background-image: repeating-linear-gradient(
+            0deg,
+            rgba(255, 255, 255, 0.3) 0px,
+            rgba(255, 255, 255, 0.3) 1px,
+            transparent 1px,
+            transparent 28px
+        );
+    }
+
     .contact-card {
         --mouse-x: 0px;
         --mouse-y: 0px;
