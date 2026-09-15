@@ -2,6 +2,23 @@
 
 ## Web Development
 
+### Animaciones de entrada sin repintados costosos
+
+**Explicación sencilla**
+Una animación de scroll suele ser más fluida cuando cambia únicamente opacidad y transformaciones. Efectos como `filter: blur()` sobre tarjetas grandes obligan al navegador a recalcular muchos píxeles en cada fotograma.
+
+**Cómo funciona**
+`IntersectionObserver` marca cada elemento cuando entra en el viewport. CSS interpola `opacity` y `transform` sin ejecutar lógica por fotograma. Separar la transformación de entrada en una envoltura y la transformación de hover en la tarjeta evita que ambas animaciones compitan por la misma propiedad.
+
+**Por qué importa**
+Reduce tirones durante el scroll, mantiene el hover independiente y permite respetar `prefers-reduced-motion` sin duplicar lógica JavaScript.
+
+**En este proyecto**
+`src/lib/Projects.svelte` aplica el reveal a `.project-reveal-shell`, mientras `.project-card` conserva la elevación y el escalado de imagen al pasar el ratón.
+
+**Tradeoffs / pitfalls**
+Los retrasos basados en el índice global pueden hacer que elementos ya visibles permanezcan ocultos demasiado tiempo. Si se usa stagger, debe limitarse al grupo visible y no acumularse a lo largo de toda la lista.
+
 ### Actualizaciones coordinadas de dependencias
 
 **Explicación sencilla**
