@@ -2,6 +2,40 @@
 
 ## Web Development
 
+### Efectos visuales adaptados a la capacidad gráfica
+
+**Explicación sencilla**
+Una interfaz no debería insistir en mostrar el mismo efecto si el navegador solo puede renderizarlo por software. En ese caso es mejor conservar el diseño con una variante estática y devolver el cursor nativo.
+
+**Cómo funciona**
+Al crear un contexto WebGL con `failIfMajorPerformanceCaveat`, el navegador puede rechazar renderizadores demasiado lentos. También se comprueba el nombre del renderer para detectar alternativas de software conocidas. El resultado se memoriza y los componentes lo reutilizan sin repetir la prueba.
+
+**Por qué importa**
+Los filtros grandes, los fondos animados y un cursor interpolado pueden competir por cada fotograma. Desactivarlos como conjunto evita que una mejora puramente estética vuelva difícil de usar toda la página.
+
+**En este proyecto**
+`src/lib/actions.js` centraliza la detección. `src/lib/Cursor.svelte` no monta sus listeners en modo reducido, mientras `src/lib/Hero.svelte` y `src/routes/+layout.svelte` sustituyen parallax, blur y halos animados por una composición estática.
+
+**Tradeoffs / pitfalls**
+La detección es preventiva, no un benchmark exacto. `prefers-reduced-motion`, poca memoria o pocos núcleos también activan la variante ligera, porque en esos dispositivos la estabilidad y la accesibilidad pesan más que el efecto.
+
+### Cursores personalizados e iframes
+
+**Explicación sencilla**
+Un iframe es otra página incrustada. Cuando el puntero entra en ella, la página padre deja de recibir sus movimientos y un cursor personalizado puede parecer congelado.
+
+**Cómo funciona**
+Las superficies externas se marcan con `data-native-cursor`. Antes de cruzar el límite del iframe, el cursor personalizado se oculta y se restaura el cursor del sistema. Los modales PDF gestionan esa exclusión durante todo su ciclo de vida y limpian el estado al desmontarse.
+
+**Por qué importa**
+No es posible seguir el puntero dentro de un iframe de otro dominio por la política de mismo origen. Cambiar deliberadamente al cursor nativo evita una animación rota sin intentar atravesar esa frontera de seguridad.
+
+**En este proyecto**
+Turnstile declara la zona nativa en `src/lib/Contact.svelte`. `src/lib/PdfViewer.svelte` bloquea el cursor global mientras el visor existe, de modo que el currículum y los documentos de proyectos comparten el mismo comportamiento.
+
+**Tradeoffs / pitfalls**
+La responsabilidad debe vivir en el componente que crea el modal o el iframe. Repetir clases globales desde cada consumidor produce estados desincronizados y limpiezas incompletas.
+
 ### Animaciones de entrada sin repintados costosos
 
 **Explicación sencilla**

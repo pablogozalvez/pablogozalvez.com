@@ -7,6 +7,7 @@
     import { onMount } from "svelte";
     import { page } from "$app/stores";
     import { fly } from "svelte/transition";
+    import { isLowPerformanceMode } from "../lib/actions";
     import "../app.css";
 
     export const hydrate = false;
@@ -17,6 +18,7 @@
     let innerHeight = 0;
     let showPdfModal = false;
     let showScrollTop = false;
+    let reducedEffects = false;
 
     const i18n = provideI18n(getLocaleFromPath($page.url.pathname));
     const { initializeBrowserLocale, isLocaleLoaded, syncLocaleFromPath } = i18n;
@@ -28,6 +30,7 @@
     }
 
     onMount(() => {
+        reducedEffects = isLowPerformanceMode();
         initializeBrowserLocale();
 
         // Esperar a que se cargue la ventana (imágenes, estilos, etc)
@@ -70,13 +73,17 @@
 
 <div class="layout-background">
     <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
-        <div
-            class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-600/20 blur-[120px] animate-pulse"
-        ></div>
-        <div
-            class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-purple-600/20 blur-[120px] animate-pulse"
-            style="animation-delay: 2s;"
-        ></div>
+        {#if reducedEffects}
+            <div class="absolute inset-0 static-background-glow"></div>
+        {:else}
+            <div
+                class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-600/20 blur-[120px] animate-pulse"
+            ></div>
+            <div
+                class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-purple-600/20 blur-[120px] animate-pulse"
+                style="animation-delay: 2s;"
+            ></div>
+        {/if}
     </div>
 </div>
 
@@ -105,5 +112,11 @@
     }
     :global(body) {
         background: #030712 !important;
+    }
+
+    .static-background-glow {
+        background:
+            radial-gradient(circle at 8% 8%, rgba(37, 99, 235, 0.1), transparent 34%),
+            radial-gradient(circle at 92% 92%, rgba(147, 51, 234, 0.1), transparent 34%);
     }
 </style>

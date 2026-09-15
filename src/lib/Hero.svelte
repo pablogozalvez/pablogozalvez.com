@@ -1,5 +1,5 @@
 <script>
-    import { viewport } from "./actions";
+    import { isLowPerformanceMode, rafThrottle, viewport } from "./actions";
     import { onMount } from "svelte";
     import { getI18n } from "./i18n";
     import { fly } from "svelte/transition";
@@ -10,6 +10,7 @@
 
     let visible = true;
     let isMobile = false;
+    let reducedEffects = false;
 
     let scrollY = 0;
     let innerHeight = 1;
@@ -42,7 +43,7 @@
     }
 
     function startAutoRotate() {
-        if (typeof window === "undefined" || isMobile) return;
+        if (typeof window === "undefined" || isMobile || reducedEffects) return;
         clearInterval(autoRotateInterval);
         autoRotateInterval = setInterval(() => {
             if (!isPaused && !isMobile) {
@@ -57,21 +58,33 @@
     }
 
     onMount(() => {
+        reducedEffects = isLowPerformanceMode();
+
+        const handleScroll = rafThrottle(() => {
+            scrollY = window.scrollY;
+        });
+
         const handleResize = () => {
             isMobile = window.innerWidth < 1024;
             innerHeight = window.innerHeight;
-            if (isMobile) {
+            if (isMobile || reducedEffects) {
                 clearInterval(autoRotateInterval);
+                autoRotateInterval = undefined;
             } else if (!autoRotateInterval) {
                 startAutoRotate();
             }
         };
         handleResize();
         window.addEventListener("resize", handleResize, { passive: true });
-        startAutoRotate();
+        if (!reducedEffects) {
+            scrollY = window.scrollY;
+            window.addEventListener("scroll", handleScroll, { passive: true });
+            startAutoRotate();
+        }
 
         return () => {
             window.removeEventListener("resize", handleResize);
+            window.removeEventListener("scroll", handleScroll);
             clearInterval(autoRotateInterval);
         };
     });
@@ -145,11 +158,10 @@
     }
 </script>
 
-<svelte:window bind:scrollY />
-
 <section
     id="home"
     class="relative min-h-screen flex items-center overflow-hidden bg-[#0a0a0a]"
+    class:hero-static={reducedEffects}
     use:viewport
     on:enterViewport={() => (visible = true)}
 >
@@ -171,7 +183,8 @@
 
 
     <div
-        class="w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10 h-full py-24 lg:py-0 flex flex-col lg:flex-row items-center justify-center lg:justify-between gap-12 lg:gap-8 will-change-transform origin-center transition-transform duration-75 ease-out"
+        class="w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10 h-full py-24 lg:py-0 flex flex-col lg:flex-row items-center justify-center lg:justify-between gap-12 lg:gap-8 origin-center transition-transform duration-75 ease-out"
+        class:will-change-transform={!reducedEffects}
         style="transform: translateY({heroTranslateY}px) scale({heroScale}); --hero-blur: {heroBlur}px;"
     >
         <!-- Left Column: Presentation -->
@@ -554,6 +567,22 @@
     .hero-fade-interactive:hover,
     .hero-fade-interactive:focus-within {
         filter: blur(0px) !important;
+    }
+
+    .hero-static .hero-fade,
+    .hero-static .hero-fade-interactive {
+        filter: none;
+        transition: none;
+    }
+
+    .hero-static .hero-grid,
+    .hero-static .animate-bounce-slow,
+    .hero-static [class*="animate-bar-"] {
+        animation: none;
+    }
+
+    .hero-static .preview-card {
+        backdrop-filter: none;
     }
 
     .hero-grid {

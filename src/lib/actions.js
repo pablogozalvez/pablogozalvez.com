@@ -21,11 +21,14 @@ export function isLowPerformanceMode() {
         return true;
     }
 
-    // Detectar si probablemente no hay aceleración por hardware
-    // Canvas 2D suele ser lento sin GPU
+    // Rechazar WebGL cuando el navegador solo puede ofrecer un renderer de software.
     try {
         const canvas = document.createElement("canvas");
-        const gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+        const contextOptions = { failIfMajorPerformanceCaveat: true };
+        const gl =
+            canvas.getContext("webgl2", contextOptions) ||
+            canvas.getContext("webgl", contextOptions) ||
+            canvas.getContext("experimental-webgl", contextOptions);
         if (!gl) {
             _isLowPerformance = true;
             return true;
@@ -33,11 +36,11 @@ export function isLowPerformanceMode() {
         // Verificar si es un renderer de software
         const debugInfo = gl.getExtension("WEBGL_debug_renderer_info");
         if (debugInfo) {
-            const renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+            const renderer = String(gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)).toLowerCase();
             if (
-                renderer.toLowerCase().includes("swiftshader") ||
-                renderer.toLowerCase().includes("software") ||
-                renderer.toLowerCase().includes("llvmpipe")
+                renderer.includes("swiftshader") ||
+                renderer.includes("software") ||
+                renderer.includes("llvmpipe")
             ) {
                 _isLowPerformance = true;
                 return true;
