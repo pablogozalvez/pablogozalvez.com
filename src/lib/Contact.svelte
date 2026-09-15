@@ -18,6 +18,7 @@
     let turnstileElement;
     let turnstileToken = "";
     let turnstileWidgetId;
+    let turnstileInteractive = false;
 
     const TURNSTILE_SCRIPT_ID = "cloudflare-turnstile-script";
 
@@ -149,8 +150,16 @@
                         language: $locale,
                         theme: "dark",
                         size: "flexible",
+                        appearance: "interaction-only",
+                        "before-interactive-callback": () => {
+                            turnstileInteractive = true;
+                        },
+                        "after-interactive-callback": () => {
+                            turnstileInteractive = false;
+                        },
                         callback: (token) => {
                             turnstileToken = token;
+                            turnstileInteractive = false;
                             if (formError === "verification") {
                                 formError = "";
                                 formState = "idle";
@@ -161,6 +170,7 @@
                         },
                         "error-callback": () => {
                             turnstileToken = "";
+                            turnstileInteractive = false;
                             formError = "verificationUnavailable";
                             formState = "error";
                         },
@@ -399,10 +409,15 @@
 
                         <!-- Turnstile -->
                         <div
-                            class="min-h-[65px] w-full"
+                            class="turnstile-stage w-full"
+                            class:turnstile-stage-visible={turnstileInteractive}
                             data-native-cursor
-                            bind:this={turnstileElement}
-                        ></div>
+                        >
+                            <div
+                                class="turnstile-widget w-full"
+                                bind:this={turnstileElement}
+                            ></div>
+                        </div>
 
                         <!-- Divider + Submit -->
                         <div class="relative pt-4">
@@ -439,6 +454,13 @@
                                     <p class="text-sm text-emerald-300" role="status">
                                         {$t("contact.form.confirmationSent")}
                                     </p>
+                                {:else}
+                                    <p class="flex items-center gap-1.5 text-[10px] text-gray-600 font-mono uppercase tracking-wider">
+                                        <svg class="w-3.5 h-3.5 text-emerald-500/60" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M9 12l2 2 4-4m5.6-4.4A11 11 0 0112 2a11 11 0 01-8.6 3.6A11.4 11.4 0 003 8c0 5.1 3.4 9.4 9 11 5.6-1.6 9-5.9 9-11 0-.8-.1-1.6-.4-2.4z" />
+                                        </svg>
+                                        {$t("contact.form.spamProtection")}
+                                    </p>
                                 {/if}
                             </div>
                         </div>
@@ -466,6 +488,42 @@
         width: 1px;
         height: 1px;
         overflow: hidden;
+    }
+
+    .turnstile-stage {
+        max-height: 0;
+        margin-top: -1.25rem;
+        opacity: 0;
+        overflow: hidden;
+        transition:
+            max-height 250ms cubic-bezier(0.22, 1, 0.36, 1),
+            margin-top 250ms cubic-bezier(0.22, 1, 0.36, 1),
+            opacity 180ms ease-out;
+    }
+
+    .turnstile-stage-visible {
+        max-height: 82px;
+        margin-top: 0;
+        opacity: 1;
+    }
+
+    .turnstile-widget {
+        min-height: 65px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 0.75rem;
+        background: rgba(255, 255, 255, 0.025);
+        box-shadow: 0 0 24px rgba(99, 102, 241, 0.06);
+    }
+
+    .turnstile-widget:focus-within {
+        border-color: rgba(99, 102, 241, 0.35);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.08);
+    }
+
+    :global(.turnstile-widget iframe) {
+        display: block;
+        border-radius: 0.75rem;
     }
 
     .contact-field {

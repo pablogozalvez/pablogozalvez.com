@@ -120,3 +120,5 @@ La clave de Resend nunca llega al navegador y el HTML indexable no depende de la
 
 **Tradeoffs / pitfalls**
 Un honeypot reduce spam básico, pero no detiene ataques dirigidos. Turnstile añade una prueba de riesgo sin exponer su clave secreta: la clave de sitio llega al HTML, mientras que la secreta permanece en el servidor. El token caduca, es de un solo uso y siempre debe verificarse en el backend; validar solo el widget del navegador no aporta seguridad real. El correo del visitante debe ser `replyTo`, no el remitente, para no romper la autenticación del dominio.
+
+El modo de apariencia `interaction-only` permite ejecutar la comprobación desde el renderizado sin reservar siempre espacio visual. El widget solo se despliega si Cloudflare requiere una acción humana; no debe confundirse con ocultar o saltarse la verificación.

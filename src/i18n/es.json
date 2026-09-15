@@ -147,6 +147,7 @@
             "sending": "Enviando...",
             "sent": "¡Mensaje recibido!",
             "confirmationSent": "Te he enviado un correo de confirmación.",
+            "spamProtection": "Protección antispam activa",
             "errors": {
                 "invalid": "Revisa los datos introducidos e inténtalo de nuevo.",
                 "verification": "Completa la verificación de seguridad e inténtalo de nuevo.",

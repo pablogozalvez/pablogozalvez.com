@@ -147,6 +147,7 @@
             "sending": "Sending...",
             "sent": "Message received!",
             "confirmationSent": "I've sent you a confirmation email.",
+            "spamProtection": "Spam protection active",
             "errors": {
                 "invalid": "Please review the details and try again.",
                 "verification": "Complete the security check and try again.",
