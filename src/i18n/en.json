@@ -112,9 +112,12 @@
             "message": "Message",
             "messagePlaceholder": "Tell me what's on your mind...",
             "send": "Send Message",
+            "sending": "Sending...",
             "sent": "Message Sent!",
-            "disabledTitle": "Under Development",
-            "disabledMessage": "Please use the direct email,<br />this form will be available very soon."
+            "errors": {
+                "invalid": "Please review the details and try again.",
+                "unavailable": "Your message could not be sent. Please try again or use the direct email."
+            }
         }
     },
     "footer": {

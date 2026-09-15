@@ -11,6 +11,8 @@
 
     let formState = "idle";
     let formData = { name: "", email: "", message: "" };
+    let honeypot = "";
+    let formError = "";
 
     const email = "pablogozalvezr@gmail.com";
 
@@ -42,12 +44,33 @@
     }
 
     const handleSubmit = async () => {
-        if (!formData.email || !formData.message) return;
+        if (formState === "sending" || formState === "success") return;
+
         formState = "sending";
-        await new Promise((resolve) => setTimeout(resolve, 1500));
-        formState = "success";
-        formData = { name: "", email: "", message: "" };
-        setTimeout(() => (formState = "idle"), 3000);
+        formError = "";
+
+        try {
+            const response = await fetch("/api/contact", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ ...formData, website: honeypot }),
+            });
+            const result = await response.json();
+
+            if (!response.ok || !result.success) {
+                formError = result.error === "invalid" ? "invalid" : "unavailable";
+                formState = "error";
+                return;
+            }
+
+            formState = "success";
+            formData = { name: "", email: "", message: "" };
+            honeypot = "";
+            setTimeout(() => (formState = "idle"), 3000);
+        } catch {
+            formError = "unavailable";
+            formState = "error";
+        }
     };
 
     const handleMouseMove = rafThrottle((e) => {
@@ -195,33 +218,7 @@
                 </div>
 
                 <div class="lg:col-span-3 p-8 md:p-12 relative">
-                    <div
-                        class="absolute inset-0 z-50 flex flex-col items-center justify-center backdrop-blur-sm transition-all"
-                    >
-                        <div class="p-4 rounded-full bg-white/5 border border-white/10 mb-4 animate-pulse">
-                            <svg
-                                class="w-8 h-8 text-gray-400"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"
-                                ></path>
-                            </svg>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-2">{$t("contact.form.disabledTitle")}</h3>
-                        <p class="text-gray-400 text-sm text-center px-8">
-                            {@html $t("contact.form.disabledMessage")}
-                        </p>
-                    </div>
-
-                    <fieldset disabled class="contents">
-                        <form on:submit|preventDefault={handleSubmit} class="space-y-6 relative z-10 opacity-50">
+                    <form on:submit|preventDefault={handleSubmit} class="space-y-6 relative z-10">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div class="space-y-2">
                                     <label
@@ -232,8 +229,12 @@
                                     <input
                                         type="text"
                                         id="name"
+                                        name="name"
                                         bind:value={formData.name}
                                         placeholder={$t("contact.form.namePlaceholder")}
+                                        autocomplete="name"
+                                        maxlength="100"
+                                        required
                                         class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-indigo-500/50 focus:bg-white/[0.07] transition-all"
                                     />
                                 </div>
@@ -246,8 +247,12 @@
                                     <input
                                         type="email"
                                         id="email"
+                                        name="email"
                                         bind:value={formData.email}
                                         placeholder={$t("contact.form.emailPlaceholder")}
+                                        autocomplete="email"
+                                        maxlength="254"
+                                        required
                                         class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-indigo-500/50 focus:bg-white/[0.07] transition-all"
                                     />
                                 </div>
@@ -261,30 +266,51 @@
                                 >
                                 <textarea
                                     id="message"
+                                    name="message"
                                     rows="4"
                                     bind:value={formData.message}
                                     placeholder={$t("contact.form.messagePlaceholder")}
+                                    minlength="10"
+                                    maxlength="3000"
+                                    required
                                     class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-indigo-500/50 focus:bg-white/[0.07] transition-all resize-y min-h-[120px] max-h-[300px]"
                                 ></textarea>
+                            </div>
+
+                            <div class="contact-honeypot" aria-hidden="true">
+                                <label for="website">Website</label>
+                                <input
+                                    id="website"
+                                    name="website"
+                                    type="text"
+                                    bind:value={honeypot}
+                                    tabindex="-1"
+                                    autocomplete="off"
+                                />
                             </div>
 
                             <div class="pt-2">
                                 <button
                                     type="submit"
-                                    disabled={formState !== "idle"}
+                                    disabled={formState === "sending" || formState === "success"}
                                     class="w-full md:w-auto px-8 py-3.5 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl text-white font-medium hover:shadow-[0_0_20px_rgba(79,70,229,0.3)] hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 min-w-[140px]"
                                 >
-                                    {#if formState === "idle"}
-                                        <span>{$t("contact.form.send")}</span>
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    {#if formState === "success"}
+                                        <span class="text-white">{$t("contact.form.sent")}</span>
+                                        <svg
+                                            class="w-5 h-5 text-white"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
                                             ><path
                                                 stroke-linecap="round"
                                                 stroke-linejoin="round"
                                                 stroke-width="2"
-                                                d="M14 5l7 7m0 0l-7 7m7-7H3"
+                                                d="M5 13l4 4L19 7"
                                             ></path></svg
                                         >
                                     {:else if formState === "sending"}
+                                        <span>{$t("contact.form.sending")}</span>
                                         <svg
                                             class="animate-spin h-5 w-5 text-white"
                                             xmlns="http://www.w3.org/2000/svg"
@@ -304,24 +330,24 @@
                                             ></path></svg
                                         >
                                     {:else}
-                                        <span class="text-white">{$t("contact.form.sent")}</span>
-                                        <svg
-                                            class="w-5 h-5 text-white"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
+                                        <span>{$t("contact.form.send")}</span>
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                             ><path
                                                 stroke-linecap="round"
                                                 stroke-linejoin="round"
                                                 stroke-width="2"
-                                                d="M5 13l4 4L19 7"
+                                                d="M14 5l7 7m0 0l-7 7m7-7H3"
                                             ></path></svg
                                         >
                                     {/if}
                                 </button>
+                                {#if formState === "error"}
+                                    <p class="mt-3 text-sm text-red-300" role="alert">
+                                        {$t(`contact.form.errors.${formError}`)}
+                                    </p>
+                                {/if}
                             </div>
-                        </form>
-                    </fieldset>
+                    </form>
                 </div>
             </div>
         </div>
@@ -337,6 +363,14 @@
             transparent 1px,
             transparent 28px
         );
+    }
+
+    .contact-honeypot {
+        position: absolute;
+        left: -9999px;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
     }
 
     .contact-card {

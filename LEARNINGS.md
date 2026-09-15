@@ -35,3 +35,20 @@ La entidad y el esquema `WebSite` se generan en `src/lib/SEO.svelte`; el hero re
 
 **Tradeoffs / pitfalls**
 No conviene mencionar a la persona con la que existe confusión ni incluir variantes ortográficas que no pertenecen a la identidad propia. Eso puede reforzar justo la asociación que se intenta evitar.
+
+### Formularios estáticos con un endpoint de servidor
+
+**Explicación sencilla**
+Una página puede seguir siendo estática y tener un formulario funcional. El navegador envía los datos a una ruta de servidor independiente, que ejecuta solo la parte sensible, como enviar un correo.
+
+**Cómo funciona**
+El componente publica JSON en `POST /api/contact`. La ruta valida el contenido, lee las variables privadas de entorno y usa Resend. La página principal no deja de prerenderizarse porque el endpoint declara `prerender = false` de forma aislada.
+
+**Por qué importa**
+La clave de Resend nunca llega al navegador y el HTML indexable no depende de la ejecución de la función. El servidor también es el único lugar fiable para validar datos y aplicar medidas antispam.
+
+**En este proyecto**
+`src/lib/Contact.svelte` controla la interfaz y `src/routes/api/contact/+server.js` contiene la validación, el honeypot y el envío. Las variables `RESEND_API_KEY`, `CONTACT_TO_EMAIL` y `CONTACT_FROM_EMAIL` se configuran fuera del repositorio.
+
+**Tradeoffs / pitfalls**
+Un honeypot reduce spam básico pero no limita ataques dirigidos. Para protección persistente se necesita un servicio adicional, por ejemplo Cloudflare Turnstile o un limitador distribuido. El correo del visitante debe ser `replyTo`, no el remitente, para no romper la autenticación del dominio.

@@ -112,9 +112,12 @@
             "message": "Mensaje",
             "messagePlaceholder": "Cuéntame qué tienes en mente...",
             "send": "Enviar Mensaje",
+            "sending": "Enviando...",
             "sent": "¡Mensaje Enviado!",
-            "disabledTitle": "Formulario deshabilitado",
-            "disabledMessage": "Utiliza el email directo,<br />este formulario estará disponible muy pronto."
+            "errors": {
+                "invalid": "Revisa los datos introducidos e inténtalo de nuevo.",
+                "unavailable": "No se ha podido enviar el mensaje. Inténtalo de nuevo o utiliza el email directo."
+            }
         }
     },
     "footer": {
