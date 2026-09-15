@@ -8,12 +8,6 @@
 
     let containerRef;
 
-    $: stats = [
-        { label: $t("about.stats.projects"), value: "20+" },
-        { label: $t("about.stats.releases"), value: "5+" },
-        { label: $t("about.stats.experience"), value: "+2" },
-    ];
-
     $: skills = [
         {
             category: $t("about.skills.languages"),
@@ -106,13 +100,10 @@
                     </p>
                 </div>
 
-                <div class="grid grid-cols-3 gap-4 mt-12 border-t border-white/10 pt-8">
-                    {#each stats as stat, i}
-                        <div class="stat-item" style="--stat-delay: {i * 100}ms" use:reveal>
-                            <div class="text-3xl font-bold text-white mb-1">{stat.value}</div>
-                            <div class="text-xs text-gray-500 uppercase tracking-wider font-mono">{stat.label}</div>
-                        </div>
-                    {/each}
+                <div class="mt-10 pl-5 border-l border-indigo-400/40">
+                    <p class="text-sm sm:text-base text-gray-400 leading-relaxed">
+                        {@html $t("about.trackRecord")}
+                    </p>
                 </div>
             </div>
 
@@ -212,14 +203,6 @@
         animation: aboutSlideRight 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
 
-    .stat-item {
-        opacity: 0;
-    }
-    .stat-item:global([data-revealed]) {
-        animation: statPop 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-        animation-delay: var(--stat-delay, 0ms);
-    }
-
     .skill-card {
         opacity: 0;
         transition:
@@ -274,20 +257,6 @@
             opacity: 1;
             transform: translateX(0);
             filter: blur(0);
-        }
-    }
-
-    @keyframes statPop {
-        0% {
-            opacity: 0;
-            transform: scale(0.8) translateY(10px);
-        }
-        70% {
-            transform: scale(1.05) translateY(-2px);
-        }
-        100% {
-            opacity: 1;
-            transform: scale(1) translateY(0);
         }
     }
 

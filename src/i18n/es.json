@@ -56,11 +56,7 @@
         "title": "Sobre mí",
         "p1": "No me limito a escribir código; desde muy joven <strong class=\"text-white font-medium\">desarrollaba mis propios programas</strong> y aprendía de manera autodidacta. Con el tiempo, decidí que mi carrera estaría dedicada al <strong class=\"text-white font-medium\">desarrollo de software</strong>, profundizando mis conocimientos y mejorando cada día.",
         "p2": "Lo que empezó como pequeños programas autodidactas cuando era niño se convirtió con los años en proyectos más complejos y desafiantes. Cada desafío me enseñó a <strong class=\"text-white font-medium\">resolver problemas de manera práctica</strong> y a entender cómo unir <strong class=\"text-white font-medium\">frontend y backend</strong> para que todo funcione como un conjunto coherente.",
-        "stats": {
-            "projects": "Proyectos",
-            "releases": "Lanzamientos",
-            "experience": "Años de experiencia"
-        },
+        "trackRecord": "He trabajado en <strong class=\"text-gray-200 font-medium\">más de 20 proyectos</strong>, he llevado <strong class=\"text-gray-200 font-medium\">más de 5 lanzamientos</strong> a producción y acumulo <strong class=\"text-gray-200 font-medium\">más de 2 años de experiencia profesional</strong>.",
         "skills": {
             "frontend": "Frontend",
             "backend": "Backend y Sistemas",

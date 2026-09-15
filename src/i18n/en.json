@@ -56,11 +56,7 @@
         "title": "About me",
         "p1": "I don't just write code; from a very young age I was <strong class=\"text-white font-medium\">building my own programs</strong> and learning on my own. Over time, I decided to dedicate my career to <strong class=\"text-white font-medium\">software development</strong>, deepening my knowledge and improving every day.",
         "p2": "What started as small, self-taught programs in my childhood gradually evolved into more complex and challenging projects. Each challenge taught me how to <strong class=\"text-white font-medium\">solve problems practically</strong> and understand how to connect <strong class=\"text-white font-medium\">frontend and backend</strong> so that everything works together as a coherent whole.",
-        "stats": {
-            "projects": "Projects",
-            "releases": "Releases",
-            "experience": "Years of Experience"
-        },
+        "trackRecord": "I have worked on <strong class=\"text-gray-200 font-medium\">more than 20 projects</strong>, taken <strong class=\"text-gray-200 font-medium\">more than 5 releases</strong> into production, and built <strong class=\"text-gray-200 font-medium\">over 2 years of professional experience</strong>.",
         "skills": {
             "frontend": "Frontend",
             "backend": "Backend & Systems",
