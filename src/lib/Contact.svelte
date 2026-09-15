@@ -7,7 +7,7 @@
     let copied = false;
     let currentTime = "";
 
-    const { t } = getI18n();
+    const { t, locale } = getI18n();
 
     let formState = "idle";
     let formData = { name: "", email: "", message: "" };
@@ -53,7 +53,7 @@
             const response = await fetch("/api/contact", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ ...formData, website: honeypot }),
+                body: JSON.stringify({ ...formData, website: honeypot, locale: $locale }),
             });
             const result = await response.json();
 
@@ -344,6 +344,10 @@
                                 {#if formState === "error"}
                                     <p class="mt-3 text-sm text-red-300" role="alert">
                                         {$t(`contact.form.errors.${formError}`)}
+                                    </p>
+                                {:else if formState === "success"}
+                                    <p class="mt-3 text-sm text-emerald-300" role="status">
+                                        {$t("contact.form.confirmationSent")}
                                     </p>
                                 {/if}
                             </div>

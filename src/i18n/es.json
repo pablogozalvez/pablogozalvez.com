@@ -104,6 +104,34 @@
         "emailCommand": "Comando de Email",
         "copied": "¡Copiado al portapapeles!",
         "location": "Alicante, ES",
+        "emails": {
+            "brand": "Pablo Gozálvez",
+            "role": "Desarrollador de software fullstack · Alicante",
+            "website": "pablogozalvez.com",
+            "owner": {
+                "subject": "Nuevo mensaje de {{name}}",
+                "preheader": "{{name}} ha contactado contigo desde tu portfolio.",
+                "eyebrow": "Nuevo contacto",
+                "title": "Tienes un nuevo mensaje",
+                "intro": "Una persona ha utilizado el formulario de contacto de tu portfolio.",
+                "nameLabel": "Nombre",
+                "emailLabel": "Email",
+                "messageLabel": "Mensaje",
+                "replyAction": "Responder a {{name}}"
+            },
+            "confirmation": {
+                "subject": "He recibido tu mensaje",
+                "preheader": "Gracias por contactar conmigo. Te responderé lo antes posible.",
+                "eyebrow": "Mensaje recibido",
+                "title": "Gracias por escribirme, {{name}}",
+                "intro": "He recibido correctamente tu mensaje a través de mi portfolio.",
+                "nextTitle": "¿Qué ocurre ahora?",
+                "nextBody": "Revisaré tu mensaje y te responderé personalmente lo antes posible.",
+                "noReplyTitle": "Mensaje automático · NO REPLY",
+                "noReplyBody": "Este correo confirma únicamente la recepción. Por favor, no respondas a esta dirección.",
+                "signOff": "Un saludo,"
+            }
+        },
         "form": {
             "name": "Nombre",
             "namePlaceholder": "Juan Pérez",
@@ -113,7 +141,8 @@
             "messagePlaceholder": "Cuéntame qué tienes en mente...",
             "send": "Enviar Mensaje",
             "sending": "Enviando...",
-            "sent": "¡Mensaje Enviado!",
+            "sent": "¡Mensaje recibido!",
+            "confirmationSent": "Te he enviado un correo de confirmación.",
             "errors": {
                 "invalid": "Revisa los datos introducidos e inténtalo de nuevo.",
                 "unavailable": "No se ha podido enviar el mensaje. Inténtalo de nuevo o utiliza el email directo."

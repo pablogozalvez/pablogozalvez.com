@@ -104,6 +104,34 @@
         "emailCommand": "Email Command",
         "copied": "Copied to clipboard!",
         "location": "Alicante, ES",
+        "emails": {
+            "brand": "Pablo Gozálvez",
+            "role": "Full-stack software developer · Alicante",
+            "website": "pablogozalvez.com",
+            "owner": {
+                "subject": "New message from {{name}}",
+                "preheader": "{{name}} has contacted you through your portfolio.",
+                "eyebrow": "New contact",
+                "title": "You have a new message",
+                "intro": "Someone has used your portfolio contact form.",
+                "nameLabel": "Name",
+                "emailLabel": "Email",
+                "messageLabel": "Message",
+                "replyAction": "Reply to {{name}}"
+            },
+            "confirmation": {
+                "subject": "I've received your message",
+                "preheader": "Thank you for getting in touch. I'll get back to you as soon as possible.",
+                "eyebrow": "Message received",
+                "title": "Thanks for reaching out, {{name}}",
+                "intro": "I've received your message through my portfolio.",
+                "nextTitle": "What happens next?",
+                "nextBody": "I'll review your message and get back to you personally as soon as possible.",
+                "noReplyTitle": "Automated message · NO REPLY",
+                "noReplyBody": "This email only confirms receipt. Please do not reply to this address.",
+                "signOff": "Best regards,"
+            }
+        },
         "form": {
             "name": "Name",
             "namePlaceholder": "John Doe",
@@ -113,7 +141,8 @@
             "messagePlaceholder": "Tell me what's on your mind...",
             "send": "Send Message",
             "sending": "Sending...",
-            "sent": "Message Sent!",
+            "sent": "Message received!",
+            "confirmationSent": "I've sent you a confirmation email.",
             "errors": {
                 "invalid": "Please review the details and try again.",
                 "unavailable": "Your message could not be sent. Please try again or use the direct email."
