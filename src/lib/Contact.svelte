@@ -229,7 +229,7 @@
             </div>
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div>
-                    <h2 class="text-4xl md:text-5xl font-black text-white mb-4 tracking-tight">
+                    <h2 class="section-title text-4xl md:text-5xl text-white mb-4 tracking-tight">
                         {$t("contact.title")}
                     </h2>
                     <p class="text-lg text-gray-400 max-w-xl font-light leading-relaxed">
@@ -537,7 +537,7 @@
         align-items: center;
         gap: 0.375rem;
         font-size: 0.7rem;
-        font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+        font-family: var(--font-mono);
         color: rgb(107 114 128);
         text-transform: uppercase;
         letter-spacing: 0.05em;

@@ -160,7 +160,7 @@
                     <span class="text-[11px] font-mono font-semibold text-gray-500 uppercase tracking-widest">02 —</span>
                     <div class="h-px w-12 bg-gradient-to-r from-white/20 to-transparent"></div>
                 </div>
-                <h2 class="text-4xl md:text-5xl font-black text-white mb-4 tracking-tight">
+                <h2 class="section-title text-4xl md:text-5xl text-white mb-4 tracking-tight">
                     {$t("projects.title")}
                 </h2>
                 <p class="text-xl text-gray-400 max-w-xl font-light leading-relaxed">

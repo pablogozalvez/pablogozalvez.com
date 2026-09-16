@@ -84,7 +84,7 @@
                 <span class="text-[11px] font-mono font-semibold text-gray-500 uppercase tracking-widest">01 —</span>
                 <div class="h-px w-12 bg-gradient-to-r from-white/20 to-transparent"></div>
             </div>
-            <h2 class="text-4xl md:text-5xl font-black text-white tracking-tight">
+            <h2 class="section-title text-4xl md:text-5xl text-white tracking-tight">
                 {$t("about.title")}
             </h2>
         </div>
