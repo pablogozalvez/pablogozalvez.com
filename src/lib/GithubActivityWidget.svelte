@@ -2,7 +2,7 @@
     import { onMount } from "svelte";
     import { getI18n } from "./i18n";
 
-    const { t } = getI18n();
+    const { locale, t } = getI18n();
 
     // Datos de contribción recientes (fallback en caso de error al obtener los datos de GitHub)
     const fallbackDays = [
@@ -65,7 +65,7 @@
         try {
             const [y, m, d] = dateStr.split("-").map(Number);
             const date = new Date(y, m - 1, d);
-            return date.toLocaleDateString("es-ES", { day: "numeric", month: "short", year: "numeric" });
+            return date.toLocaleDateString($locale === "es" ? "es-ES" : "en-US", { day: "numeric", month: "short", year: "numeric" });
         } catch {
             return dateStr;
         }
@@ -90,7 +90,7 @@
 <div
     class="w-full max-w-lg my-6 p-4 rounded-2xl bg-gradient-to-br from-white/[0.04] via-white/[0.015] to-transparent border border-white/10 shadow-2xl shadow-black/40 backdrop-blur-md transition-all duration-300 hover:border-white/20 group/gh"
     role="region"
-    aria-label="GitHub Activity"
+    aria-label={$t("githubActivity.ariaLabel")}
 >
     <!-- Top Header Bar -->
     <div class="flex items-center justify-between mb-3">
@@ -118,7 +118,7 @@
         <div class="flex items-center gap-3">
             <div class="text-right">
                 <span class="text-xs font-mono font-bold text-emerald-400">{totalYearContributions}</span>
-                <span class="text-[10px] text-gray-400 font-mono ml-1">commits / año</span>
+                <span class="text-[10px] text-gray-400 font-mono ml-1">{$t("githubActivity.commitsPerYear")}</span>
             </div>
 
             <!-- Animated audio/frequency micro bars -->
@@ -136,7 +136,7 @@
     <div
         class="grid grid-rows-7 grid-flow-col gap-[2px] sm:gap-[2.5px] w-full justify-between py-1 select-none"
         role="grid"
-        aria-label="Matriz de contribuciones de GitHub"
+        aria-label={$t("githubActivity.gridAriaLabel")}
     >
         {#each days as day}
             <div
@@ -145,7 +145,7 @@
                 on:mouseleave={() => (hoveredDay = null)}
                 on:focus={() => (hoveredDay = day)}
                 on:blur={() => (hoveredDay = null)}
-                title={`${day.c} contribuciones el ${day.d}`}
+                title={$t("githubActivity.contributionTitle").replace("{{count}}", day.c).replace("{{date}}", day.d)}
                 role="gridcell"
                 tabindex="0"
             ></div>
@@ -159,23 +159,23 @@
             {#if hoveredDay}
                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_#10b981] shrink-0"></span>
                 <span class="text-white font-semibold truncate">
-                    {hoveredDay.c} {hoveredDay.c === 1 ? 'commit' : 'commits'}
+                    {hoveredDay.c} {hoveredDay.c === 1 ? $t("githubActivity.commit") : $t("githubActivity.commits")}
                 </span>
-                <span class="text-gray-400 truncate">el {formatDate(hoveredDay.d)}</span>
+                <span class="text-gray-400 truncate">{$t("githubActivity.on")} {formatDate(hoveredDay.d)}</span>
             {:else}
-                <span class="text-gray-400 truncate">Actividad en GitHub (últimos 6 meses)</span>
+                <span class="text-gray-400 truncate">{$t("githubActivity.summary")}</span>
             {/if}
         </div>
 
         <!-- Heatmap Legend -->
         <div class="flex items-center gap-1 shrink-0 ml-2">
-            <span class="text-[9px] text-gray-400 mr-0.5">Menos</span>
+            <span class="text-[9px] text-gray-400 mr-0.5">{$t("githubActivity.less")}</span>
             <span class="w-2 h-2 rounded-[1.5px] bg-white/[0.04] border border-white/5"></span>
             <span class="w-2 h-2 rounded-[1.5px] bg-emerald-950/70 border border-emerald-500/40"></span>
             <span class="w-2 h-2 rounded-[1.5px] bg-emerald-700/80 border border-emerald-400/50"></span>
             <span class="w-2 h-2 rounded-[1.5px] bg-emerald-500 border border-emerald-300"></span>
             <span class="w-2 h-2 rounded-[1.5px] bg-emerald-400 border border-white/60"></span>
-            <span class="text-[9px] text-gray-400 ml-0.5">Más</span>
+            <span class="text-[9px] text-gray-400 ml-0.5">{$t("githubActivity.more")}</span>
         </div>
     </div>
 </div>

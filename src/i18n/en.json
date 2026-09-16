@@ -99,6 +99,18 @@
             }
         }
     },
+    "githubActivity": {
+        "ariaLabel": "GitHub Activity",
+        "commitsPerYear": "commits / year",
+        "gridAriaLabel": "GitHub contribution matrix",
+        "contributionTitle": "{{count}} contributions on {{date}}",
+        "commit": "commit",
+        "commits": "commits",
+        "on": "on",
+        "summary": "GitHub activity (last 6 months)",
+        "less": "Less",
+        "more": "More"
+    },
     "contact": {
         "openForOpportunities": "Available",
         "title": "Contact",
