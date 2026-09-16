@@ -192,7 +192,7 @@
             {#if visible}
                 <div in:fly={{ y: 30, duration: 800, easing: cubicOut }} class="hero-fade">
                     <h1
-                        class="hero-title text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-extrabold tracking-tighter mb-6 lg:mb-10 leading-[0.95] text-white drop-shadow-lg"
+                        class="hero-title text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-extrabold tracking-tighter mb-6 lg:mb-10 leading-[0.95] text-white"
                     >
                         {@html $t("hero.title")}
                     </h1>
@@ -624,7 +624,16 @@
         -webkit-background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: transparent;
+        -webkit-text-stroke: 1.2px rgba(255, 255, 255, 0.95);
+        paint-order: stroke fill;
+        filter: drop-shadow(0 8px 24px rgba(255, 255, 255, 0.12));
         letter-spacing: -0.04em;
+    }
+
+    @media (min-width: 1024px) {
+        .hero-title {
+            -webkit-text-stroke-width: 1.8px;
+        }
     }
 
     .hero-cta {
