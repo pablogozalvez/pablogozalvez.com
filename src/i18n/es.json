@@ -42,6 +42,12 @@
             "switchTab": "Explorar proyectos",
             "techStack": "Tecnologías clave",
             "capabilitiesTitle": "Qué puedo aportar",
+            "projectDescriptions": {
+                "outreal": "Una app móvil para descubrir planes espontáneos cercanos mediante mapas, confianza y gamificación.",
+                "hospitalXyz": "Un recorrido hospitalario 3D interactivo que ayuda a preparar las visitas a radiodiagnóstico.",
+                "trickyMansion": "Un plataformas 2D procedural creado con Unity y publicado en Google Play e Itch.io.",
+                "pseudoBlocks": "Un entorno de programación visual en C# con lexer y parser propios."
+            },
             "capabilities": {
                 "frontend": "Frontend y apps móviles",
                 "backend": "Backend y microservicios",

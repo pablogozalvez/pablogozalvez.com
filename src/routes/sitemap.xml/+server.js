@@ -2,7 +2,7 @@ import { AVAILABLE_LOCALES, localizePath } from "$lib/locales";
 import { SITE_URL } from "$lib/site";
 
 export async function GET() {
-    const lastmod = "2026-09-14";
+    const lastmod = "2026-09-17";
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${AVAILABLE_LOCALES.map(

@@ -111,7 +111,7 @@
         {
             title: "OutReal",
             category: "Mobile App · Social Platform",
-            description: $t("projects.items.outreal.description"),
+            description: $t("hero.preview.projectDescriptions.outreal"),
             image: "/img/outreal.webp",
             tags: ["Ionic", "Angular", "PostGIS", "Full Stack"],
             highlight: "Social Map & Gamification"
@@ -119,7 +119,7 @@
         {
             title: "Hospital Dr. Balmis 3D",
             category: "WebGL · Virtual Tour 3D",
-            description: $t("projects.items.hospitalXyz.description"),
+            description: $t("hero.preview.projectDescriptions.hospitalXyz"),
             image: "/img/hospitalxyz.webp",
             tags: ["Three.js", "WebGL", "Healthcare", "3D"],
             highlight: "Hospital Univ. Dr. Balmis"
@@ -127,7 +127,7 @@
         {
             title: "Tricky Mansion",
             category: "Game Dev · Procedural 2D",
-            description: $t("projects.items.trickyMansion.description"),
+            description: $t("hero.preview.projectDescriptions.trickyMansion"),
             image: "/img/tricky-mansion.webp",
             tags: ["Unity", "C#", "Google Play", "Game Dev"],
             highlight: "Google Play & Itch.io"
@@ -135,7 +135,7 @@
         {
             title: "PseudoBlocks",
             category: "Desktop Tool · Custom Lexer",
-            description: $t("projects.items.pseudoBlocks.description"),
+            description: $t("hero.preview.projectDescriptions.pseudoBlocks"),
             image: "/img/pseudoblocks.webp",
             tags: ["C#", "WinForms", "Compilers", "Open Source"],
             highlight: "Custom Lexer & Parser"

@@ -42,6 +42,12 @@
             "switchTab": "Explore projects",
             "techStack": "Key Technologies",
             "capabilitiesTitle": "What I bring",
+            "projectDescriptions": {
+                "outreal": "A social mobile app for discovering spontaneous activities nearby through maps, trust and gamification.",
+                "hospitalXyz": "An interactive 3D hospital tour that helps patients prepare for radiodiagnosis visits.",
+                "trickyMansion": "A procedurally generated 2D Unity platformer released on Google Play and Itch.io.",
+                "pseudoBlocks": "A C# visual programming environment with a custom lexer and parser."
+            },
             "capabilities": {
                 "frontend": "Frontend and mobile apps",
                 "backend": "Backend and microservices",
