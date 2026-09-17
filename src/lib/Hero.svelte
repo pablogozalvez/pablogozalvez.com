@@ -330,7 +330,7 @@
                                                     PG
                                             </div>
                                             <div class="min-w-0">
-                                                <h2 class="text-white font-semibold text-sm sm:text-base leading-tight truncate">Pablo Gozálvez</h2>
+                                                <p class="text-white font-semibold text-sm sm:text-base leading-tight truncate">Pablo Gozálvez</p>
                                                 <p class="text-[11px] text-indigo-300/90 font-medium truncate mt-0.5">{$t("hero.preview.role")}</p>
                                             </div>
                                         </div>
@@ -476,9 +476,9 @@
 
                                 <div class="p-3.5 sm:p-4">
                                     <div class="flex items-center justify-between mb-1.5">
-                                        <h3 class="text-base sm:text-lg font-bold text-white tracking-tight">
+                                        <p class="text-base sm:text-lg font-bold text-white tracking-tight">
                                             {featuredProjects[currentProjectIndex].title}
-                                        </h3>
+                                        </p>
                                         <button
                                             on:click={() => scrollTo("projects")}
                                             class="text-xs text-indigo-400 hover:text-indigo-300 font-medium inline-flex items-center gap-1 cursor-pointer"

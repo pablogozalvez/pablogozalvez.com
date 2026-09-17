@@ -34,9 +34,9 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
             <div class="lg:col-span-2 space-y-4 footer-item" style="--footer-delay: 0ms" use:reveal>
                 <a href="#home" class="inline-block" on:click|preventDefault={scrollToTop}>
-                    <h2 class="text-2xl font-black text-white tracking-tighter">
+                    <p class="text-2xl font-black text-white tracking-tighter">
                         PABLO<span class="text-gray-500">GOZÁLVEZ</span>
-                    </h2>
+                    </p>
                 </a>
                 <p class="text-gray-400 max-w-sm text-sm leading-relaxed">
                     {$t("footer.description")}
