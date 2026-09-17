@@ -192,17 +192,7 @@
                     class="project-reveal-shell {project.featured ? 'md:col-span-2' : ''}"
                     use:reveal
                 >
-                    <!-- svelte-ignore a11y-invalid-attribute -->
-                    <a
-                        href={project.link || project.article || "#"}
-                        target={project.link || project.article ? "_blank" : undefined}
-                        rel={project.link || project.article ? "noopener noreferrer" : undefined}
-                        on:click={(e) => {
-                            if (project.pdf) {
-                                e.preventDefault();
-                                openPdf(project.pdf, project.title);
-                            }
-                        }}
+                    <article
                         class="project-card group h-full cursor-pointer text-left relative flex flex-col {project.featured
                             ? 'md:flex-row'
                             : ''} overflow-hidden rounded-3xl bg-[#0F1115] border border-white/5 hover:border-white/10"
@@ -278,8 +268,10 @@
                             </div>
 
                             {#if project.article}
-                                <button
-                                    on:click|preventDefault|stopPropagation={() => window.open(project.article, "_blank")}
+                                <a
+                                    href={project.article}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                     class="absolute bottom-4 right-4 z-40 group/btn flex items-center justify-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 text-[10px] sm:text-xs font-semibold tracking-wide text-indigo-50 bg-[#0F1115]/80 hover:bg-black/90 border border-indigo-500/30 hover:border-indigo-400/50 rounded-lg backdrop-blur-md transition-all overflow-hidden w-auto max-w-[calc(100%-2rem)]"
                                 >
                                     <span class="relative z-10 whitespace-nowrap truncate"
@@ -301,7 +293,7 @@
                                     <div
                                         class="absolute inset-0 bg-gradient-to-r from-indigo-500/0 via-indigo-500/10 to-indigo-500/0 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700"
                                     ></div>
-                                </button>
+                                </a>
                             {/if}
                         </div>
 
@@ -322,7 +314,24 @@
                                         : 'text-xl md:text-2xl font-bold text-white mb-3'} group-hover:text-indigo-400"
                                     style="transition: color 0.3s;"
                                 >
-                                    {project.title}
+                                    {#if project.pdf}
+                                        <button
+                                            type="button"
+                                            on:click={() => openPdf(project.pdf, project.title)}
+                                            class="project-primary-action text-left"
+                                        >
+                                            {project.title}
+                                        </button>
+                                    {:else}
+                                        <a
+                                            href={project.link || project.article}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            class="project-primary-action"
+                                        >
+                                            {project.title}
+                                        </a>
+                                    {/if}
                                 </h3>
                                 <p
                                     class={project.featured
@@ -348,7 +357,7 @@
                                 </div>
                             </div>
                         </div>
-                    </a>
+                    </article>
                 </div>
             {/each}
         </div>
@@ -385,6 +394,13 @@
             box-shadow 0.4s ease,
             transform 0.4s ease;
         contain: layout style;
+    }
+
+    .project-primary-action::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 20;
     }
 
     .project-card:hover {
