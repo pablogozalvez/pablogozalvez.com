@@ -2,6 +2,23 @@
 
 ## Web Development
 
+### Loaders coordinados con estado asíncrono real
+
+**Explicación sencilla**
+Un loader debe representar trabajo real pendiente. Un temporizador fijo puede ocultarlo antes de que termine una redirección o mantenerlo visible cuando la página ya está preparada.
+
+**Cómo funciona**
+El servidor conserva el contenido renderizado para SEO. Al montar en el navegador, la inicialización del idioma marca su estado como pendiente y no lo resuelve hasta terminar la navegación de SvelteKit. El layout espera en paralelo tanto esa inicialización como la carga inicial del documento antes de retirar el loader.
+
+**Por qué importa**
+Evita que se vea brevemente el contenido en un idioma incorrecto y elimina recargas completas al corregir la ruta localizada.
+
+**En este proyecto**
+`src/lib/i18n.js` controla `isLocaleLoaded` y espera `goto()`. `src/routes/+layout.svelte` combina esa promesa con el evento `load` antes de retirar el loader.
+
+**Tradeoffs / pitfalls**
+La preferencia se guarda en `localStorage`, por lo que la primera decisión de idioma ocurre en el navegador. Si se necesitara redirigir antes de enviar HTML, habría que guardar el idioma en una cookie legible desde el servidor.
+
 ### Efectos visuales adaptados a la capacidad gráfica
 
 **Explicación sencilla**

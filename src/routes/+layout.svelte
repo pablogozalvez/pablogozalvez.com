@@ -31,24 +31,23 @@
 
     onMount(() => {
         reducedEffects = isLowPerformanceMode();
-        initializeBrowserLocale();
+        let isMounted = true;
+        let handlePageLoad;
+        const pageLoadPromise = document.readyState === "complete"
+            ? Promise.resolve()
+            : new Promise((resolve) => {
+                handlePageLoad = resolve;
+                window.addEventListener("load", handlePageLoad, { once: true });
+            });
 
-        // Esperar a que se cargue la ventana (imágenes, estilos, etc)
-        if (document.readyState === "complete") {
-            setTimeout(() => {
-                isPageLoaded = true;
-            }, 100);
-        } else {
-            window.addEventListener(
-                "load",
-                () => {
-                    setTimeout(() => {
-                        isPageLoaded = true;
-                    }, 100);
-                },
-                { once: true },
-            );
-        }
+        Promise.all([initializeBrowserLocale(), pageLoadPromise]).finally(() => {
+            if (isMounted) isPageLoaded = true;
+        });
+
+        return () => {
+            isMounted = false;
+            if (handlePageLoad) window.removeEventListener("load", handlePageLoad);
+        };
     });
 
     function scrollToTop() {

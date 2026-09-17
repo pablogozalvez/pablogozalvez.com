@@ -32,31 +32,49 @@ export function createI18n(initialLocale = "en") {
 
     async function initializeBrowserLocale() {
         if (typeof window === "undefined") return;
+        isLocaleLoaded.set(false);
 
-        const routeLocale = getLocaleFromPath(window.location.pathname);
-        if (routeLocale !== "en") {
-            localStorage.setItem("locale", routeLocale);
-            return;
-        }
+        try {
+            const routeLocale = getLocaleFromPath(window.location.pathname);
+            if (routeLocale !== "en") {
+                localStorage.setItem("locale", routeLocale);
+                return;
+            }
 
-        const storedLocale = localStorage.getItem("locale");
-        const browserLocale = navigator.language?.slice(0, 2);
-        const preferredLocale = AVAILABLE_LOCALES.includes(storedLocale)
-            ? storedLocale
-            : AVAILABLE_LOCALES.includes(browserLocale)
-                ? browserLocale
-                : "en";
+            const storedLocale = localStorage.getItem("locale");
+            const browserLocale = navigator.language?.slice(0, 2);
+            const preferredLocale = AVAILABLE_LOCALES.includes(storedLocale)
+                ? storedLocale
+                : AVAILABLE_LOCALES.includes(browserLocale)
+                    ? browserLocale
+                    : "en";
 
-        localStorage.setItem("locale", preferredLocale);
-        if (preferredLocale !== "en") {
-            await goto(localizePath(`${window.location.pathname}${window.location.search}${window.location.hash}`, preferredLocale));
+            localStorage.setItem("locale", preferredLocale);
+            if (preferredLocale !== "en") {
+                await goto(localizePath(`${window.location.pathname}${window.location.search}${window.location.hash}`, preferredLocale), {
+                    replaceState: true,
+                    noScroll: true,
+                    keepFocus: true,
+                });
+            }
+        } finally {
+            isLocaleLoaded.set(true);
         }
     }
 
     async function setLocale(nextLocale) {
         if (!AVAILABLE_LOCALES.includes(nextLocale) || typeof window === "undefined") return;
-        localStorage.setItem("locale", nextLocale);
-        await goto(localizePath(`${window.location.pathname}${window.location.search}${window.location.hash}`, nextLocale));
+        isLocaleLoaded.set(false);
+        try {
+            localStorage.setItem("locale", nextLocale);
+            await goto(localizePath(`${window.location.pathname}${window.location.search}${window.location.hash}`, nextLocale), {
+                replaceState: true,
+                noScroll: true,
+                keepFocus: true,
+            });
+        } finally {
+            isLocaleLoaded.set(true);
+        }
     }
 
     return { locale, t, isLocaleLoaded, initializeBrowserLocale, setLocale, syncLocaleFromPath };
