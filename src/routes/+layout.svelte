@@ -13,7 +13,6 @@
     export const hydrate = false;
     export const router = false;
 
-    let isPageLoaded = false;
     let scrollY = 0;
     let innerHeight = 0;
     let showPdfModal = false;
@@ -31,23 +30,7 @@
 
     onMount(() => {
         reducedEffects = isLowPerformanceMode();
-        let isMounted = true;
-        let handlePageLoad;
-        const pageLoadPromise = document.readyState === "complete"
-            ? Promise.resolve()
-            : new Promise((resolve) => {
-                handlePageLoad = resolve;
-                window.addEventListener("load", handlePageLoad, { once: true });
-            });
-
-        Promise.all([initializeBrowserLocale(), pageLoadPromise]).finally(() => {
-            if (isMounted) isPageLoaded = true;
-        });
-
-        return () => {
-            isMounted = false;
-            if (handlePageLoad) window.removeEventListener("load", handlePageLoad);
-        };
+        initializeBrowserLocale();
     });
 
     function scrollToTop() {
@@ -57,7 +40,7 @@
         });
     }
 
-    $: isLoading = !$isLocaleLoaded || !isPageLoaded;
+    $: isLoading = !$isLocaleLoaded;
 </script>
 
 <svelte:window bind:scrollY bind:innerHeight />

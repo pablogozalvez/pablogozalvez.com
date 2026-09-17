@@ -9,7 +9,7 @@
 {#if isLoading}
     <div
         class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#050505] text-white"
-        out:fade={{ duration: 600, easing: cubicOut }}
+        out:fade={{ duration: 200, easing: cubicOut }}
     >
         <!-- Logo Animation -->
         <div class="relative w-20 h-20 mb-8 loader-logo">
