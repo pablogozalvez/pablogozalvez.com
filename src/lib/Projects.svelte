@@ -253,7 +253,7 @@
                             <img
                                 src={project.image}
                                 alt={project.title}
-                                loading="eager"
+                                loading="lazy"
                                 decoding="async"
                                 width="600"
                                 height="400"

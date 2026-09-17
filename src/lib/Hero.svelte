@@ -465,7 +465,8 @@
                                         src={featuredProjects[currentProjectIndex].image}
                                         alt={featuredProjects[currentProjectIndex].title}
                                         class="w-full h-full object-cover object-center transform group-hover/proj:scale-105 transition-transform duration-500"
-                                        loading="eager"
+                                        loading="lazy"
+                                        decoding="async"
                                     />
                                     <div class="absolute inset-0 bg-gradient-to-t from-[#0d0f17] via-[#0d0f17]/40 to-transparent"></div>
                                     <div class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-md border border-white/10 text-[11px] font-mono text-cyan-300">
