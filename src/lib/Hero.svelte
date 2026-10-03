@@ -40,12 +40,13 @@
     }
 
     $: {
-        const progress = Math.min(1, Math.max(0, scrollY / (innerHeight || 1)));
+        const effectScroll = isMobile || reducedEffects ? 0 : scrollY;
+        const progress = Math.min(1, Math.max(0, effectScroll / (innerHeight || 1)));
         scrollProgress = progress;
         heroScale = Math.max(0.92, 1 - progress * 0.07);
-        heroTranslateY = scrollY * 0.26;
+        heroTranslateY = effectScroll * 0.26;
         heroBlur = Math.min(6, progress * 6);
-        bgParallax = scrollY * 0.12;
+        bgParallax = effectScroll * 0.12;
         dimOpacity = progress * 0.45;
     }
 
@@ -76,12 +77,17 @@
         reducedEffects = isLowPerformanceMode();
 
         const handleScroll = rafThrottle(() => {
-            if (visible) scrollY = window.scrollY;
+            if (visible && !isMobile && !reducedEffects) scrollY = window.scrollY;
         });
 
         const handleResize = () => {
             isMobile = window.innerWidth < 1024;
             innerHeight = window.innerHeight;
+            window.removeEventListener("scroll", handleScroll);
+            if (!isMobile && !reducedEffects) {
+                scrollY = window.scrollY;
+                window.addEventListener("scroll", handleScroll, { passive: true });
+            }
             if (isMobile || reducedEffects) {
                 stopAutoRotate();
             } else if (!autoRotateInterval) {
@@ -91,11 +97,6 @@
         handleResize();
         mounted = true;
         window.addEventListener("resize", handleResize, { passive: true });
-        if (!reducedEffects) {
-            scrollY = window.scrollY;
-            window.addEventListener("scroll", handleScroll, { passive: true });
-            startAutoRotate();
-        }
 
         return () => {
             mounted = false;
@@ -176,8 +177,8 @@
 
 <section
     id="home"
-    class="relative min-h-screen flex items-center overflow-hidden bg-[#0a0a0a]"
-    class:hero-static={reducedEffects}
+    class="relative min-h-svh flex items-center overflow-hidden bg-[#0a0a0a]"
+    class:hero-static={reducedEffects || isMobile}
     use:animationVisibility={(active) => { visible = active; if (active && !reducedEffects) scrollY = window.scrollY; }}
 >
     <div class="absolute inset-0 bg-[#0a0a0a] z-0"></div>
@@ -199,7 +200,7 @@
 
     <div
         class="w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10 h-full py-24 lg:py-0 flex flex-col lg:flex-row items-center justify-center lg:justify-between gap-12 lg:gap-8 origin-center transition-transform duration-75 ease-out"
-        class:will-change-transform={!reducedEffects}
+        class:will-change-transform={!reducedEffects && !isMobile}
         style="transform: translateY({heroTranslateY}px) scale({heroScale}); --hero-blur: {heroBlur}px;"
     >
         <!-- Left Column: Presentation -->
@@ -712,4 +713,15 @@
     .animate-bar-3 { animation: eqBar3 1.4s ease-in-out infinite; }
     .animate-bar-4 { animation: eqBar4 1.1s ease-in-out infinite; }
     .animate-bar-5 { animation: eqBar5 1.3s ease-in-out infinite; }
+
+    @media (max-width: 1023px) {
+        .hero-fade,
+        .hero-fade-interactive {
+            filter: none;
+        }
+        .hero-grid {
+            animation: none;
+            will-change: auto;
+        }
+    }
 </style>

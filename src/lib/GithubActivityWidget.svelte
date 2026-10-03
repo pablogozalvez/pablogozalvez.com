@@ -163,18 +163,19 @@
         aria-label={$t("githubActivity.gridAriaLabel")}
     >
         {#each days as day, index}
-            <div
-                class="w-[7.5px] h-[7.5px] sm:w-[8.5px] sm:h-[8.5px] rounded-[1.5px] transition-all duration-200 cursor-pointer {getLevelClass(day.l)} hover:scale-135 hover:z-10 focus:outline-none focus:scale-135"
+            <button
+                type="button"
+                class="p-0 w-[7.5px] h-[7.5px] sm:w-[8.5px] sm:h-[8.5px] rounded-[1.5px] transition-all duration-200 cursor-pointer {getLevelClass(day.l)} hover:scale-135 hover:z-10 focus:outline-none focus:scale-135"
                 on:mouseenter={() => (hoveredDay = day)}
                 on:mouseleave={() => (hoveredDay = null)}
                 on:focus={() => { hoveredDay = day; focusedIndex = index; }}
                 on:blur={() => (hoveredDay = null)}
                 on:keydown={(event) => moveFocus(event, index)}
+                on:click={() => { hoveredDay = day; focusedIndex = index; }}
                 title={$t("githubActivity.contributionTitle").replace("{{count}}", day.c).replace("{{date}}", day.d)}
                 aria-label={$t("githubActivity.contributionTitle").replace("{{count}}", day.c).replace("{{date}}", formatDate(day.d))}
-                role="img"
                 tabindex={focusedIndex === index ? 0 : -1}
-            ></div>
+            ></button>
         {/each}
     </div>
 

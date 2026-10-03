@@ -487,4 +487,19 @@
             transition: none;
         }
     }
+
+    @media (hover: none) {
+        .project-img,
+        .project-card:hover .project-img {
+            filter: none;
+            transform: none;
+            will-change: auto;
+        }
+        .project-card:hover {
+            transform: none;
+        }
+        .project-card:hover::after {
+            animation: none;
+        }
+    }
 </style>

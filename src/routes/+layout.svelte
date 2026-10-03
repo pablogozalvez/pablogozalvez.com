@@ -57,14 +57,13 @@
 
 <div class="layout-background">
     <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none" use:animationVisibility>
-        {#if reducedEffects}
-            <div class="absolute inset-0 static-background-glow"></div>
-        {:else}
+        <div class="absolute inset-0 static-background-glow" class:show-static-glow={reducedEffects}></div>
+        {#if !reducedEffects}
             <div
-                class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-600/20 blur-[120px] animate-pulse"
+                class="animated-background-glow absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-600/20 blur-[120px] animate-pulse"
             ></div>
             <div
-                class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-purple-600/20 blur-[120px] animate-pulse"
+                class="animated-background-glow absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-purple-600/20 blur-[120px] animate-pulse"
                 style="animation-delay: 2s;"
             ></div>
         {/if}
@@ -97,8 +96,22 @@
     }
 
     .static-background-glow {
+        display: none;
         background:
             radial-gradient(circle at 8% 8%, rgba(37, 99, 235, 0.1), transparent 34%),
             radial-gradient(circle at 92% 92%, rgba(147, 51, 234, 0.1), transparent 34%);
+    }
+
+    .show-static-glow {
+        display: block;
+    }
+
+    @media (hover: none), (prefers-reduced-motion: reduce) {
+        .static-background-glow {
+            display: block;
+        }
+        .animated-background-glow {
+            display: none;
+        }
     }
 </style>

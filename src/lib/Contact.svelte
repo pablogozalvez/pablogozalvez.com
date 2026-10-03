@@ -331,7 +331,7 @@
                                     {/if}
                                 </button>
                             </div>
-                            <p role="status" class="min-h-5 mt-2 text-xs text-gray-300">{copyError ? $t("contact.copyFailed") : copied ? $t("contact.copied") : ""}</p>
+                            <p role="status" class="min-h-12 mt-2 text-xs text-gray-300">{copyError ? $t("contact.copyFailed") : copied ? $t("contact.copied") : ""}</p>
                         </div>
 
                         <!-- Socials block -->
@@ -448,7 +448,7 @@
                         <!-- Divider + Submit -->
                         <div class="relative pt-4">
                             <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-                            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 min-h-[110px] sm:min-h-[85px]">
+                            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                                 <button
                                     type="submit"
                                     disabled={formState === "sending" || formState === "success"}
@@ -472,15 +472,17 @@
                                         >
                                     {/if}
                                 </button>
-                                {#if formState === "error"}
-                                    <p class="text-sm text-red-300" role="alert">
-                                        {$t(`contact.form.errors.${formError}`)}
-                                    </p>
-                                {:else if formState === "success"}
-                                    <p class="text-sm text-emerald-300" role="status">
-                                        {$t("contact.form.confirmationSent")}
-                                    </p>
-                                {/if}
+                                <div class="min-h-20 w-full sm:flex-1">
+                                    {#if formState === "error"}
+                                        <p class="text-sm text-red-300" role="alert">
+                                            {$t(`contact.form.errors.${formError}`)}
+                                        </p>
+                                    {:else if formState === "success"}
+                                        <p class="text-sm text-emerald-300" role="status">
+                                            {$t("contact.form.confirmationSent")}
+                                        </p>
+                                    {/if}
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -535,7 +537,7 @@
         border-radius: 0.75rem;
         padding: 0.8rem 1rem;
         color: white;
-        font-size: 0.9rem;
+        font-size: 1rem;
         transition: all 0.25s ease;
     }
     .contact-input::placeholder {

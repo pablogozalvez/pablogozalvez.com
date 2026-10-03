@@ -106,15 +106,15 @@
         use:modal
         aria-labelledby="mobile-menu-title"
         on:cancel|preventDefault={() => (isMenuOpen = false)}
-        class="m-0 max-w-none max-h-none w-full h-[100dvh] border-0 text-white bg-[#050505]/98 backdrop-blur-2xl flex flex-col items-center justify-center"
+        class="m-0 max-w-none max-h-none w-full h-[100dvh] border-0 text-white bg-[#050505]/98 flex flex-col items-center overflow-y-auto overscroll-contain px-4 pt-20 pb-6"
         in:fade={{ duration: 200, easing: cubicInOut }}
         out:fade={{ duration: 100, easing: cubicInOut }}
     >
         <h2 id="mobile-menu-title" data-modal-title tabindex="-1" class="sr-only">{$t("nav.menu")}</h2>
-        <button type="button" on:click={() => (isMenuOpen = false)} aria-label={$t("nav.closeMenu")} class="absolute top-6 right-6 z-20 w-12 h-12 rounded-full text-3xl hover:bg-white/10">×</button>
+        <button type="button" on:click={() => (isMenuOpen = false)} aria-label={$t("nav.closeMenu")} class="fixed top-6 right-6 z-20 w-12 h-12 rounded-full text-3xl bg-[#050505] hover:bg-white/10">×</button>
         <div class="absolute inset-0" in:scale={{ start: 1.1, duration: 800, easing: cubicOut }}></div>
 
-        <nav aria-label={$t("nav.menu")} class="flex flex-col items-center gap-8 relative z-10">
+        <nav aria-label={$t("nav.menu")} class="flex flex-col items-center gap-8 relative z-10 my-auto shrink-0">
             {#each sections as section, i}
                 <a
                     href={"#" + section.id}
@@ -126,7 +126,7 @@
                     {#if section.num}
                         <span class="text-sm font-mono font-medium tracking-wide {activeSection === section.id ? 'text-gray-400' : 'text-white/20'}">{section.num}</span>
                     {/if}
-                    <span class="text-5xl md:text-6xl font-black uppercase tracking-tighter {activeSection === section.id ? 'text-white' : 'text-white/40'}">{section.label}</span>
+                    <span class="text-4xl sm:text-5xl md:text-6xl font-black uppercase tracking-tighter {activeSection === section.id ? 'text-white' : 'text-white/60'}">{section.label}</span>
                 </a>
             {/each}
             <div class="mt-8 pt-8 border-t border-white/10 w-20 flex justify-center">
@@ -161,7 +161,7 @@
         bind:this={navElement}
         on:mousemove={handleMouseMove}
         role="none"
-        class="pointer-events-auto relative group/nav flex items-center justify-between border border-transparent overflow-hidden shadow-2xl"
+        class="nav-surface pointer-events-auto relative group/nav flex items-center justify-between border border-transparent overflow-hidden shadow-2xl"
         style={navStylesCache}
     >
         <div
@@ -282,3 +282,11 @@
         </div>
     </div>
 </nav>
+
+<style>
+    @media (hover: none) {
+        .nav-surface {
+            backdrop-filter: none !important;
+        }
+    }
+</style>
