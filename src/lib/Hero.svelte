@@ -137,7 +137,7 @@
             category: $t("hero.preview.categories.hospital"),
             description: $t("hero.preview.projectDescriptions.hospitalXyz"),
             image: "/img/hospitalxyz.webp",
-            tags: ["Three.js", "WebGL", "Healthcare", "3D"],
+            tags: ["Three.js", "WebGL", $t("projectTags.healthcare"), "3D"],
             highlight: "Hospital Univ. Dr. Balmis"
         },
         {
@@ -145,7 +145,7 @@
             category: $t("hero.preview.categories.trickyMansion"),
             description: $t("hero.preview.projectDescriptions.trickyMansion"),
             image: "/img/tricky-mansion.webp",
-            tags: ["Unity", "C#", "Google Play", "Game Dev"],
+            tags: ["Unity", "C#", "Google Play", $t("projectTags.gameDev")],
             highlight: "Google Play & Itch.io"
         },
         {
@@ -153,7 +153,7 @@
             category: $t("hero.preview.categories.pseudoBlocks"),
             description: $t("hero.preview.projectDescriptions.pseudoBlocks"),
             image: "/img/pseudoblocks.webp",
-            tags: ["C#", "WinForms", "Compilers", "Open Source"],
+            tags: ["C#", "WinForms", $t("projectTags.compilers"), $t("projectTags.openSource")],
             highlight: $t("hero.preview.highlights.pseudoBlocks")
         }
     ];

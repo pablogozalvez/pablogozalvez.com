@@ -39,7 +39,7 @@
             description: $t("projects.items.pseudoBlocks.description"),
             image: "/img/pseudoblocks.webp",
             link: "https://github.com/pablogozalvez/PseudoBlocks",
-            tags: ["C#", "WinForms", "Compilers", "UI Tooling"],
+            tags: ["C#", "WinForms", $t("projectTags.compilers"), $t("projectTags.uiTooling")],
             featured: false,
         },
         {
@@ -50,7 +50,7 @@
             linkType: "demo",
             article: "https://github.com/pablogozalvez/ScrollCarousel",
             articleType: $t("projects.sourceCode"),
-            tags: ["Open Source", "UI Tooling", "Unity"],
+            tags: [$t("projectTags.openSource"), $t("projectTags.uiTooling"), "Unity"],
             featured: false,
         },
         {
@@ -61,7 +61,7 @@
             linkType: "demo",
             article:
                 "https://portal.edu.gva.es/cipfpcanastell/2025/04/15/el-cipfp-canastell-se-engalana-de-innovacion/",
-            tags: ["Three.js", "WebGL", "Virtual Tours", "Healthcare"],
+            tags: ["Three.js", "WebGL", $t("projectTags.virtualTours"), $t("projectTags.healthcare")],
             featured: true,
         },
         {
@@ -72,7 +72,7 @@
             linkType: "demo",
             article: "https://play.google.com/store/apps/details?id=com.ChapayPinturaJorgeRal.TrickyMansion",
             articleType: "Google Play",
-            tags: ["Unity", "C#", "Game Dev", "Procedural Gen"],
+            tags: ["Unity", "C#", $t("projectTags.gameDev"), $t("projectTags.proceduralGeneration")],
             featured: true,
         },
         {
@@ -83,7 +83,7 @@
             linkType: "demo",
             article: "https://github.com/pablogozalvez/Super-Mario-Phaser",
             articleType: $t("projects.sourceCode"),
-            tags: ["Phaser", "JavaScript", "WebGame", "Procedural Gen"],
+            tags: ["Phaser", "JavaScript", $t("projectTags.webGame"), $t("projectTags.proceduralGeneration")],
             featured: false,
         },
         {
@@ -91,7 +91,7 @@
             description: $t("projects.items.jokerAssistant.description"),
             image: "/img/joker-assistant.webp",
             link: "https://github.com/pablogozalvez/Joker-Assistant",
-            tags: ["AI", "Speech Rec", "WinForms", "C#"],
+            tags: [$t("projectTags.ai"), $t("projectTags.speechRecognition"), "WinForms", "C#"],
             featured: false,
         },
         {
@@ -100,7 +100,7 @@
             image: "/img/clumsy-mimics.webp",
             link: "https://github.com/pablogozalvez/ClumsyMimics",
             linkType: "demo",
-            tags: ["Game Jam", "Rapid Dev", "Unity", "C#"],
+            tags: ["Game Jam", $t("projectTags.rapidDevelopment"), "Unity", "C#"],
             featured: true,
         },
     ];

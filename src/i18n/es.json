@@ -1,4 +1,17 @@
 {
+    "projectTags": {
+        "compilers": "Compiladores",
+        "uiTooling": "Herramientas de interfaz",
+        "openSource": "Código abierto",
+        "virtualTours": "Recorridos virtuales",
+        "healthcare": "Salud",
+        "gameDev": "Desarrollo de juegos",
+        "proceduralGeneration": "Generación procedural",
+        "webGame": "Juego web",
+        "ai": "IA",
+        "speechRecognition": "Reconocimiento de voz",
+        "rapidDevelopment": "Desarrollo rápido"
+    },
     "pdf": {
         "viewer": "Visor de PDF",
         "zoomOut": "Reducir zoom",
@@ -161,7 +174,7 @@
     },
     "contact": {
         "copyEmail": "Copiar dirección de correo",
-        "copyFailed": "No se ha podido copiar la dirección. Selecciónala manualmente o utiliza el enlace de correo.",
+        "copyFailed": "No se ha podido copiar. Selecciona la dirección o usa el enlace de correo.",
         "openForOpportunities": "Disponible",
         "title": "Contacto",
         "subtitle": "¿Tienes un proyecto, una propuesta de colaboración o una oportunidad profesional? Cuéntame los detalles y hablamos.",
@@ -211,7 +224,7 @@
             "sent": "¡Mensaje recibido!",
             "confirmationSent": "Te he enviado un correo de confirmación.",
             "errors": {
-                "timeout": "El servidor no ha confirmado el envío a tiempo. Puede que el mensaje se haya enviado; espera antes de intentarlo otra vez o escríbeme por correo.",
+                "timeout": "Envío sin confirmar. Puede haberse enviado: espera antes de reintentar o usa el correo.",
                 "invalid": "Revisa los datos introducidos e inténtalo de nuevo.",
                 "verification": "Completa la verificación de seguridad e inténtalo de nuevo.",
                 "verificationUnavailable": "No se ha podido cargar la verificación de seguridad. Recarga la página o utiliza el email directo.",

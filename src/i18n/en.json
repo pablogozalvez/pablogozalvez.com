@@ -1,4 +1,17 @@
 {
+    "projectTags": {
+        "compilers": "Compilers",
+        "uiTooling": "UI tooling",
+        "openSource": "Open source",
+        "virtualTours": "Virtual tours",
+        "healthcare": "Healthcare",
+        "gameDev": "Game development",
+        "proceduralGeneration": "Procedural generation",
+        "webGame": "Web game",
+        "ai": "AI",
+        "speechRecognition": "Speech recognition",
+        "rapidDevelopment": "Rapid development"
+    },
     "pdf": {
         "viewer": "PDF viewer",
         "zoomOut": "Zoom out",
@@ -161,7 +174,7 @@
     },
     "contact": {
         "copyEmail": "Copy email address",
-        "copyFailed": "Could not copy the address. Select it manually or use the email link.",
+        "copyFailed": "Copy failed. Select the address or use the email link.",
         "openForOpportunities": "Available",
         "title": "Contact",
         "subtitle": "Do you have a project, a collaboration proposal, or a professional opportunity? Tell me the details and let's talk.",
@@ -211,7 +224,7 @@
             "sent": "Message received!",
             "confirmationSent": "I've sent you a confirmation email.",
             "errors": {
-                "timeout": "The server did not confirm delivery in time. Your message may have been sent; wait before trying again, or contact me by email.",
+                "timeout": "Delivery was not confirmed. It may have been sent; wait before trying again, or use email.",
                 "invalid": "Please review the details and try again.",
                 "verification": "Complete the security check and try again.",
                 "verificationUnavailable": "The security check could not be loaded. Refresh the page or use the direct email.",
