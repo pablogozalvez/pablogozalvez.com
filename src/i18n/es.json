@@ -1,4 +1,15 @@
 {
+    "pdf": {
+        "viewer": "Visor de PDF",
+        "zoomOut": "Reducir zoom",
+        "zoomIn": "Ampliar zoom",
+        "resetZoom": "Restablecer zoom",
+        "download": "Descargar PDF",
+        "close": "Cerrar PDF",
+        "openDirectly": "Abrir el PDF en una pestaña nueva",
+        "loading": "Cargando PDF",
+        "unavailable": "La vista previa tarda demasiado. Puedes abrir o descargar el PDF con los enlaces de arriba."
+    },
     "common": {
         "loading": "Cargando página",
         "skipToContent": "Saltar al contenido",

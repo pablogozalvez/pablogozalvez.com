@@ -1,4 +1,15 @@
 {
+    "pdf": {
+        "viewer": "PDF viewer",
+        "zoomOut": "Zoom out",
+        "zoomIn": "Zoom in",
+        "resetZoom": "Reset zoom",
+        "download": "Download PDF",
+        "close": "Close PDF",
+        "openDirectly": "Open the PDF in a new tab",
+        "loading": "Loading PDF",
+        "unavailable": "The preview is taking too long. You can open or download the PDF using the links above."
+    },
     "common": {
         "loading": "Loading page",
         "skipToContent": "Skip to content",

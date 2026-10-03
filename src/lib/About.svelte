@@ -58,7 +58,7 @@
     });
 </script>
 
-<PdfViewer bind:showPdfModal pdfUrl="/media/pdf/cv.pdf" title="Curriculum Vitae" downloadName="cv.pdf" />
+<PdfViewer bind:showPdfModal pdfUrl="/media/pdf/cv.pdf" title={$t("about.resume.title")} downloadName="cv.pdf" />
 
 <section
     id="about"
@@ -148,13 +148,10 @@
                     </div>
                 {/each}
 
-                <div
+                <a href="/media/pdf/cv.pdf"
                     class="md:col-span-2 mt-4 p-6 rounded-2xl bg-gradient-to-r from-indigo-900/20 to-blue-900/20 border border-white/10 flex items-center justify-between group cursor-pointer hover:border-white/20 resume-card"
                     use:reveal
-                    on:click={() => (showPdfModal = true)}
-                    on:keydown={(e) => e.key === "Enter" && (showPdfModal = true)}
-                    role="button"
-                    tabindex="0"
+                    on:click|preventDefault={() => (showPdfModal = true)}
                 >
                     <div class="flex flex-col">
                         <span class="text-white font-bold text-lg">{$t("about.resume.title")}</span>
@@ -172,7 +169,7 @@
                             ></path></svg
                         >
                     </div>
-                </div>
+                </a>
             </div>
         </div>
     </div>

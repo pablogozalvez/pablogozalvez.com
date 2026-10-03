@@ -204,12 +204,12 @@
                         ></div>
 
                         {#if project.pdf}
-                            <button
-                                type="button"
+                            <a
+                                href={project.pdf}
                                 aria-label={$t("projects.openPdf") + ": " + project.title}
-                                on:click={() => openPdf(project.pdf, project.title)}
+                                on:click|preventDefault={() => openPdf(project.pdf, project.title)}
                                 class="project-primary-action absolute inset-0 z-[36] rounded-3xl border-0 bg-transparent p-0 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-indigo-300"
-                            ></button>
+                            ></a>
                         {:else if project.link || project.article}
                             <a
                                 href={project.link || project.article}
