@@ -126,6 +126,7 @@
         }
     },
     "githubActivity": {
+        "saved": "Saved activity",
         "ariaLabel": "GitHub Activity",
         "commitsPerYear": "commits / year",
         "gridAriaLabel": "GitHub contribution matrix",
@@ -186,6 +187,7 @@
             "sent": "Message received!",
             "confirmationSent": "I've sent you a confirmation email.",
             "errors": {
+                "timeout": "The server did not confirm delivery in time. Your message may have been sent; wait before trying again, or contact me by email.",
                 "invalid": "Please review the details and try again.",
                 "verification": "Complete the security check and try again.",
                 "verificationUnavailable": "The security check could not be loaded. Refresh the page or use the direct email.",

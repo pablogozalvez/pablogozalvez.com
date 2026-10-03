@@ -3,11 +3,17 @@
     import { animationVisibility } from "./animation-visibility";
     import { onMount } from "svelte";
     import { getI18n } from "./i18n";
+    import { fetchJson } from "./fetch-json";
 
     export let turnstileSiteKey = "";
 
     let containerRef;
     let copied = false;
+    let copyError = false;
+    let copyTimer;
+    let successTimer;
+    let isMounted = false;
+    const lifetime = new AbortController();
     let currentTime = "";
 
     const { t, locale } = getI18n();
@@ -22,27 +28,34 @@
 
     const TURNSTILE_SCRIPT_ID = "cloudflare-turnstile-script";
 
-    function loadTurnstile() {
+    function loadTurnstile(signal) {
         if (window.turnstile) return Promise.resolve(window.turnstile);
 
         return new Promise((resolve, reject) => {
             const existingScript = document.getElementById(TURNSTILE_SCRIPT_ID);
-            const handleLoad = () =>
+            const script = existingScript || document.createElement("script");
+            const cleanup = () => {
+                clearTimeout(timer);
+                script.removeEventListener("load", handleLoad);
+                script.removeEventListener("error", handleError);
+                signal.removeEventListener("abort", handleAbort);
+            };
+            const handleLoad = () => {
+                cleanup();
                 window.turnstile ? resolve(window.turnstile) : reject(new Error("Turnstile no está disponible."));
-
-            if (existingScript) {
-                existingScript.addEventListener("load", handleLoad, { once: true });
-                existingScript.addEventListener("error", reject, { once: true });
-                return;
-            }
-
-            const script = document.createElement("script");
+            };
+            const handleError = () => { cleanup(); reject(new Error("Turnstile no está disponible.")); };
+            const handleAbort = () => { cleanup(); reject(signal.reason); };
+            const timer = setTimeout(handleError, 15000);
+            script.addEventListener("load", handleLoad);
+            script.addEventListener("error", handleError);
+            signal.addEventListener("abort", handleAbort, { once: true });
+            if (signal.aborted) { handleAbort(); return; }
+            if (existingScript) return;
             script.id = TURNSTILE_SCRIPT_ID;
             script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
             script.async = true;
             script.defer = true;
-            script.addEventListener("load", handleLoad, { once: true });
-            script.addEventListener("error", reject, { once: true });
             document.head.appendChild(script);
         });
     }
@@ -77,10 +90,17 @@
         },
     ];
 
-    function copyToClipboard() {
-        navigator.clipboard.writeText(email);
-        copied = true;
-        setTimeout(() => (copied = false), 2000);
+    async function copyToClipboard() {
+        clearTimeout(copyTimer);
+        copyError = false;
+        try {
+            await navigator.clipboard.writeText(email);
+            if (!isMounted) return;
+            copied = true;
+            copyTimer = setTimeout(() => (copied = false), 2000);
+        } catch {
+            if (isMounted) copyError = true;
+        }
     }
 
     const handleSubmit = async () => {
@@ -96,7 +116,9 @@
         formError = "";
 
         try {
-            const response = await fetch("/api/contact", {
+            const { ok, data: result } = await fetchJson("/api/contact", {
+                timeoutMs: 20000,
+                signal: lifetime.signal,
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -106,10 +128,10 @@
                     turnstileToken,
                 }),
             });
-            const result = await response.json();
+            if (!isMounted) return;
 
-            if (!response.ok || !result.success) {
-                formError = ["invalid", "verification"].includes(result.error) ? result.error : "unavailable";
+            if (!ok || result?.success !== true) {
+                formError = ["invalid", "verification"].includes(result?.error) ? result.error : "unavailable";
                 formState = "error";
                 resetTurnstile();
                 return;
@@ -119,9 +141,10 @@
             formData = { name: "", email: "", message: "" };
             honeypot = "";
             resetTurnstile();
-            setTimeout(() => (formState = "idle"), 3000);
-        } catch {
-            formError = "unavailable";
+            successTimer = setTimeout(() => (formState = "idle"), 3000);
+        } catch (error) {
+            if (!isMounted || lifetime.signal.aborted) return;
+            formError = error.name === "TimeoutError" ? "timeout" : "unavailable";
             formState = "error";
             resetTurnstile();
         }
@@ -137,10 +160,13 @@
     });
 
     onMount(() => {
-        let isMounted = true;
+        isMounted = true;
 
         if (turnstileSiteKey) {
-            loadTurnstile()
+            const observer = new IntersectionObserver(([entry]) => {
+                if (!entry.isIntersecting) return;
+                observer.disconnect();
+                loadTurnstile(lifetime.signal)
                 .then((turnstile) => {
                     if (!isMounted || !turnstileElement) return;
 
@@ -151,6 +177,7 @@
                         theme: "dark",
                         size: "flexible",
                         callback: (token) => {
+                            if (!isMounted) return;
                             turnstileToken = token;
                             if (formError === "verification") {
                                 formError = "";
@@ -158,9 +185,11 @@
                             }
                         },
                         "expired-callback": () => {
+                            if (!isMounted) return;
                             turnstileToken = "";
                         },
                         "error-callback": () => {
+                            if (!isMounted) return;
                             turnstileToken = "";
                             formError = "verificationUnavailable";
                             formState = "error";
@@ -172,6 +201,9 @@
                     formError = "verificationUnavailable";
                     formState = "error";
                 });
+            }, { rootMargin: "400px" });
+            observer.observe(turnstileElement);
+            lifetime.signal.addEventListener("abort", () => observer.disconnect(), { once: true });
         } else {
             formError = "verificationUnavailable";
             formState = "error";
@@ -189,6 +221,9 @@
         const interval = setInterval(updateTime, 60000);
         return () => {
             isMounted = false;
+            lifetime.abort();
+            clearTimeout(copyTimer);
+            clearTimeout(successTimer);
             clearInterval(interval);
             if (window.turnstile && turnstileWidgetId !== undefined) {
                 window.turnstile.remove(turnstileWidgetId);

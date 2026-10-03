@@ -1,6 +1,9 @@
 <script>
     import { onMount } from "svelte";
     import { getI18n } from "./i18n";
+    import { fetchJson } from "./fetch-json";
+    import { parseGithubActivity } from "./github-activity";
+    import { animationVisibility } from "./animation-visibility";
 
     const { locale, t } = getI18n();
 
@@ -39,25 +42,32 @@
     let hoveredDay = null;
     let isLive = false;
 
-    onMount(async () => {
-        try {
-            const res = await fetch("https://github-contributions-api.jogruber.de/v4/pablogozalvez?y=last");
-            if (res.ok) {
-                const data = await res.json();
-                if (data.total && data.total.lastYear) {
-                    totalYearContributions = data.total.lastYear;
-                }
-                if (Array.isArray(data.contributions) && data.contributions.length > 0) {
-                    const sliced = data.contributions.slice(-182);
-                    days = sliced.map(item => ({
-                        d: item.date,
-                        c: item.count,
-                        l: item.level
-                    }));
-                    isLive = true;
-                }
+    onMount(() => {
+        const controller = new AbortController();
+        // La gráfica está oculta en móvil: tampoco necesita una petición allí.
+        const desktop = window.matchMedia("(min-width: 1024px)");
+        let requested = false;
+        const load = async () => {
+            if (!desktop.matches || requested) return;
+            requested = true;
+            try {
+                const { ok, data } = await fetchJson("https://github-contributions-api.jogruber.de/v4/pablogozalvez?y=last", { signal: controller.signal });
+                if (!ok || controller.signal.aborted) return;
+                const activity = parseGithubActivity(data);
+                totalYearContributions = activity.total;
+                days = activity.days;
+                hoveredDay = null;
+                isLive = true;
+            } catch {
+                // Se conserva la instantánea existente, identificada como guardada.
             }
-        } catch { }
+        };
+        load();
+        desktop.addEventListener("change", load);
+        return () => {
+            controller.abort();
+            desktop.removeEventListener("change", load);
+        };
     });
 
     function formatDate(dateStr) {
@@ -88,6 +98,7 @@
 </script>
 
 <div
+    use:animationVisibility
     class="w-full max-w-lg my-6 p-4 rounded-2xl bg-gradient-to-br from-white/[0.04] via-white/[0.015] to-transparent border border-white/10 shadow-2xl shadow-black/40 backdrop-blur-md transition-all duration-300 hover:border-white/20 group/gh"
     role="region"
     aria-label={$t("githubActivity.ariaLabel")}
@@ -163,7 +174,7 @@
                 </span>
                 <span class="text-gray-400 truncate">{$t("githubActivity.on")} {formatDate(hoveredDay.d)}</span>
             {:else}
-                <span class="text-gray-400 truncate">{$t("githubActivity.summary")}</span>
+                <span class="text-gray-400 truncate" title={isLive ? $t("githubActivity.summary") : $t("githubActivity.saved") + " " + formatDate(fallbackDays.at(-1).d)}>{isLive ? $t("githubActivity.summary") : $t("githubActivity.saved")}</span>
             {/if}
         </div>
 

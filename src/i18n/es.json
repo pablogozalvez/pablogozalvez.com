@@ -126,6 +126,7 @@
         }
     },
     "githubActivity": {
+        "saved": "Actividad guardada",
         "ariaLabel": "Actividad en GitHub",
         "commitsPerYear": "commits / año",
         "gridAriaLabel": "Matriz de contribuciones de GitHub",
@@ -186,6 +187,7 @@
             "sent": "¡Mensaje recibido!",
             "confirmationSent": "Te he enviado un correo de confirmación.",
             "errors": {
+                "timeout": "El servidor no ha confirmado el envío a tiempo. Puede que el mensaje se haya enviado; espera antes de intentarlo otra vez o escríbeme por correo.",
                 "invalid": "Revisa los datos introducidos e inténtalo de nuevo.",
                 "verification": "Completa la verificación de seguridad e inténtalo de nuevo.",
                 "verificationUnavailable": "No se ha podido cargar la verificación de seguridad. Recarga la página o utiliza el email directo.",
