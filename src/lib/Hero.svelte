@@ -1,5 +1,6 @@
 <script>
-    import { isLowPerformanceMode, rafThrottle, viewport } from "./actions";
+    import { isLowPerformanceMode, rafThrottle } from "./actions";
+    import { animationVisibility } from "./animation-visibility";
     import { onMount } from "svelte";
     import { getI18n } from "./i18n";
     import { fly } from "svelte/transition";
@@ -27,6 +28,13 @@
     let currentProjectIndex = 0;
     let autoRotateInterval;
     let isPaused = false;
+    let hasFocus = false;
+    let mounted = false;
+
+    $: if (mounted) {
+        if (visible && !isPaused && !hasFocus && !isMobile && !reducedEffects) startAutoRotate();
+        else clearInterval(autoRotateInterval);
+    }
 
     function scrollTo(id) {
         document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
@@ -43,7 +51,7 @@
     }
 
     function startAutoRotate() {
-        if (typeof window === "undefined" || isMobile || reducedEffects) return;
+        if (typeof window === "undefined" || !mounted || !visible || isPaused || hasFocus || isMobile || reducedEffects) return;
         clearInterval(autoRotateInterval);
         autoRotateInterval = setInterval(() => {
             if (!isPaused && !isMobile) {
@@ -61,7 +69,7 @@
         reducedEffects = isLowPerformanceMode();
 
         const handleScroll = rafThrottle(() => {
-            scrollY = window.scrollY;
+            if (visible) scrollY = window.scrollY;
         });
 
         const handleResize = () => {
@@ -75,6 +83,7 @@
             }
         };
         handleResize();
+        mounted = true;
         window.addEventListener("resize", handleResize, { passive: true });
         if (!reducedEffects) {
             scrollY = window.scrollY;
@@ -83,6 +92,7 @@
         }
 
         return () => {
+            mounted = false;
             window.removeEventListener("resize", handleResize);
             window.removeEventListener("scroll", handleScroll);
             clearInterval(autoRotateInterval);
@@ -162,8 +172,7 @@
     id="home"
     class="relative min-h-screen flex items-center overflow-hidden bg-[#0a0a0a]"
     class:hero-static={reducedEffects}
-    use:viewport
-    on:enterViewport={() => (visible = true)}
+    use:animationVisibility={(active) => (visible = active)}
 >
     <div class="absolute inset-0 bg-[#0a0a0a] z-0"></div>
     <div
@@ -189,7 +198,6 @@
     >
         <!-- Left Column: Presentation -->
         <div class="flex flex-col items-center lg:items-start text-center lg:text-left w-full lg:w-1/2 max-w-2xl mx-auto lg:mx-0">
-            {#if visible}
                 <div in:fly={{ y: 30, duration: 800, easing: cubicOut }} class="hero-fade">
                     <h1
                         class="hero-title text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-extrabold tracking-tighter mb-6 lg:mb-10 leading-[0.95] text-white"
@@ -248,11 +256,10 @@
                         {$t("hero.contactMe")}
                     </button>
                 </div>
-            {/if}
         </div>
 
         <!-- Right Column: Interactive About & Projects Showcase Preview (Desktop only) -->
-        {#if visible && !isMobile}
+        {#if !isMobile}
             <div
                 in:fly={{ y: 35, duration: 900, delay: 200, easing: cubicOut }}
                 class="hidden lg:block lg:w-[48%] xl:w-[46%] max-w-xl relative z-10"
@@ -263,6 +270,8 @@
                     aria-label="Preview showcase"
                     on:mouseenter={() => (isPaused = true)}
                     on:mouseleave={() => (isPaused = false)}
+                    on:focusin={() => (hasFocus = true)}
+                    on:focusout={(event) => (hasFocus = event.currentTarget.contains(event.relatedTarget))}
                 >
                     <!-- Header with macOS Dots & Centered Tabs -->
                     <div

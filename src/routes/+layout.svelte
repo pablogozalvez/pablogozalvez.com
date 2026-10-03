@@ -8,6 +8,7 @@
     import { page, navigating } from "$app/stores";
     import { fly } from "svelte/transition";
     import { isLowPerformanceMode } from "../lib/actions";
+    import { animationVisibility } from "../lib/animation-visibility";
     import "../app.css";
 
     export const hydrate = false;
@@ -55,7 +56,7 @@
 <Navbar hideNav={showPdfModal} />
 
 <div class="layout-background">
-    <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+    <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none" use:animationVisibility>
         {#if reducedEffects}
             <div class="absolute inset-0 static-background-glow"></div>
         {:else}

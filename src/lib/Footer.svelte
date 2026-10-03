@@ -1,5 +1,6 @@
 <script>
     import { reveal } from "./actions";
+    import { animationVisibility } from "./animation-visibility";
     import { getI18n } from "./i18n";
     const { t } = getI18n();
     const currentYear = new Date().getFullYear();
@@ -19,7 +20,7 @@
     ];
 </script>
 
-<footer class="relative bg-[#040406] pt-20 pb-10 overflow-hidden">
+<footer use:animationVisibility class="relative bg-[#040406] pt-20 pb-10 overflow-hidden">
     <!-- Section top accent divider -->
     <div
         class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"

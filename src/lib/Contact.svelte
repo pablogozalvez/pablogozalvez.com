@@ -1,5 +1,6 @@
 <script>
     import { reveal, rafThrottle } from "./actions";
+    import { animationVisibility } from "./animation-visibility";
     import { onMount } from "svelte";
     import { getI18n } from "./i18n";
 
@@ -198,6 +199,7 @@
 
 <section
     id="contact"
+    use:animationVisibility
     class="py-32 relative flex items-center justify-center overflow-hidden bg-[#060608] -mt-px"
 >
     <!-- Section top accent divider -->
