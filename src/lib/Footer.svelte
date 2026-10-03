@@ -170,10 +170,10 @@
 
 <style>
     .footer-item {
-        opacity: 0;
+        opacity: 1;
     }
     .footer-item:global([data-revealed]) {
-        animation: footerReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        animation: footerReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
         animation-delay: var(--footer-delay, 0ms);
     }
 

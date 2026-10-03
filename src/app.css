@@ -46,6 +46,17 @@ html {
     transform: translateY(0);
 }
 
+[data-reveal-pending] {
+    opacity: 0 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    [data-reveal-pending] {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+}
+
 [id] {
     scroll-margin-top: 100px;
 }

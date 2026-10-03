@@ -190,28 +190,28 @@
     }
 
     .about-header {
-        opacity: 0;
+        opacity: 1;
     }
     .about-header:global([data-revealed]) {
-        animation: aboutFadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        animation: aboutFadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
 
     .about-left {
-        opacity: 0;
+        opacity: 1;
     }
     .about-left:global([data-revealed]) {
-        animation: aboutSlideRight 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        animation: aboutSlideRight 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
 
     .skill-card {
-        opacity: 0;
+        opacity: 1;
         transition:
             border-color 0.3s,
             box-shadow 0.4s ease,
             transform 0.4s ease;
     }
     .skill-card:global([data-revealed]) {
-        animation: skillReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        animation: skillReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
         animation-delay: var(--skill-delay, 0ms);
     }
     .skill-card:hover {
@@ -220,14 +220,14 @@
     }
 
     .resume-card {
-        opacity: 0;
+        opacity: 1;
         transition:
             border-color 0.3s,
             box-shadow 0.3s,
             transform 0.3s;
     }
     .resume-card:global([data-revealed]) {
-        animation: skillReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        animation: skillReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
     .resume-card:hover {
         transform: translateY(-2px);
@@ -238,12 +238,10 @@
         from {
             opacity: 0;
             transform: translateY(30px);
-            filter: blur(3px);
         }
         to {
             opacity: 1;
             transform: translateY(0);
-            filter: blur(0);
         }
     }
 
@@ -251,12 +249,10 @@
         from {
             opacity: 0;
             transform: translateX(-30px);
-            filter: blur(3px);
         }
         to {
             opacity: 1;
             transform: translateX(0);
-            filter: blur(0);
         }
     }
 
@@ -264,12 +260,10 @@
         from {
             opacity: 0;
             transform: translateY(30px) scale(0.97);
-            filter: blur(3px);
         }
         to {
             opacity: 1;
             transform: translateY(0) scale(1);
-            filter: blur(0);
         }
     }
 </style>

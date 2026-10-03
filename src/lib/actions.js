@@ -131,23 +131,32 @@ function getRevealObserver() {
 }
 
 export function reveal(element) {
-    if (typeof IntersectionObserver === "undefined") {
-        element.dataset.revealed = "";
-        return;
-    }
+    // El HTML es visible de partida. Solo se prepara el reveal fuera de pantalla.
+    const rect = element.getBoundingClientRect();
+    if (typeof IntersectionObserver === "undefined" ||
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+        (rect.top < window.innerHeight && rect.bottom > 0)) return;
 
     const observer = getRevealObserver();
-    _revealCallbacks.set(element, () => {
-        element.dataset.revealed = "";
+    element.dataset.revealPending = "";
+    const finish = (animate = true) => {
+        delete element.dataset.revealPending;
+        if (animate) element.dataset.revealed = "";
         observer.unobserve(element);
         _revealCallbacks.delete(element);
-    });
+        element.removeEventListener("focusin", handleFocus);
+    };
+    const handleFocus = () => finish(false);
+    element.addEventListener("focusin", handleFocus);
+    _revealCallbacks.set(element, finish);
     observer.observe(element);
 
     return {
         destroy() {
             observer.unobserve(element);
             _revealCallbacks.delete(element);
+            element.removeEventListener("focusin", handleFocus);
+            delete element.dataset.revealPending;
         },
     };
 }

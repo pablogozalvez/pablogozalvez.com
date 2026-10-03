@@ -383,16 +383,16 @@
     }
 
     .project-reveal-shell {
-        opacity: 0;
-        transform: translate3d(0, 32px, 0) scale(0.985);
+        opacity: 1;
+        transform: none;
         transition:
             opacity 0.45s ease-out,
             transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    .project-reveal-shell:global([data-revealed]) {
-        opacity: 1;
-        transform: translate3d(0, 0, 0) scale(1);
+    .project-reveal-shell:global([data-reveal-pending]) {
+        opacity: 0;
+        transform: translate3d(0, 32px, 0) scale(0.985);
     }
 
     .project-card {
@@ -457,16 +457,16 @@
     }
 
     .proj-header {
-        opacity: 0;
-        transform: translate3d(0, 24px, 0);
+        opacity: 1;
+        transform: none;
         transition:
             opacity 0.5s ease-out,
             transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    .proj-header:global([data-revealed]) {
-        opacity: 1;
-        transform: translate3d(0, 0, 0);
+    .proj-header:global([data-reveal-pending]) {
+        opacity: 0;
+        transform: translate3d(0, 24px, 0);
     }
 
     @keyframes shimmerSweep {

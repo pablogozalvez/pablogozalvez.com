@@ -540,14 +540,14 @@
     .contact-card {
         --mouse-x: 0px;
         --mouse-y: 0px;
-        opacity: 0;
+        opacity: 1;
         transition:
             border-color 0.3s,
             box-shadow 0.5s ease;
     }
 
     .contact-card:global([data-revealed]) {
-        animation: contactReveal 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        animation: contactReveal 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
 
     .contact-card:hover {
@@ -574,12 +574,10 @@
         from {
             opacity: 0;
             transform: translateY(40px) scale(0.98);
-            filter: blur(4px);
         }
         to {
             opacity: 1;
             transform: translateY(0) scale(1);
-            filter: blur(0);
         }
     }
 </style>
