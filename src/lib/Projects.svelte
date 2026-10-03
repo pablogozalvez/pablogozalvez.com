@@ -203,13 +203,30 @@
                             style="background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.08), transparent 40%); transition: opacity 0.3s;"
                         ></div>
 
+                        {#if project.pdf}
+                            <button
+                                type="button"
+                                aria-label={$t("projects.openPdf") + ": " + project.title}
+                                on:click={() => openPdf(project.pdf, project.title)}
+                                class="project-primary-action absolute inset-0 z-[36] rounded-3xl border-0 bg-transparent p-0 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-indigo-300"
+                            ></button>
+                        {:else if project.link || project.article}
+                            <a
+                                href={project.link || project.article}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label={$t("projects.openProject") + ": " + project.title}
+                                class="project-primary-action absolute inset-0 z-[36] rounded-3xl focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-indigo-300"
+                            ></a>
+                        {/if}
+
                         <!-- Image — fixed height, no flex-basis, shrink-0 prevents layout recalc -->
                         <div
                             class="relative overflow-hidden w-full flex-shrink-0 {project.featured
                                 ? 'h-72 md:h-auto md:w-1/2'
                                 : 'h-56'}"
                         >
-                            <div class="absolute top-4 left-4 z-40 flex flex-wrap gap-2">
+                            <div class="absolute top-4 left-4 z-40 flex flex-wrap gap-2 pointer-events-none">
                                 {#if project.featured}
                                     <span
                                         class="px-3 py-1 text-[10px] font-bold uppercase rounded-full border border-white/20 tracking-wider bg-gradient-to-r from-indigo-500/90 to-purple-500/90 backdrop-blur-md text-white shadow-[0_4px_12px_rgba(0,0,0,0.5)]"
@@ -217,18 +234,27 @@
                                         Featured
                                     </span>
                                 {/if}
-                                {#if project.linkType === "demo"}
+                                {#if project.pdf}
+                                    <span
+                                        class="px-3 py-1 text-[10px] font-bold uppercase rounded-full border border-red-400/30 tracking-wider bg-red-950/80 backdrop-blur-md text-red-200 shadow-[0_4px_12px_rgba(0,0,0,0.5)]"
+                                    >
+                                        PDF
+                                    </span>
+                                {:else if project.linkType === "demo"}
                                     <span
                                         class="px-3 py-1 text-[10px] font-bold uppercase rounded-full border border-emerald-400/30 tracking-wider bg-emerald-950/80 backdrop-blur-md text-emerald-300 shadow-[0_4px_12px_rgba(0,0,0,0.5)]"
                                     >
                                         Demo
                                     </span>
                                 {/if}
-                                {#if project.article}
+                                {#if project.article && (project.link || project.pdf)}
                                     <span
-                                        class="px-3 py-1 text-[10px] font-bold uppercase rounded-full border border-blue-400/30 tracking-wider bg-blue-950/80 backdrop-blur-md text-blue-300 shadow-[0_4px_12px_rgba(0,0,0,0.5)]"
+                                        class="inline-flex items-center gap-1.5 px-3 py-1 text-[10px] font-bold uppercase rounded-full border border-indigo-400/30 tracking-wider bg-indigo-950/80 backdrop-blur-md text-indigo-200 shadow-[0_4px_12px_rgba(0,0,0,0.5)]"
                                     >
-                                        {project.articleType || "Artículo"}
+                                        <svg aria-hidden="true" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14M5 12h14" />
+                                        </svg>
+                                        {project.articleType || $t("projects.article")}
                                     </span>
                                 {/if}
                             </div>
@@ -251,20 +277,19 @@
                             />
 
                             <div
-                                class="absolute top-4 right-4 z-30 w-10 h-10 rounded-full bg-black/50 backdrop-blur-md border border-white/10 flex items-center justify-center text-white opacity-0 translate-x-3 -translate-y-3 scale-75 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:scale-100 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] shadow-lg"
+                                aria-hidden="true"
+                                class="pointer-events-none absolute top-4 right-4 z-30 grid h-10 w-10 place-items-center rounded-full bg-black/50 backdrop-blur-md border border-white/10 text-white opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-200 shadow-lg"
                             >
-                                <svg
-                                    class="w-5 h-5 ml-[2px] -mt-[2px] transform -rotate-45 transition-transform duration-500 group-hover:translate-x-[2px] group-hover:-translate-y-[2px]"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    ><path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M14 5l7 7m0 0l-7 7m7-7H3"
-                                    ></path></svg
-                                >
+                                {#if project.pdf}
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M7 3.75h7l5 5v11.5a.75.75 0 0 1-.75.75H7a3 3 0 0 1-3-3V6.75a3 3 0 0 1 3-3Z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M14 4v5h5M8 14h8M8 17h5" />
+                                    </svg>
+                                {:else}
+                                    <svg class="block h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.71" />
+                                    </svg>
+                                {/if}
                             </div>
 
                             {#if project.article}
@@ -275,19 +300,20 @@
                                     class="absolute bottom-4 right-4 z-40 group/btn flex items-center justify-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 text-[10px] sm:text-xs font-semibold tracking-wide text-indigo-50 bg-[#0F1115]/80 hover:bg-black/90 border border-indigo-500/30 hover:border-indigo-400/50 rounded-lg backdrop-blur-md transition-all overflow-hidden w-auto max-w-[calc(100%-2rem)]"
                                 >
                                     <span class="relative z-10 whitespace-nowrap truncate"
-                                        >{project.articleType || "Más info"}</span
+                                        >{project.articleType || $t("projects.moreInfo")}</span
                                     >
                                     <svg
                                         class="w-3.5 h-3.5 relative z-10 flex-shrink-0 transition-transform duration-300 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
+                                        aria-hidden="true"
                                     >
                                         <path
                                             stroke-linecap="round"
                                             stroke-linejoin="round"
                                             stroke-width="2"
-                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                            d="M14 4h6v6m0-6L10 14M18 13v5a2 2 0 01-2 2H6a2 2 0 01-2-2V8a2 2 0 012-2h5"
                                         />
                                     </svg>
                                     <div
@@ -314,24 +340,7 @@
                                         : 'text-xl md:text-2xl font-bold text-white mb-3'} group-hover:text-indigo-400"
                                     style="transition: color 0.3s;"
                                 >
-                                    {#if project.pdf}
-                                        <button
-                                            type="button"
-                                            on:click={() => openPdf(project.pdf, project.title)}
-                                            class="project-primary-action text-left"
-                                        >
-                                            {project.title}
-                                        </button>
-                                    {:else}
-                                        <a
-                                            href={project.link || project.article}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            class="project-primary-action"
-                                        >
-                                            {project.title}
-                                        </a>
-                                    {/if}
+                                    {project.title}
                                 </h3>
                                 <p
                                     class={project.featured
@@ -357,6 +366,7 @@
                                 </div>
                             </div>
                         </div>
+
                     </article>
                 </div>
             {/each}
@@ -394,13 +404,6 @@
             box-shadow 0.4s ease,
             transform 0.4s ease;
         contain: layout style;
-    }
-
-    .project-primary-action::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        z-index: 20;
     }
 
     .project-card:hover {

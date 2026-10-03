@@ -78,6 +78,10 @@
         "title": "Projects",
         "subtitle": "A showcase of my completed projects, technical experiments, and contributions.",
         "viewArchive": "View full archive",
+        "article": "Article",
+        "moreInfo": "More info",
+        "openProject": "Open project",
+        "openPdf": "Open PDF document",
         "items": {
             "outreal": {
                 "description": "Mobile application that connects people through spontaneous social activities. Social map, proximity notifications. With a trust system and gamification, the app promotes safe and fun meetups, offering a real alternative to social networks centered only on digital interactions."
