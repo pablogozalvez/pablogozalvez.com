@@ -9,6 +9,8 @@
 {#if isLoading}
     <div
         class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#050505] text-white"
+        role="status"
+        aria-live="polite"
         out:fade={{ duration: 200, easing: cubicOut }}
     >
         <!-- Logo Animation -->

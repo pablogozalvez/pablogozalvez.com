@@ -1,5 +1,4 @@
 import { getContext, setContext } from "svelte";
-import { goto } from "$app/navigation";
 import { writable, derived } from "svelte/store";
 import en from "../i18n/en.json";
 import es from "../i18n/es.json";
@@ -13,7 +12,6 @@ const initialTranslations = { en, es };
 export function createI18n(initialLocale = "en") {
     const locale = writable(initialLocale);
     const translations = writable(initialTranslations);
-    const isLocaleLoaded = writable(true);
     const t = derived([locale, translations], ([$locale, $translations]) => (key) => {
         const keys = key.split(".");
         let text = $translations[$locale];
@@ -30,54 +28,7 @@ export function createI18n(initialLocale = "en") {
         if (typeof document !== "undefined") document.documentElement.lang = nextLocale;
     }
 
-    async function initializeBrowserLocale() {
-        if (typeof window === "undefined") return;
-        isLocaleLoaded.set(false);
-
-        try {
-            const routeLocale = getLocaleFromPath(window.location.pathname);
-            if (routeLocale !== "en") {
-                localStorage.setItem("locale", routeLocale);
-                return;
-            }
-
-            const storedLocale = localStorage.getItem("locale");
-            const browserLocale = navigator.language?.slice(0, 2);
-            const preferredLocale = AVAILABLE_LOCALES.includes(storedLocale)
-                ? storedLocale
-                : AVAILABLE_LOCALES.includes(browserLocale)
-                    ? browserLocale
-                    : "en";
-
-            localStorage.setItem("locale", preferredLocale);
-            if (preferredLocale !== "en") {
-                await goto(localizePath(`${window.location.pathname}${window.location.search}${window.location.hash}`, preferredLocale), {
-                    replaceState: true,
-                    noScroll: true,
-                    keepFocus: true,
-                });
-            }
-        } finally {
-            isLocaleLoaded.set(true);
-        }
-    }
-
-    async function setLocale(nextLocale) {
-        if (!AVAILABLE_LOCALES.includes(nextLocale) || typeof window === "undefined") return;
-        isLocaleLoaded.set(false);
-        try {
-            localStorage.setItem("locale", nextLocale);
-            await goto(localizePath(`${window.location.pathname}${window.location.search}${window.location.hash}`, nextLocale), {
-                replaceState: true,
-                noScroll: true,
-                keepFocus: true,
-            });
-        } finally {
-            isLocaleLoaded.set(true);
-        }
-    }
-
-    return { locale, t, isLocaleLoaded, initializeBrowserLocale, setLocale, syncLocaleFromPath };
+    return { locale, t, syncLocaleFromPath };
 }
 
 export function provideI18n(initialLocale) {

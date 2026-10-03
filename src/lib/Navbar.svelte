@@ -3,11 +3,14 @@
     import { fade, fly, scale } from "svelte/transition";
     import { cubicOut, cubicInOut } from "svelte/easing";
     import { rafThrottle } from "./actions";
+    import { page } from "$app/stores";
+    import { localizePath } from "./locales";
+    import { browser } from "$app/environment";
 
     export let activeSection = "home";
     export let hideNav = false;
 
-    const { t, locale, setLocale } = getI18n();
+    const { t, locale } = getI18n();
 
     let scrollY = 0;
     let innerWidth = 0;
@@ -67,7 +70,7 @@
         else document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
     };
 
-    $: alternateLanguageUrl = $locale === "en" ? "/es" : "/";
+    $: alternateLanguageUrl = localizePath(`${$page.url.pathname}${browser ? $page.url.search + $page.url.hash : ""}`, $locale === "en" ? "es" : "en");
 
     // Detección de sección
     let lastScrollCheck = 0;
@@ -126,7 +129,7 @@
             <div class="mt-8 pt-8 border-t border-white/10 w-20 flex justify-center">
                 <a
                     href={alternateLanguageUrl}
-                    on:click|preventDefault={() => setLocale($locale === "en" ? "es" : "en")}
+                    on:click={() => (isMenuOpen = false)}
                     hreflang={$locale === "en" ? "es" : "en"}
                     lang={$locale === "en" ? "es" : "en"}
                     class="text-sm font-mono text-gray-400 border border-white/10 rounded-full px-4 py-3 hover:bg-white/10 hover:text-white transition-all hover:scale-105 active:scale-95 flex items-center gap-3"
@@ -229,7 +232,7 @@
 
                 <a
                     href={alternateLanguageUrl}
-                    on:click|preventDefault={() => setLocale($locale === "en" ? "es" : "en")}
+                    on:click={() => (isMenuOpen = false)}
                     hreflang={$locale === "en" ? "es" : "en"}
                     lang={$locale === "en" ? "es" : "en"}
                     class="ml-2 relative px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-gray-400 hover:text-white transition-all duration-300 border border-white/10 rounded-full hover:bg-white/10 flex items-center gap-2"

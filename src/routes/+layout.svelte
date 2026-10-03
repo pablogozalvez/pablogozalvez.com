@@ -5,7 +5,7 @@
     import Loader from "../lib/Loader.svelte";
     import { getLocaleFromPath, provideI18n } from "../lib/i18n";
     import { onMount } from "svelte";
-    import { page } from "$app/stores";
+    import { page, navigating } from "$app/stores";
     import { fly } from "svelte/transition";
     import { isLowPerformanceMode } from "../lib/actions";
     import "../app.css";
@@ -20,7 +20,7 @@
     let reducedEffects = false;
 
     const i18n = provideI18n(getLocaleFromPath($page.url.pathname));
-    const { initializeBrowserLocale, isLocaleLoaded, syncLocaleFromPath } = i18n;
+    const { t, syncLocaleFromPath } = i18n;
 
     $: syncLocaleFromPath($page.url.pathname);
 
@@ -30,24 +30,25 @@
 
     onMount(() => {
         reducedEffects = isLowPerformanceMode();
-        initializeBrowserLocale();
     });
 
     function scrollToTop() {
         window.scrollTo({
             top: 0,
-            behavior: "smooth",
+            behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
         });
     }
 
-    $: isLoading = !$isLocaleLoaded;
+    $: isLoading = Boolean($navigating?.to && $navigating.from?.url.pathname !== $navigating.to.url.pathname);
 </script>
 
 <svelte:window bind:scrollY bind:innerHeight />
 
 <SEO />
 
-<Loader {isLoading} />
+<Loader {isLoading} title={$t("common.loading")} />
+
+<a class="skip-link" href="#main-content">{$t("common.skipToContent")}</a>
 
 <Cursor hidden={showPdfModal} />
 
@@ -74,7 +75,7 @@
         on:click={scrollToTop}
         transition:fly={{ y: 20, duration: 300 }}
         class="fixed bottom-8 right-8 z-50 w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/10 flex items-center justify-center text-white hover:bg-white/20 hover:scale-110 transition-all shadow-lg group"
-        aria-label="Scroll to top"
+        aria-label={$t("common.scrollToTop")}
     >
         <svg class="w-5 h-5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
@@ -82,9 +83,7 @@
     </button>
 {/if}
 
-{#if $isLocaleLoaded}
-    <slot />
-{/if}
+<slot />
 
 <!--<div class="min-h-screen text-white font-sans overflow-x-hidden"></div>-->
 

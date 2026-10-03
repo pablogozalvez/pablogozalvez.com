@@ -1,4 +1,9 @@
 {
+    "common": {
+        "loading": "Loading page",
+        "skipToContent": "Skip to content",
+        "scrollToTop": "Back to top"
+    },
     "nav": {
         "home": "Home",
         "about": "About",
