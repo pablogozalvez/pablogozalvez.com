@@ -16,6 +16,8 @@ Evita redirecciones inesperadas por el idioma del navegador, destellos de conten
 **En este proyecto**
 `src/lib/i18n.js` sincroniza el idioma de la ruta; `src/routes/+layout.svelte` conserva el slot y controla el loader con `navigating`. `src/lib/Navbar.svelte` utiliza enlaces localizados de `src/lib/locales.js`.
 
+`src/lib/LanguageSuggestion.svelte` compara los idiomas del navegador con los disponibles solo después de montar. Si la primera opción compatible difiere de la URL, ofrece un cambio explícito en un panel inferior. Aceptar conserva la ruta, consulta y ancla; cancelar mantiene el idioma actual. `sessionStorage` recuerda la decisión durante la sesión sin cambiar el HTML prerenderizado, y los textos del panel se muestran en el idioma sugerido.
+
 **Tradeoffs / pitfalls**
 Una preferencia guardada o `navigator.language` puede servir para sugerir otro idioma, pero no debería sustituir silenciosamente una URL explícita. En páginas prerenderizadas, `url.search` solo se consulta en el navegador: una consulta no puede cambiar el HTML estático generado durante el build.
 
@@ -147,7 +149,7 @@ Un modal no se limita a dibujar una capa: debe impedir interactuar con el fondo,
 `dialog.showModal()` coloca el diálogo en la capa superior del navegador y vuelve inerte el resto de la página. Una acción guarda el elemento que tenía foco y el estado de scroll, abre el modal y enfoca su título. Al desmontarse, cierra el diálogo y restaura esos estados. El evento `cancel` permite gestionar Escape y terminar la transición de salida antes del desmontaje.
 
 **En este proyecto**
-`src/lib/modal.js` comparte ese ciclo de vida entre el visor PDF y el menú móvil. El visor ofrece enlaces directos al documento para navegadores que no muestran PDFs incrustados. Los paneles invisibles del hero usan `inert` y `aria-hidden` para excluir sus controles del teclado y del lector de pantalla.
+`src/lib/modal.js` comparte ese ciclo de vida entre el visor PDF, el menú móvil y la sugerencia de idioma. El visor ofrece enlaces directos al documento para navegadores que no muestran PDFs incrustados. Los paneles invisibles del hero usan `inert` y `aria-hidden` para excluir sus controles del teclado y del lector de pantalla.
 
 **Tradeoffs / pitfalls**
 Un modal con divs exige implementar y mantener una trampa de foco propia. Ocultar un panel mediante opacidad o `pointer-events` no evita que se alcance con Tab. Un iframe tiene su propio documento y puede gestionar algunas teclas internamente.

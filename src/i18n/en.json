@@ -1,4 +1,11 @@
 {
+    "languageSuggestion": {
+        "title": "Prefer English?",
+        "description": "Your browser uses English. You can view this same page in that language.",
+        "accept": "Accept",
+        "cancel": "Cancel",
+        "close": "Close language suggestion"
+    },
     "projectTags": {
         "compilers": "Compilers",
         "uiTooling": "UI tooling",

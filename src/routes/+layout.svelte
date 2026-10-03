@@ -3,6 +3,7 @@
     import Navbar from "../lib/Navbar.svelte";
     import Cursor from "../lib/Cursor.svelte";
     import Loader from "../lib/Loader.svelte";
+    import LanguageSuggestion from "../lib/LanguageSuggestion.svelte";
     import { getLocaleFromPath, provideI18n } from "../lib/i18n";
     import { onMount } from "svelte";
     import { page, navigating } from "$app/stores";
@@ -84,6 +85,8 @@
 {/if}
 
 <slot />
+
+<LanguageSuggestion />
 
 <!--<div class="min-h-screen text-white font-sans overflow-x-hidden"></div>-->
 

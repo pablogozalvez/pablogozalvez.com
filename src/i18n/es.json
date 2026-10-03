@@ -1,4 +1,11 @@
 {
+    "languageSuggestion": {
+        "title": "¿Prefieres español?",
+        "description": "Tu navegador usa español. Puedes ver esta misma página en ese idioma.",
+        "accept": "Aceptar",
+        "cancel": "Cancelar",
+        "close": "Cerrar sugerencia de idioma"
+    },
     "projectTags": {
         "compilers": "Compiladores",
         "uiTooling": "Herramientas de interfaz",
