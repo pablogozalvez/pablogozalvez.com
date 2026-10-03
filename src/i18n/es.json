@@ -16,6 +16,10 @@
         "scrollToTop": "Volver al inicio"
     },
     "nav": {
+        "menu": "Menú de navegación",
+        "primary": "Navegación principal",
+        "openMenu": "Abrir menú de navegación",
+        "closeMenu": "Cerrar menú de navegación",
         "home": "Inicio",
         "about": "Sobre mí",
         "projects": "Proyectos",
@@ -26,7 +30,7 @@
         "subtitle": "Soy Pablo Gozálvez, desarrollador de software fullstack en Alicante. Creo plataformas web, aplicaciones móviles y experiencias interactivas, combinando frontend, backend y desarrollo con Unity.",
         "viewProjects": "Ver Proyectos",
         "contactMe": "Contáctame",
-        "scroll": "Desliza",
+        "scroll": "Ir a Sobre mí",
         "code": {
             "hello": "¡Hola! Soy ",
             "stack": "Stack: ",
@@ -40,11 +44,25 @@
             "varGoal": "objetivo"
         },
         "preview": {
+            "ariaLabel": "Vista previa de mi perfil y proyectos",
+            "pause": "Pausar la vista previa automática",
+            "resume": "Reanudar la vista previa automática",
+            "showProject": "Mostrar proyecto",
+            "categories": {
+                "outreal": "App móvil · Plataforma social",
+                "hospital": "WebGL · Recorrido virtual 3D",
+                "trickyMansion": "Desarrollo de juegos · 2D procedural",
+                "pseudoBlocks": "Herramienta de escritorio · Lexer propio"
+            },
+            "highlights": {
+                "outreal": "Mapa social y gamificación",
+                "pseudoBlocks": "Lexer y parser propios"
+            },
             "tabAbout": "Sobre mí",
             "tabProjects": "Proyectos",
             "available": "Disponible para proyectos",
             "location": "Alicante, ES",
-            "role": "Full Stack & Software Dev",
+            "role": "Desarrollo de software fullstack",
             "summary": "Desarrollo plataformas web, aplicaciones móviles y experiencias interactivas, uniendo frontend moderno con arquitecturas backend sólidas y Unity.",
             "statExp": "Años exp.",
             "statProjects": "Proyectos",
@@ -91,6 +109,8 @@
         }
     },
     "projects": {
+        "sourceCode": "Código fuente",
+        "featured": "Destacado",
         "title": "Proyectos",
         "subtitle": "Una muestra de mis proyectos completados, experimentos técnicos y contribuciones.",
         "viewArchive": "Ver archivo completo",
@@ -103,7 +123,8 @@
                 "description": "Aplicación móvil que conecta a personas mediante planes espontáneos de ocio. Mapa social, notificaciones de proximidad. Con un sistema de confianza y gamificación, la app promueve encuentros seguros y divertidos, ofreciendo una alternativa real a las redes sociales centradas únicamente en lo digital."
             },
             "hospitalXyz": {
-                "description": "Proyecto colaborativo entre el Hospital General Universitario Dr. Balmis y los centros educativos CIPFP Canastell e IES San Vicente para Facilitar la asistencia del paciente en su trayecto hasta el lugar de exploración en el hospital, específicamente en el área de radiodiagnóstico, proveyendo información previa que genere comodidad y seguridad."
+                "title": "Recorridos virtuales de guiado intrahospitalario",
+                "description": "Proyecto colaborativo entre el Hospital General Universitario Dr. Balmis y los centros educativos CIPFP Canastell e IES San Vicente para facilitar la asistencia del paciente en su trayecto hasta el lugar de exploración en el hospital, específicamente en el área de radiodiagnóstico, proveyendo información previa que genere comodidad y seguridad."
             },
             "trickyMansion": {
                 "description": "Un juego de plataformas 2D desarrollado en Unity. Cuenta con generación aleatoria de niveles con desplazamiento vertical, varios enemigos y trampas. Ha sido presentado en varios eventos de desarrollo de juegos y se encuentra publicado en plataformas como Google Play e Itch.io."
@@ -128,17 +149,19 @@
     "githubActivity": {
         "saved": "Actividad guardada",
         "ariaLabel": "Actividad en GitHub",
-        "commitsPerYear": "commits / año",
+        "commitsPerYear": "contribuciones / año",
         "gridAriaLabel": "Matriz de contribuciones de GitHub",
         "contributionTitle": "{{count}} contribuciones el {{date}}",
-        "commit": "commit",
-        "commits": "commits",
+        "commit": "contribución",
+        "commits": "contribuciones",
         "on": "el",
         "summary": "Actividad en GitHub (últimos 6 meses)",
         "less": "Menos",
         "more": "Más"
     },
     "contact": {
+        "copyEmail": "Copiar dirección de correo",
+        "copyFailed": "No se ha podido copiar la dirección. Selecciónala manualmente o utiliza el enlace de correo.",
         "openForOpportunities": "Disponible",
         "title": "Contacto",
         "subtitle": "¿Tienes un proyecto, una propuesta de colaboración o una oportunidad profesional? Cuéntame los detalles y hablamos.",
@@ -176,6 +199,7 @@
             }
         },
         "form": {
+            "website": "Sitio web",
             "name": "Nombre",
             "namePlaceholder": "Juan Pérez",
             "email": "Email",

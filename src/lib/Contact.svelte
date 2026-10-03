@@ -14,7 +14,7 @@
     let successTimer;
     let isMounted = false;
     const lifetime = new AbortController();
-    let currentTime = "";
+    let currentTime = "--:--";
 
     const { t, locale } = getI18n();
 
@@ -211,10 +211,11 @@
 
         const updateTime = () => {
             const now = new Date();
-            currentTime = now.toLocaleTimeString("es-ES", {
+            currentTime = now.toLocaleTimeString($locale === "es" ? "es-ES" : "en-GB", {
                 hour: "2-digit",
                 minute: "2-digit",
                 timeZone: "Europe/Madrid",
+                timeZoneName: "short",
             });
         };
         updateTime();
@@ -280,7 +281,7 @@
             bind:this={containerRef}
             on:mousemove={handleMouseMove}
             role="region"
-            aria-label="Contact card"
+            aria-label={$t("contact.title")}
             class="contact-card group relative w-full bg-[#0F1115] border border-white/5 rounded-[2rem] overflow-hidden"
             use:reveal
         >
@@ -308,12 +309,14 @@
                             <div
                                 class="flex items-center bg-black/40 border border-white/10 rounded-xl p-1.5 transition-colors hover:border-indigo-500/50 group/email"
                             >
-                                <div class="pl-3 pr-2 font-mono text-gray-300 text-xs sm:text-sm truncate flex-1 select-all">
+                                <a href={"mailto:" + email} class="pl-3 pr-2 font-mono text-gray-300 text-xs sm:text-sm break-all flex-1 min-w-0 select-all">
                                     {email}
-                                </div>
+                                </a>
                                 <button
                                     on:click={copyToClipboard}
-                                    class="flex items-center justify-center p-2 rounded-lg {copied
+                                    aria-label={copied ? $t("contact.copied") : $t("contact.copyEmail")}
+                                    title={$t("contact.copyEmail")}
+                                    class="flex items-center justify-center min-w-11 min-h-11 p-2 rounded-lg {copied
                                         ? 'bg-emerald-500/20 text-emerald-400'
                                         : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'} transition-all duration-200"
                                 >
@@ -328,6 +331,7 @@
                                     {/if}
                                 </button>
                             </div>
+                            <p role="status" class="min-h-5 mt-2 text-xs text-gray-300">{copyError ? $t("contact.copyFailed") : copied ? $t("contact.copied") : ""}</p>
                         </div>
 
                         <!-- Socials block -->
@@ -354,8 +358,8 @@
                     </div>
 
                     <!-- Location & time -->
-                    <div class="flex items-center gap-4 text-xs text-gray-600 font-mono mt-10 lg:mt-12">
-                        <span>{currentTime} (CET)</span>
+                    <div class="flex flex-wrap items-center gap-4 text-xs text-gray-400 font-mono mt-10 lg:mt-12">
+                        <span class="min-w-[105px] tabular-nums">{currentTime}</span>
                         <div class="w-1 h-1 bg-gray-700 rounded-full"></div>
                         <span>{$t("contact.location")}</span>
                     </div>
@@ -363,7 +367,7 @@
 
                 <!-- Right Panel: Contact Form -->
                 <div class="lg:col-span-3 p-8 md:p-10 lg:p-12 relative">
-                    <form on:submit|preventDefault={handleSubmit} class="flex flex-col gap-5 relative z-10">
+                    <form on:submit|preventDefault={handleSubmit} aria-busy={formState === "sending"} class="flex flex-col gap-5 relative z-10">
                         <!-- Name & Email row -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <div class="contact-field group/field">
@@ -423,7 +427,7 @@
 
                         <!-- Honeypot -->
                         <div class="contact-honeypot" aria-hidden="true">
-                            <label for="website">Website</label>
+                            <label for="website">{$t("contact.form.website")}</label>
                             <input
                                 id="website"
                                 name="website"
@@ -444,7 +448,7 @@
                         <!-- Divider + Submit -->
                         <div class="relative pt-4">
                             <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-                            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 min-h-[110px] sm:min-h-[85px]">
                                 <button
                                     type="submit"
                                     disabled={formState === "sending" || formState === "success"}
@@ -517,7 +521,7 @@
         gap: 0.375rem;
         font-size: 0.7rem;
         font-family: var(--font-mono);
-        color: rgb(107 114 128);
+        color: rgb(156 163 175);
         text-transform: uppercase;
         letter-spacing: 0.05em;
         margin-left: 0.125rem;
@@ -535,7 +539,7 @@
         transition: all 0.25s ease;
     }
     .contact-input::placeholder {
-        color: rgb(75 85 99);
+        color: rgb(156 163 175);
     }
     .contact-input:focus {
         outline: none;

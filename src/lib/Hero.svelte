@@ -30,14 +30,13 @@
     let isPaused = false;
     let hasFocus = false;
     let mounted = false;
+    let autoRotateEnabled = true;
+    let aboutTabButton;
+    let projectsTabButton;
 
     $: if (mounted) {
-        if (visible && !isPaused && !hasFocus && !isMobile && !reducedEffects) startAutoRotate();
-        else clearInterval(autoRotateInterval);
-    }
-
-    function scrollTo(id) {
-        document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+        if (visible && autoRotateEnabled && !isPaused && !hasFocus && !isMobile && !reducedEffects) startAutoRotate();
+        else stopAutoRotate();
     }
 
     $: {
@@ -50,9 +49,14 @@
         dimOpacity = progress * 0.45;
     }
 
-    function startAutoRotate() {
-        if (typeof window === "undefined" || !mounted || !visible || isPaused || hasFocus || isMobile || reducedEffects) return;
+    function stopAutoRotate() {
         clearInterval(autoRotateInterval);
+        autoRotateInterval = undefined;
+    }
+
+    function startAutoRotate() {
+        if (typeof window === "undefined" || !mounted || !visible || !autoRotateEnabled || isPaused || hasFocus || isMobile || reducedEffects) return;
+        stopAutoRotate();
         autoRotateInterval = setInterval(() => {
             if (!isPaused && !isMobile) {
                 activeTab = activeTab === "about" ? "projects" : "about";
@@ -62,6 +66,9 @@
 
     function selectTab(tab) {
         activeTab = tab;
+        if (document.activeElement?.closest("[data-preview-panel]")) {
+            (tab === "about" ? aboutTabButton : projectsTabButton)?.focus();
+        }
         startAutoRotate();
     }
 
@@ -76,8 +83,7 @@
             isMobile = window.innerWidth < 1024;
             innerHeight = window.innerHeight;
             if (isMobile || reducedEffects) {
-                clearInterval(autoRotateInterval);
-                autoRotateInterval = undefined;
+                stopAutoRotate();
             } else if (!autoRotateInterval) {
                 startAutoRotate();
             }
@@ -95,7 +101,7 @@
             mounted = false;
             window.removeEventListener("resize", handleResize);
             window.removeEventListener("scroll", handleScroll);
-            clearInterval(autoRotateInterval);
+            stopAutoRotate();
         };
     });
 
@@ -120,15 +126,15 @@
     $: featuredProjects = [
         {
             title: "OutReal",
-            category: "Mobile App · Social Platform",
+            category: $t("hero.preview.categories.outreal"),
             description: $t("hero.preview.projectDescriptions.outreal"),
             image: "/img/outreal.webp",
             tags: ["Ionic", "Angular", "PostGIS", "Full Stack"],
-            highlight: "Social Map & Gamification"
+            highlight: $t("hero.preview.highlights.outreal")
         },
         {
             title: "Hospital Dr. Balmis 3D",
-            category: "WebGL · Virtual Tour 3D",
+            category: $t("hero.preview.categories.hospital"),
             description: $t("hero.preview.projectDescriptions.hospitalXyz"),
             image: "/img/hospitalxyz.webp",
             tags: ["Three.js", "WebGL", "Healthcare", "3D"],
@@ -136,7 +142,7 @@
         },
         {
             title: "Tricky Mansion",
-            category: "Game Dev · Procedural 2D",
+            category: $t("hero.preview.categories.trickyMansion"),
             description: $t("hero.preview.projectDescriptions.trickyMansion"),
             image: "/img/tricky-mansion.webp",
             tags: ["Unity", "C#", "Google Play", "Game Dev"],
@@ -144,11 +150,11 @@
         },
         {
             title: "PseudoBlocks",
-            category: "Desktop Tool · Custom Lexer",
+            category: $t("hero.preview.categories.pseudoBlocks"),
             description: $t("hero.preview.projectDescriptions.pseudoBlocks"),
             image: "/img/pseudoblocks.webp",
             tags: ["C#", "WinForms", "Compilers", "Open Source"],
-            highlight: "Custom Lexer & Parser"
+            highlight: $t("hero.preview.highlights.pseudoBlocks")
         }
     ];
 
@@ -172,7 +178,7 @@
     id="home"
     class="relative min-h-screen flex items-center overflow-hidden bg-[#0a0a0a]"
     class:hero-static={reducedEffects}
-    use:animationVisibility={(active) => (visible = active)}
+    use:animationVisibility={(active) => { visible = active; if (active && !reducedEffects) scrollY = window.scrollY; }}
 >
     <div class="absolute inset-0 bg-[#0a0a0a] z-0"></div>
     <div
@@ -230,8 +236,7 @@
                     in:fly={{ y: 20, duration: 800, delay: 300, easing: cubicOut }}
                     class="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 justify-center lg:justify-start w-full"
                 >
-                    <button
-                        on:click={() => scrollTo("projects")}
+                    <a href="#projects"
                         class="hero-cta hero-fade-interactive px-8 py-4 bg-gradient-to-r from-white to-gray-100 text-black font-bold rounded-full hover:from-gray-100 hover:to-white hover:shadow-lg hover:shadow-white/25 transition-all duration-300 flex items-center justify-center gap-2 group will-change-transform cursor-pointer"
                     >
                         <span>{$t("hero.viewProjects")}</span>
@@ -247,14 +252,13 @@
                                 d="M17 8l4 4m0 0l-4 4m4-4H3"
                             /></svg
                         >
-                    </button>
+                    </a>
 
-                    <button
-                        on:click={() => scrollTo("contact")}
+                    <a href="#contact"
                         class="hero-fade-interactive px-8 py-4 bg-white/5 border border-white/10 text-white font-medium rounded-full hover:bg-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-indigo-500/10 transition-all duration-300 backdrop-blur-sm will-change-transform cursor-pointer"
                     >
                         {$t("hero.contactMe")}
-                    </button>
+                    </a>
                 </div>
         </div>
 
@@ -267,7 +271,7 @@
                 <div
                     class="preview-card hero-fade-interactive bg-[#0d0f17]/90 rounded-2xl border border-white/10 shadow-2xl shadow-indigo-950/30 backdrop-blur-xl overflow-hidden transition-all duration-300 hover:border-white/20"
                     role="region"
-                    aria-label="Preview showcase"
+                    aria-label={$t("hero.preview.ariaLabel")}
                     on:mouseenter={() => (isPaused = true)}
                     on:mouseleave={() => (isPaused = false)}
                     on:focusin={() => (hasFocus = true)}
@@ -290,7 +294,9 @@
                             <div class="inline-flex p-1 bg-white/[0.06] rounded-xl border border-white/10 shadow-inner">
                                 <button
                                     type="button"
+                                    bind:this={aboutTabButton}
                                     on:click={() => selectTab("about")}
+                                    aria-pressed={activeTab === "about"}
                                     class="px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all duration-200 flex items-center gap-1.5 cursor-pointer {activeTab === 'about' ? 'bg-indigo-500 text-white shadow-md shadow-indigo-500/25' : 'text-gray-400 hover:text-white'}"
                                 >
                                     <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -301,7 +307,9 @@
 
                                 <button
                                     type="button"
+                                    bind:this={projectsTabButton}
                                     on:click={() => selectTab("projects")}
+                                    aria-pressed={activeTab === "projects"}
                                     class="px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all duration-200 flex items-center gap-2 cursor-pointer {activeTab === 'projects' ? 'bg-indigo-500 text-white shadow-md shadow-indigo-500/25' : 'text-gray-400 hover:text-white'}"
                                 >
                                     <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -320,13 +328,26 @@
                         </div>
 
                         <!-- Right Balance Spacer -->
-                        <div class="w-16 hidden sm:block"></div>
+                        <div class="w-16 hidden sm:flex justify-end">
+                            <button type="button" on:click={() => (autoRotateEnabled = !autoRotateEnabled)}
+                                aria-pressed={!autoRotateEnabled}
+                                aria-label={$t(autoRotateEnabled ? "hero.preview.pause" : "hero.preview.resume")}
+                                title={$t(autoRotateEnabled ? "hero.preview.pause" : "hero.preview.resume")}
+                                class="w-9 h-9 inline-flex items-center justify-center rounded-lg text-gray-300 hover:bg-white/10">
+                                <svg aria-hidden="true" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d={autoRotateEnabled ? "M8 5v14M16 5v14" : "M8 5l12 7-12 7Z"} />
+                                </svg>
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Main Panel Content: Fixed Height & Overlapping Grid for zero layout jumps -->
                     <div class="p-5 sm:p-6 h-[440px] sm:h-[445px] relative grid grid-cols-1 grid-rows-1 overflow-hidden">
                         <!-- About Tab Panel -->
                         <div
+                            data-preview-panel
+                            inert={activeTab !== "about"}
+                            aria-hidden={activeTab !== "about"}
                             class="col-start-1 row-start-1 flex flex-col justify-between h-full transition-all duration-500 ease-out {activeTab === 'about' ? 'opacity-100 translate-y-0 pointer-events-auto z-10' : 'opacity-0 translate-y-2 pointer-events-none z-0'}"
                         >
                             <!-- Two Column Body: Info on left, Separator, Key Technologies on right -->
@@ -401,15 +422,14 @@
                             <!-- Footer Links -->
                             <div class="relative mt-5 pt-3.5 flex items-center justify-between text-xs">
                                 <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none"></div>
-                                <button
-                                    on:click={() => scrollTo("about")}
+                                <a href="#about"
                                     class="text-indigo-400 hover:text-indigo-300 font-medium inline-flex items-center gap-1.5 transition-colors cursor-pointer group"
                                 >
                                     <span>{$t("hero.preview.viewAbout")}</span>
                                     <svg class="w-3.5 h-3.5 transform group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                     </svg>
-                                </button>
+                                </a>
 
                                 <button
                                     on:click={() => selectTab("projects")}
@@ -425,6 +445,9 @@
 
                         <!-- Projects Tab Panel -->
                         <div
+                            data-preview-panel
+                            inert={activeTab !== "projects"}
+                            aria-hidden={activeTab !== "projects"}
                             class="col-start-1 row-start-1 flex flex-col justify-between h-full transition-all duration-500 ease-out {activeTab === 'projects' ? 'opacity-100 translate-y-0 pointer-events-auto z-10' : 'opacity-0 translate-y-2 pointer-events-none z-0'}"
                         >
                             <!-- Top controls -->
@@ -444,7 +467,7 @@
                                             type="button"
                                             on:click={prevProject}
                                             aria-label={$t("hero.preview.seePrev")}
-                                            class="w-7 h-7 rounded-lg bg-white/5 hover:bg-white/15 border border-white/10 flex items-center justify-center text-gray-300 hover:text-white transition-all cursor-pointer"
+                                            class="w-9 h-9 rounded-lg bg-white/5 hover:bg-white/15 border border-white/10 flex items-center justify-center text-gray-300 hover:text-white transition-all cursor-pointer"
                                         >
                                             <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -454,7 +477,7 @@
                                             type="button"
                                             on:click={nextProject}
                                             aria-label={$t("hero.preview.seeNext")}
-                                            class="w-7 h-7 rounded-lg bg-white/5 hover:bg-white/15 border border-white/10 flex items-center justify-center text-gray-300 hover:text-white transition-all cursor-pointer"
+                                            class="w-9 h-9 rounded-lg bg-white/5 hover:bg-white/15 border border-white/10 flex items-center justify-center text-gray-300 hover:text-white transition-all cursor-pointer"
                                         >
                                             <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -488,15 +511,14 @@
                                         <p class="text-base sm:text-lg font-bold text-white tracking-tight">
                                             {featuredProjects[currentProjectIndex].title}
                                         </p>
-                                        <button
-                                            on:click={() => scrollTo("projects")}
+                                        <a href="#projects"
                                             class="text-xs text-indigo-400 hover:text-indigo-300 font-medium inline-flex items-center gap-1 cursor-pointer"
                                         >
                                             <span>{$t("hero.preview.viewInProjects")}</span>
                                             <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                                             </svg>
-                                        </button>
+                                        </a>
                                     </div>
 
                                     <p class="text-xs text-gray-400 line-clamp-2 leading-relaxed mb-3">
@@ -521,21 +543,21 @@
                                         <button
                                             type="button"
                                             on:click={() => setProject(idx)}
-                                            class="h-1.5 rounded-full transition-all duration-300 cursor-pointer {idx === currentProjectIndex ? 'w-6 bg-indigo-500' : 'w-2 bg-white/20 hover:bg-white/40'}"
-                                            aria-label={`Proyecto ${idx + 1}`}
-                                        ></button>
+                                            class="w-7 h-7 flex items-center justify-center cursor-pointer"
+                                            aria-label={$t("hero.preview.showProject") + ": " + featuredProjects[idx].title}
+                                            aria-pressed={idx === currentProjectIndex}
+                                        ><span aria-hidden="true" class="h-1.5 rounded-full transition-all duration-300 {idx === currentProjectIndex ? 'w-6 bg-indigo-500' : 'w-2 bg-white/20 hover:bg-white/40'}"></span></button>
                                     {/each}
                                 </div>
 
-                                <button
-                                    on:click={() => scrollTo("projects")}
+                                <a href="#projects"
                                     class="text-gray-300 hover:text-white font-medium inline-flex items-center gap-1.5 transition-colors cursor-pointer group"
                                 >
                                     <span>{$t("hero.preview.allProjects")}</span>
                                     <svg class="w-3.5 h-3.5 transform group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                     </svg>
-                                </button>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -545,11 +567,12 @@
     </div>
 
     <!-- Scroll down indicator (fades out naturally on scroll) -->
-    <button
-        on:click={() => scrollTo("about")}
+    <a href="#about"
+        tabindex={scrollProgress > 0.2 ? -1 : 0}
+        aria-hidden={scrollProgress > 0.2}
         class="hero-fade-interactive absolute bottom-6 left-1/2 -translate-x-1/2 text-gray-500 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.5)] transition-all duration-300 animate-bounce-slow z-20 will-change-transform cursor-pointer"
         style="opacity: {Math.max(0, 1 - scrollProgress * 5)}; pointer-events: {scrollProgress > 0.2 ? 'none' : 'auto'};"
-        aria-label="Scroll down"
+        aria-label={$t("hero.scroll")}
     >
         <svg class="w-6 h-6 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"
             ><path
@@ -559,7 +582,7 @@
                 d="M19 14l-7 7m0 0l-7-7m7 7V3"
             /></svg
         >
-    </button>
+    </a>
 </section>
 
 <style>

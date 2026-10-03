@@ -16,6 +16,10 @@
         "scrollToTop": "Back to top"
     },
     "nav": {
+        "menu": "Navigation menu",
+        "primary": "Main navigation",
+        "openMenu": "Open navigation menu",
+        "closeMenu": "Close navigation menu",
         "home": "Home",
         "about": "About",
         "projects": "Projects",
@@ -26,7 +30,7 @@
         "subtitle": "I'm Pablo Gozálvez, a full-stack software developer based in Alicante, Spain. I build web platforms, mobile apps and interactive experiences, combining frontend, backend and Unity development.",
         "viewProjects": "View Projects",
         "contactMe": "Contact Me",
-        "scroll": "Scroll",
+        "scroll": "Go to About me",
         "code": {
             "hello": "Hello! I am ",
             "stack": "Stack: ",
@@ -40,6 +44,20 @@
             "varGoal": "goal"
         },
         "preview": {
+            "ariaLabel": "About me and project preview",
+            "pause": "Pause automatic preview",
+            "resume": "Resume automatic preview",
+            "showProject": "Show project",
+            "categories": {
+                "outreal": "Mobile app · Social platform",
+                "hospital": "WebGL · Virtual 3D tour",
+                "trickyMansion": "Game development · Procedural 2D",
+                "pseudoBlocks": "Desktop tool · Custom lexer"
+            },
+            "highlights": {
+                "outreal": "Social map and gamification",
+                "pseudoBlocks": "Custom lexer and parser"
+            },
             "tabAbout": "About Me",
             "tabProjects": "Projects",
             "available": "Available for projects",
@@ -91,6 +109,8 @@
         }
     },
     "projects": {
+        "sourceCode": "Source code",
+        "featured": "Featured",
         "title": "Projects",
         "subtitle": "A showcase of my completed projects, technical experiments, and contributions.",
         "viewArchive": "View full archive",
@@ -103,7 +123,8 @@
                 "description": "Mobile application that connects people through spontaneous social activities. Social map, proximity notifications. With a trust system and gamification, the app promotes safe and fun meetups, offering a real alternative to social networks centered only on digital interactions."
             },
             "hospitalXyz": {
-                "description": "Colaborative project between Hospital General Universitario Dr. Balmis and educational centers CIPFP Canastell and IES San Vicente to facilitate patient assistance during their journey to the hospital, specifically in the radiodiagnosis area, providing prior information that generates comfort and security."
+                "title": "Virtual hospital navigation tours",
+                "description": "Collaborative project between Hospital General Universitario Dr. Balmis and educational centers CIPFP Canastell and IES San Vicente to facilitate patient assistance during their journey to the hospital, specifically in the radiodiagnosis area, providing prior information that generates comfort and security."
             },
             "trickyMansion": {
                 "description": "A 2D platformer game developed in Unity. Features a random vertical scrolling level generation, various enemies and traps. It has been showcased at several game development events and is published on platforms like Google Play and Itch.io."
@@ -128,17 +149,19 @@
     "githubActivity": {
         "saved": "Saved activity",
         "ariaLabel": "GitHub Activity",
-        "commitsPerYear": "commits / year",
+        "commitsPerYear": "contributions / year",
         "gridAriaLabel": "GitHub contribution matrix",
         "contributionTitle": "{{count}} contributions on {{date}}",
-        "commit": "commit",
-        "commits": "commits",
+        "commit": "contribution",
+        "commits": "contributions",
         "on": "on",
         "summary": "GitHub activity (last 6 months)",
         "less": "Less",
         "more": "More"
     },
     "contact": {
+        "copyEmail": "Copy email address",
+        "copyFailed": "Could not copy the address. Select it manually or use the email link.",
         "openForOpportunities": "Available",
         "title": "Contact",
         "subtitle": "Do you have a project, a collaboration proposal, or a professional opportunity? Tell me the details and let's talk.",
@@ -176,6 +199,7 @@
             }
         },
         "form": {
+            "website": "Website",
             "name": "Name",
             "namePlaceholder": "John Doe",
             "email": "Email",

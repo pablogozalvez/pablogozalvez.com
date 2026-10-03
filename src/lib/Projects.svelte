@@ -49,12 +49,12 @@
             link: "https://assetstore.unity.com/packages/tools/gui/scroll-carousel-306533",
             linkType: "demo",
             article: "https://github.com/pablogozalvez/ScrollCarousel",
-            articleType: "Source Code",
+            articleType: $t("projects.sourceCode"),
             tags: ["Open Source", "UI Tooling", "Unity"],
             featured: false,
         },
         {
-            title: "Recorridos virtuales de guiado intrahospitalario",
+            title: $t("projects.items.hospitalXyz.title"),
             description: $t("projects.items.hospitalXyz.description"),
             image: "/img/hospitalxyz.webp",
             link: "https://hospital.fernandoruizrico.com/",
@@ -82,7 +82,7 @@
             link: "https://pablogozalvez.github.io/Super-Mario-Phaser/",
             linkType: "demo",
             article: "https://github.com/pablogozalvez/Super-Mario-Phaser",
-            articleType: "Source Code",
+            articleType: $t("projects.sourceCode"),
             tags: ["Phaser", "JavaScript", "WebGame", "Procedural Gen"],
             featured: false,
         },
@@ -136,7 +136,7 @@
 <section
     id="projects"
     class="py-32 relative bg-[#0a0a0c] -mt-px overflow-hidden"
-    aria-label="Projects"
+    aria-label={$t("nav.projects")}
     on:mousemove={handleMouseMove}
 >
     <!-- Section top accent divider -->
@@ -231,7 +231,7 @@
                                     <span
                                         class="px-3 py-1 text-[10px] font-bold uppercase rounded-full border border-white/20 tracking-wider bg-gradient-to-r from-indigo-500/90 to-purple-500/90 backdrop-blur-md text-white shadow-[0_4px_12px_rgba(0,0,0,0.5)]"
                                     >
-                                        Featured
+                                        {$t("projects.featured")}
                                     </span>
                                 {/if}
                                 {#if project.pdf}
@@ -295,6 +295,7 @@
                             {#if project.article}
                                 <a
                                     href={project.article}
+                                    aria-label={(project.articleType || $t("projects.moreInfo")) + ": " + project.title}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     class="absolute bottom-4 right-4 z-40 group/btn flex items-center justify-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 text-[10px] sm:text-xs font-semibold tracking-wide text-indigo-50 bg-[#0F1115]/80 hover:bg-black/90 border border-indigo-500/30 hover:border-indigo-400/50 rounded-lg backdrop-blur-md transition-all overflow-hidden w-auto max-w-[calc(100%-2rem)]"

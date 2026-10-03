@@ -62,7 +62,7 @@
 
 <section
     id="about"
-    aria-label="About"
+    aria-label={$t("nav.about")}
     class="py-32 relative overflow-hidden bg-[#08080a]"
     on:mousemove={handleMouseMove}
     bind:this={containerRef}

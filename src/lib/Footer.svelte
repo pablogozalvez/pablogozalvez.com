@@ -138,7 +138,7 @@
                             href="mailto:pablogozalvezr@gmail.com"
                             class="text-sm text-gray-400 hover:text-white transition-colors"
                         >
-                            Email
+                            {$t("contact.form.email")}
                         </a>
                     </li>
                 </ul>
@@ -160,7 +160,7 @@
             </div>
 
             <div class="flex flex-col md:flex-row items-center gap-6">
-                <span class="text-xs text-gray-600 font-mono">
+                <span class="text-xs text-gray-400 font-mono">
                     &copy; {currentYear}
                     {$t("footer.rights")}
                 </span>

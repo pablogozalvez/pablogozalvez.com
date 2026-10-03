@@ -6,6 +6,7 @@
     import { page } from "$app/stores";
     import { localizePath } from "./locales";
     import { browser } from "$app/environment";
+    import { modal } from "./modal";
 
     export let activeSection = "home";
     export let hideNav = false;
@@ -23,6 +24,7 @@
     let isMenuOpen = false;
 
     $: isMobile = innerWidth < 768;
+    $: if (!isMobile && isMenuOpen) isMenuOpen = false;
 
     const SCROLL_THRESHOLD = 500;
 
@@ -64,12 +66,6 @@
         { id: "contact", label: $t("nav.contact"), num: "03" },
     ];
 
-    const scrollTo = (id) => {
-        isMenuOpen = false;
-        if (id === "home") window.scrollTo({ top: 0, behavior: "smooth" });
-        else document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-    };
-
     $: alternateLanguageUrl = localizePath(`${$page.url.pathname}${browser ? $page.url.search + $page.url.hash : ""}`, $locale === "en" ? "es" : "en");
 
     // Detección de sección
@@ -105,18 +101,25 @@
 <svelte:window bind:scrollY bind:innerWidth bind:innerHeight />
 
 {#if isMenuOpen}
-    <div
-        class="fixed inset-0 z-40 bg-[#050505]/98 backdrop-blur-2xl flex flex-col items-center justify-center"
-        transition:fade={{ duration: 400, easing: cubicInOut }}
+    <dialog
+        id="mobile-navigation"
+        use:modal
+        aria-labelledby="mobile-menu-title"
+        on:cancel|preventDefault={() => (isMenuOpen = false)}
+        class="m-0 max-w-none max-h-none w-full h-[100dvh] border-0 text-white bg-[#050505]/98 backdrop-blur-2xl flex flex-col items-center justify-center"
+        in:fade={{ duration: 200, easing: cubicInOut }}
+        out:fade={{ duration: 100, easing: cubicInOut }}
     >
+        <h2 id="mobile-menu-title" data-modal-title tabindex="-1" class="sr-only">{$t("nav.menu")}</h2>
+        <button type="button" on:click={() => (isMenuOpen = false)} aria-label={$t("nav.closeMenu")} class="absolute top-6 right-6 z-20 w-12 h-12 rounded-full text-3xl hover:bg-white/10">×</button>
         <div class="absolute inset-0" in:scale={{ start: 1.1, duration: 800, easing: cubicOut }}></div>
 
-        <nav class="flex flex-col items-center gap-8 relative z-10">
+        <nav aria-label={$t("nav.menu")} class="flex flex-col items-center gap-8 relative z-10">
             {#each sections as section, i}
-                <button
-                    on:click={() => scrollTo(section.id)}
+                <a
+                    href={"#" + section.id}
+                    on:click={() => (isMenuOpen = false)}
                     in:fly={{ y: 50, delay: 200 + i * 100, duration: 500, easing: cubicOut }}
-                    out:fly={{ y: 20, delay: i * 50, duration: 300, easing: cubicOut }}
                     class="flex items-baseline gap-3 transition-all duration-300 hover:scale-110
                     {activeSection === section.id ? 'scale-105' : 'hover:text-white'}"
                 >
@@ -124,29 +127,32 @@
                         <span class="text-sm font-mono font-medium tracking-wide {activeSection === section.id ? 'text-gray-400' : 'text-white/20'}">{section.num}</span>
                     {/if}
                     <span class="text-5xl md:text-6xl font-black uppercase tracking-tighter {activeSection === section.id ? 'text-white' : 'text-white/40'}">{section.label}</span>
-                </button>
+                </a>
             {/each}
             <div class="mt-8 pt-8 border-t border-white/10 w-20 flex justify-center">
                 <a
                     href={alternateLanguageUrl}
                     on:click={() => (isMenuOpen = false)}
+                    aria-label={$locale === "en" ? "Español" : "English"}
                     hreflang={$locale === "en" ? "es" : "en"}
                     lang={$locale === "en" ? "es" : "en"}
                     class="text-sm font-mono text-gray-400 border border-white/10 rounded-full px-4 py-3 hover:bg-white/10 hover:text-white transition-all hover:scale-105 active:scale-95 flex items-center gap-3"
                 >
                     <img
                         src={$locale === "en" ? "/img/icons/es.png" : "/img/icons/us.png"}
-                        alt={$locale === "en" ? "Spanish" : "English"}
+                        alt=""
+                        width="20" height="20"
                         class="w-5 h-5 object-contain"
                     />
                     <span>{$locale === "en" ? "ES" : "EN"}</span>
                 </a>
             </div>
         </nav>
-    </div>
+    </dialog>
 {/if}
 
 <nav
+    aria-label={$t("nav.primary")}
     class="fixed top-0 left-0 w-full z-50 flex justify-center pointer-events-none transition-transform duration-500 {hideNav
         ? '-translate-y-[150%]'
         : 'translate-y-0'}"
@@ -179,7 +185,7 @@
             "
         ></div>
 
-        <button on:click={() => scrollTo("home")} class="group flex items-center outline-none relative z-20 gap-3">
+        <a href="#home" class="group flex items-center relative z-20 gap-3">
             <div class="relative w-10 h-10 flex items-center justify-center shrink-0">
                 <div
                     class="absolute inset-0 rounded-xl border border-white/20 bg-white/5 backdrop-blur-sm transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]
@@ -197,13 +203,13 @@
                     >Gozálvez</span
                 >
             </div>
-        </button>
+        </a>
 
         <div class="flex items-center gap-4">
             <div class="hidden md:flex items-center">
                 {#each sections as section}
-                    <button
-                        on:click={() => scrollTo(section.id)}
+                    <a
+                        href={"#" + section.id}
                         class="relative px-4 py-2 text-xs font-bold uppercase tracking-wider transition-colors duration-300 rounded-full group flex items-center gap-1.5
                         {activeSection === section.id ? 'text-white' : 'text-gray-400 hover:text-white'}"
                     >
@@ -227,19 +233,21 @@
                                 ? 0
                                 : 5}px)"
                         ></div>
-                    </button>
+                    </a>
                 {/each}
 
                 <a
                     href={alternateLanguageUrl}
                     on:click={() => (isMenuOpen = false)}
+                    aria-label={$locale === "en" ? "Español" : "English"}
                     hreflang={$locale === "en" ? "es" : "en"}
                     lang={$locale === "en" ? "es" : "en"}
-                    class="ml-2 relative px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-gray-400 hover:text-white transition-all duration-300 border border-white/10 rounded-full hover:bg-white/10 flex items-center gap-2"
+                    class="ml-2 relative min-h-9 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-gray-400 hover:text-white transition-all duration-300 border border-white/10 rounded-full hover:bg-white/10 flex items-center gap-2"
                 >
                     <img
                         src={$locale === "en" ? "/img/icons/es.png" : "/img/icons/us.png"}
-                        alt="Language"
+                        alt=""
+                        width="12" height="12"
                         class="w-3 h-3 object-contain"
                     />
                     <span>{$locale === "en" ? "ES" : "EN"}</span>
@@ -249,7 +257,9 @@
             <button
                 on:click={() => (isMenuOpen = !isMenuOpen)}
                 class="md:hidden relative w-12 h-12 flex flex-col items-center justify-center z-50 rounded-full hover:bg-white/5 transition-colors"
-                aria-label="Toggle Menu"
+                aria-label={$t("nav.openMenu")}
+                aria-expanded={isMenuOpen}
+                aria-controls={isMenuOpen ? "mobile-navigation" : undefined}
             >
                 <div class="relative w-6 h-5">
                     <span

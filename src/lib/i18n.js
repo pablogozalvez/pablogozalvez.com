@@ -2,7 +2,7 @@ import { getContext, setContext } from "svelte";
 import { writable, derived } from "svelte/store";
 import en from "../i18n/en.json";
 import es from "../i18n/es.json";
-import { AVAILABLE_LOCALES, getLocaleFromPath, localizePath } from "./locales";
+import { getLocaleFromPath } from "./locales";
 
 export { AVAILABLE_LOCALES, getLocaleFromPath, localizePath } from "./locales";
 

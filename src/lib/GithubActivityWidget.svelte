@@ -41,6 +41,19 @@
     let totalYearContributions = 692;
     let hoveredDay = null;
     let isLive = false;
+    let focusedIndex = 0;
+
+    function moveFocus(event, index) {
+        const offsets = { ArrowLeft: -7, ArrowRight: 7, ArrowUp: -1, ArrowDown: 1 };
+        let next;
+        if (event.key === "Home") next = 0;
+        else if (event.key === "End") next = days.length - 1;
+        else if (event.key in offsets) next = Math.max(0, Math.min(days.length - 1, index + offsets[event.key]));
+        else return;
+        event.preventDefault();
+        focusedIndex = next;
+        event.currentTarget.parentElement.children[next]?.focus();
+    }
 
     onMount(() => {
         const controller = new AbortController();
@@ -146,19 +159,21 @@
     <!-- Authentic GitHub Contribution Grid (26 columns x 7 rows = 182 real days / ~6 months) -->
     <div
         class="grid grid-rows-7 grid-flow-col gap-[2px] sm:gap-[2.5px] w-full justify-between py-1 select-none"
-        role="grid"
+        role="group"
         aria-label={$t("githubActivity.gridAriaLabel")}
     >
-        {#each days as day}
+        {#each days as day, index}
             <div
                 class="w-[7.5px] h-[7.5px] sm:w-[8.5px] sm:h-[8.5px] rounded-[1.5px] transition-all duration-200 cursor-pointer {getLevelClass(day.l)} hover:scale-135 hover:z-10 focus:outline-none focus:scale-135"
                 on:mouseenter={() => (hoveredDay = day)}
                 on:mouseleave={() => (hoveredDay = null)}
-                on:focus={() => (hoveredDay = day)}
+                on:focus={() => { hoveredDay = day; focusedIndex = index; }}
                 on:blur={() => (hoveredDay = null)}
+                on:keydown={(event) => moveFocus(event, index)}
                 title={$t("githubActivity.contributionTitle").replace("{{count}}", day.c).replace("{{date}}", day.d)}
-                role="gridcell"
-                tabindex="0"
+                aria-label={$t("githubActivity.contributionTitle").replace("{{count}}", day.c).replace("{{date}}", formatDate(day.d))}
+                role="img"
+                tabindex={focusedIndex === index ? 0 : -1}
             ></div>
         {/each}
     </div>
