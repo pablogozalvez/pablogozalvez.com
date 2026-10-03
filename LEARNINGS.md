@@ -2,22 +2,22 @@
 
 ## Web Development
 
-### Loaders coordinados con estado que bloquea la interfaz
+### Idioma de la URL y loaders de navegación
 
 **Explicación sencilla**
-Un loader debe representar trabajo que impide usar correctamente la interfaz. Esperar recursos secundarios cuando el HTML ya está preparado retrasa artificialmente el contenido principal.
+La URL determina qué idioma se muestra, tanto en el servidor como en el navegador. Un loader representa una navegación pendiente; no hace falta volver a ocultar una página cuyo HTML ya está preparado.
 
 **Cómo funciona**
-El servidor conserva el contenido renderizado para SEO. Al montar en el navegador, la inicialización del idioma marca su estado como pendiente y no lo resuelve hasta terminar la navegación de SvelteKit. El layout usa únicamente ese estado; fuentes e imágenes continúan cargando sin tapar contenido que ya puede mostrarse.
+SvelteKit prerenderiza cada ruta con su idioma. El contexto de traducciones sincroniza su store con `page.url.pathname`. El layout observa `navigating` y muestra el loader cuando existe un destino con un pathname diferente. Cambiar un ancla no requiere tapar la página. Los enlaces de idioma conservan la consulta y el ancla y permiten usar el historial del navegador.
 
 **Por qué importa**
-Evita que se vea brevemente el contenido en un idioma incorrecto sin vincular el LCP al evento global `window.load`.
+Evita redirecciones inesperadas por el idioma del navegador, destellos de contenido y desmontajes innecesarios. También conserva URLs coherentes para enlaces compartidos y buscadores.
 
 **En este proyecto**
-`src/lib/i18n.js` controla `isLocaleLoaded` y espera `goto()`. `src/routes/+layout.svelte` utiliza esa señal como única condición del loader.
+`src/lib/i18n.js` sincroniza el idioma de la ruta; `src/routes/+layout.svelte` conserva el slot y controla el loader con `navigating`. `src/lib/Navbar.svelte` utiliza enlaces localizados de `src/lib/locales.js`.
 
 **Tradeoffs / pitfalls**
-La preferencia se guarda en `localStorage`, por lo que la primera decisión de idioma ocurre en el navegador. Esperar `window.load` parece conservador, pero hace depender la interfaz de cualquier imagen lenta. Si se necesitara redirigir antes de enviar HTML, habría que guardar el idioma en una cookie legible desde el servidor.
+Una preferencia guardada o `navigator.language` puede servir para sugerir otro idioma, pero no debería sustituir silenciosamente una URL explícita. En páginas prerenderizadas, `url.search` solo se consulta en el navegador: una consulta no puede cambiar el HTML estático generado durante el build.
 
 ### Efectos visuales adaptados a la capacidad gráfica
 
@@ -31,7 +31,7 @@ Al crear un contexto WebGL con `failIfMajorPerformanceCaveat`, el navegador pued
 Los filtros grandes, los fondos animados y un cursor interpolado pueden competir por cada fotograma. Desactivarlos como conjunto evita que una mejora puramente estética vuelva difícil de usar toda la página.
 
 **En este proyecto**
-`src/lib/actions.js` centraliza la detección. `src/lib/Cursor.svelte` no monta sus listeners en modo reducido, mientras `src/lib/Hero.svelte` y `src/routes/+layout.svelte` sustituyen parallax, blur y halos animados por una composición estática.
+`src/lib/actions.js` centraliza la detección. El cursor personalizado permanece desactivado. `src/lib/Hero.svelte` y `src/routes/+layout.svelte` sustituyen parallax, blur y halos animados por una composición estática en modos reducidos; el hero también usa esa variante en móvil.
 
 **Tradeoffs / pitfalls**
 La detección es preventiva, no un benchmark exacto. `prefers-reduced-motion`, poca memoria o pocos núcleos también activan la variante ligera, porque en esos dispositivos la estabilidad y la accesibilidad pesan más que el efecto.
@@ -65,10 +65,10 @@ Una animación de scroll suele ser más fluida cuando cambia únicamente opacida
 Reduce tirones durante el scroll, mantiene el hover independiente y permite respetar `prefers-reduced-motion` sin duplicar lógica JavaScript.
 
 **En este proyecto**
-`src/lib/Projects.svelte` aplica el reveal a `.project-reveal-shell`, mientras `.project-card` conserva la elevación y el escalado de imagen al pasar el ratón.
+`src/lib/Projects.svelte` aplica el reveal a `.project-reveal-shell`, mientras `.project-card` conserva la elevación y el escalado de imagen al pasar el ratón. En `src/lib/actions.js`, el HTML empieza visible; la acción añade `data-reveal-pending` solo a elementos fuera de pantalla y lo retira cuando entran. Sin JavaScript, sin observer o con movimiento reducido, el contenido sigue disponible. Recibir foco también cancela la espera del reveal.
 
 **Tradeoffs / pitfalls**
-Los retrasos basados en el índice global pueden hacer que elementos ya visibles permanezcan ocultos demasiado tiempo. Si se usa stagger, debe limitarse al grupo visible y no acumularse a lo largo de toda la lista.
+Los retrasos basados en el índice global pueden hacer que elementos ya visibles permanezcan ocultos demasiado tiempo. Si se usa stagger, debe limitarse al grupo visible y no acumularse a lo largo de toda la lista. Esconder contenido con CSS antes de que exista JavaScript rompe la mejora progresiva.
 
 ### Actualizaciones coordinadas de dependencias
 
@@ -102,7 +102,7 @@ Evita contenido dependiente de JavaScript, canonicals contradictorios y stores g
 Las reglas de URL viven en `src/lib/locales.js`, el contexto por renderizado en `src/lib/i18n.js`, el atributo `lang` en `src/hooks.server.js` y los metadatos en `src/lib/SEO.svelte`.
 
 **Tradeoffs / pitfalls**
-Todas las variantes deben enlazarse de forma recíproca. La preferencia guardada del usuario mejora la navegación, pero la URL sigue siendo la fuente de verdad para el servidor y los buscadores.
+Todas las variantes deben enlazarse de forma recíproca. Una preferencia del usuario puede informar una sugerencia de idioma, pero la URL sigue siendo la fuente de verdad para el servidor y los buscadores.
 
 ### Desambiguación de una identidad personal
 
@@ -137,3 +137,45 @@ La clave de Resend nunca llega al navegador y el HTML indexable no depende de la
 
 **Tradeoffs / pitfalls**
 Un honeypot reduce spam básico, pero no detiene ataques dirigidos. Turnstile añade una prueba de riesgo sin exponer su clave secreta: la clave de sitio llega al HTML, mientras que la secreta permanece en el servidor. El token caduca, es de un solo uso y siempre debe verificarse en el backend; validar solo el widget del navegador no aporta seguridad real. El correo del visitante debe ser `replyTo`, no el remitente, para no romper la autenticación del dominio.
+
+### Diálogos nativos y propiedad del foco
+
+**Explicación sencilla**
+Un modal no se limita a dibujar una capa: debe impedir interactuar con el fondo, mantener el teclado dentro y devolver el foco al cerrar.
+
+**Cómo funciona**
+`dialog.showModal()` coloca el diálogo en la capa superior del navegador y vuelve inerte el resto de la página. Una acción guarda el elemento que tenía foco y el estado de scroll, abre el modal y enfoca su título. Al desmontarse, cierra el diálogo y restaura esos estados. El evento `cancel` permite gestionar Escape y terminar la transición de salida antes del desmontaje.
+
+**En este proyecto**
+`src/lib/modal.js` comparte ese ciclo de vida entre el visor PDF y el menú móvil. El visor ofrece enlaces directos al documento para navegadores que no muestran PDFs incrustados. Los paneles invisibles del hero usan `inert` y `aria-hidden` para excluir sus controles del teclado y del lector de pantalla.
+
+**Tradeoffs / pitfalls**
+Un modal con divs exige implementar y mantener una trampa de foco propia. Ocultar un panel mediante opacidad o `pointer-events` no evita que se alcance con Tab. Un iframe tiene su propio documento y puede gestionar algunas teclas internamente.
+
+### Cancelación de peticiones y ciclo de vida de Svelte
+
+**Explicación sencilla**
+Una petición tiene un plazo máximo y un dueño. Cuando desaparece el componente que necesita su respuesta, también termina la petición.
+
+**Cómo funciona**
+`fetchJson` crea un `AbortController`, conecta la cancelación del componente y añade un timeout. El plazo cubre tanto `fetch()` como la lectura de JSON. `finally` libera el timer y el listener incluso si falla la petición. En Svelte, `onMount` devuelve la limpieza de forma síncrona; la función asíncrona se invoca dentro, porque una promesa devuelta por `onMount` no registra esa limpieza.
+
+**En este proyecto**
+`src/lib/fetch-json.js` sirve a GitHub y al formulario. GitHub valida fechas, totales y niveles antes de aplicar una respuesta completa. Contact cancela al desmontarse y limita los envíos a 20 segundos, conservando los campos en caso de error. Los datos guardados de GitHub se identifican como una instantánea cuando no llega una respuesta válida.
+
+**Tradeoffs / pitfalls**
+Abortar un POST en el navegador no deshace una operación que el servidor ya haya realizado. Un timeout significa envío sin confirmar y no justifica reintentar automáticamente: hacerlo puede duplicar un correo.
+
+### Visibilidad, animaciones y coste en móvil
+
+**Explicación sencilla**
+Una animación invisible sigue consumiendo recursos si no se pausa. La visibilidad de un elemento y la de la pestaña son estados distintos.
+
+**Cómo funciona**
+`IntersectionObserver` informa de si el elemento aparece en pantalla y `visibilitychange` de si la pestaña está oculta. La acción combina ambos con `prefers-reduced-motion`, comunica la actividad al componente y pausa CSS mediante un atributo. Los intervalos del carrusel también se detienen; pausar CSS no detiene JavaScript. Todos los observers, listeners e intervalos se liberan al desmontar.
+
+**En este proyecto**
+`src/lib/animation-visibility.js` controla el hero, la gráfica, Contact, Footer y el fondo. En móvil se evita la petición de la gráfica oculta, el parallax y los filtros continuos del hero. Se reserva espacio para feedback y se utilizan campos de 16px para evitar el zoom automático de ciertos navegadores móviles.
+
+**Tradeoffs / pitfalls**
+Pausar indiscriminadamente animaciones de entrada con movimiento reducido puede congelarlas en su primer fotograma invisible. La regla de pausa se aplica con `no-preference`; en modo reducido las entradas terminan rápidamente. `svh` ofrece una altura estable para el hero cuando cambian las barras del navegador, mientras `dvh` permite que un diálogo se adapte al espacio disponible.
