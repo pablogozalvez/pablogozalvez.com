@@ -43,6 +43,9 @@
                 <p class="text-gray-400 max-w-sm text-sm leading-relaxed">
                     {$t("footer.description")}
                 </p>
+                <p class="text-gray-400 max-w-sm text-sm leading-relaxed">
+                    {$t("footer.tagline")}
+                </p>
             </div>
 
             <div class="footer-item" style="--footer-delay: 120ms" use:reveal>

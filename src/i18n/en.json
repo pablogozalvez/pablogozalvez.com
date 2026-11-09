@@ -47,9 +47,9 @@
     },
     "hero": {
         "title": "PABLO<br />GOZÁLVEZ",
-        "subtitle": "I'm Pablo Gozálvez, a full-stack software developer based in Alicante, Spain. I build web platforms, mobile apps and interactive experiences, combining frontend, backend and Unity development.",
-        "viewProjects": "View Projects",
-        "contactMe": "Contact Me",
+        "subtitle": "I'm Pablo Gozálvez, a software developer from Alicante. I mainly work with Java and Spring, and my own projects also include web applications, tools and games.",
+        "viewProjects": "View projects",
+        "contactMe": "Let's talk",
         "scroll": "Go to About me",
         "code": {
             "hello": "Hello! I am ",
@@ -75,15 +75,14 @@
                 "pseudoBlocks": "Desktop tool · Custom lexer"
             },
             "highlights": {
-                "outreal": "Social map and gamification",
+                "outreal": "Activities and people nearby",
                 "pseudoBlocks": "Custom lexer and parser"
             },
             "tabAbout": "About Me",
             "tabProjects": "Projects",
-            "available": "Available for projects",
             "location": "Alicante, ES",
-            "role": "Full Stack & Software Dev",
-            "summary": "Building web platforms, mobile applications, and interactive experiences, connecting modern frontend with solid backend architectures and Unity.",
+            "role": "Software engineer",
+            "summary": "I currently work at Accenture on Java and Spring applications, APIs and databases. Outside work, I keep building my own projects, from mobile apps to Unity games.",
             "statExp": "Years exp.",
             "statProjects": "Projects",
             "statReleases": "Releases",
@@ -94,19 +93,19 @@
             "seeNext": "Next project",
             "seePrev": "Previous project",
             "switchTab": "Explore projects",
-            "techStack": "Technologies",
+            "techStack": "Technologies I use",
             "techCategories": {
                 "frontend": "Frontend",
-                "backend": "Backend & APIs",
-                "dataCloud": "Databases & Cloud",
-                "interactive": "3D & Game Dev"
+                "backend": "Backend",
+                "dataCloud": "Data and tools",
+                "interactive": "Games and 3D"
             },
             "capabilitiesTitle": "What I bring",
             "projectDescriptions": {
-                "outreal": "A social mobile app for discovering spontaneous activities nearby through maps, trust and gamification.",
-                "hospitalXyz": "An interactive 3D hospital tour that helps patients prepare for radiodiagnosis visits.",
-                "trickyMansion": "A procedurally generated 2D Unity platformer released on Google Play and Itch.io.",
-                "pseudoBlocks": "A C# visual programming environment with a custom lexer and parser."
+                "outreal": "A mobile app for finding things to do and meeting people nearby, with a map, proximity alerts and a user trust system.",
+                "hospitalXyz": "A 3D tour to explore the route to radiodiagnosis at Hospital Dr. Balmis before a visit.",
+                "trickyMansion": "A 2D platformer with random levels, made with Unity and released on Google Play and itch.io.",
+                "pseudoBlocks": "A block-based programming environment in C# and WinForms, with its own lexer and parser."
             },
             "capabilities": {
                 "frontend": "Frontend and mobile apps",
@@ -120,55 +119,55 @@
     },
     "about": {
         "title": "About me",
-        "p1": "I don't just write code; from a very young age I was <strong class=\"text-white font-medium\">building my own programs</strong> and learning on my own. Over time, I decided to dedicate my career to <strong class=\"text-white font-medium\">software development</strong>, deepening my knowledge and improving every day.",
-        "p2": "What started as small, self-taught programs in my childhood gradually evolved into more complex and challenging projects. Each challenge taught me how to <strong class=\"text-white font-medium\">solve problems practically</strong> and understand how to connect <strong class=\"text-white font-medium\">frontend and backend</strong> so that everything works together as a coherent whole.",
-        "trackRecord": "I have worked on <strong class=\"text-gray-200 font-medium\">more than 20 projects</strong>, taken <strong class=\"text-gray-200 font-medium\">more than 5 releases</strong> into production, and built <strong class=\"text-gray-200 font-medium\">over 2 years of professional experience</strong>.",
+        "p1": "I started making programs on my own and ended up doing this for a living. I like understanding how things work and having room to try out ideas, whether in an application, a tool or a game.",
+        "p2": "I now work at Accenture, developing and maintaining Java and Spring applications. My day-to-day work includes REST and SOAP APIs, reviewing SQL queries and fixing production issues. I'm also taking a specialization course in Artificial Intelligence and Big Data.",
+        "trackRecord": "I always seem to have a project on the go. Here are a few of them: applications, tools and games I've worked on.",
         "skills": {
-            "frontend": "Frontend",
-            "backend": "Backend & Systems",
-            "gamedev": "Game Development",
-            "languages": "Languages"
+            "frontend": "Frontend and applications",
+            "backend": "Backend and APIs",
+            "gamedev": "Games and 3D",
+            "dataTools": "Databases and tools"
         },
         "resume": {
-            "title": "Check out my resume",
-            "subtitle": "See the full timeline of my experience"
+            "title": "View my CV",
+            "subtitle": "Experience, education and technologies I've worked with."
         }
     },
     "projects": {
         "sourceCode": "Source code",
         "featured": "Featured",
         "title": "Projects",
-        "subtitle": "A showcase of my completed projects, technical experiments, and contributions.",
-        "viewArchive": "View full archive",
+        "subtitle": "Some of the applications, tools and games I've worked on. You can try them, browse the code or see how they were built.",
+        "viewArchive": "More projects on GitHub",
         "article": "Article",
         "moreInfo": "More info",
         "openProject": "Open project",
         "openPdf": "Open PDF document",
         "items": {
             "outreal": {
-                "description": "Mobile application that connects people through spontaneous social activities. Social map, proximity notifications. With a trust system and gamification, the app promotes safe and fun meetups, offering a real alternative to social networks centered only on digital interactions."
+                "description": "A mobile app for finding things to do and meeting people nearby. It includes a map, proximity alerts and a user trust system."
             },
             "hospitalXyz": {
                 "title": "Virtual hospital navigation tours",
-                "description": "Collaborative project between Hospital General Universitario Dr. Balmis and educational centers CIPFP Canastell and IES San Vicente to facilitate patient assistance during their journey to the hospital, specifically in the radiodiagnosis area, providing prior information that generates comfort and security."
+                "description": "A 3D hospital tour that lets patients explore the route to radiodiagnosis before their visit. A collaborative project by Hospital Dr. Balmis, CIPFP Canastell and IES San Vicente."
             },
             "trickyMansion": {
-                "description": "A 2D platformer game developed in Unity. Features a random vertical scrolling level generation, various enemies and traps. It has been showcased at several game development events and is published on platforms like Google Play and Itch.io."
+                "description": "A 2D platformer with randomly generated levels, enemies and traps. Developed with Unity and released on Google Play and itch.io."
             },
             "pseudoBlocks": {
-                "description": "Visual programming environment built from scratch with C# WinForms. Includes a custom lexer/parser for interpreting block logic."
+                "description": "A block-based programming environment made with C# and WinForms. It includes its own lexer and parser to interpret instructions."
             },
             "clumsyMimics": {
-                "description": "Award-winning Game Jam entry created in 48h. Focuses on rapid prototyping and polished mechanic feel."
+                "description": "A game developed in 48 hours for a game jam, where it won an award."
             },
             "scrollCarousel": {
-                "description": "Open-source Unity UI component providing high-performance, inertia-based scrolling for canvas elements."
+                "description": "A component for creating carousels with scrolling and inertia in Unity interfaces. It is published on the Asset Store, with source code available on GitHub."
             },
             "superMarioPhaser": {
-                "description": "Browser-based recreation of the classic using Phaser 3. Demonstrates JS physics engines and tilemap management."
+                "description": "A browser-based recreation of Super Mario, made with Phaser and JavaScript. It includes platforming physics and level generation."
             },
             "jokerAssistant": {
-                "description": "Desktop voice assistant integrating Microsoft Speech API for command recognition and automation."
+                "description": "A desktop assistant that recognizes voice commands and performs actions using Microsoft Speech API. Developed with C# and WinForms."
             }
         }
     },
@@ -188,17 +187,16 @@
     "contact": {
         "copyEmail": "Copy email address",
         "copyFailed": "Copy failed. Select the address or use the email link.",
-        "openForOpportunities": "Available",
         "title": "Contact",
-        "subtitle": "Do you have a project, a collaboration proposal, or a professional opportunity? Tell me the details and let's talk.",
-        "cardIntro": "Send me a message using the form or reach out directly through any of these channels.",
+        "subtitle": "Want to talk about a project or a job opportunity? Send me a message and let's discuss it.",
+        "cardIntro": "You can use the form or email me directly.",
         "directAccess": "Direct Access",
         "emailCommand": "Email Command",
         "copied": "Copied to clipboard!",
         "location": "Alicante, ES",
         "emails": {
             "brand": "Pablo Gozálvez",
-            "role": "Full-stack software developer · Alicante",
+            "role": "Software engineer · Alicante",
             "website": "pablogozalvez.com",
             "owner": {
                 "subject": "New message from {{name}}",
@@ -231,10 +229,10 @@
             "email": "Email",
             "emailPlaceholder": "john@example.com",
             "message": "Message",
-            "messagePlaceholder": "Tell me what's on your mind...",
-            "send": "Send Message",
+            "messagePlaceholder": "Tell me what you have in mind.",
+            "send": "Send message",
             "sending": "Sending...",
-            "sent": "Message received!",
+            "sent": "I've received your message.",
             "confirmationSent": "I've sent you a confirmation email.",
             "errors": {
                 "timeout": "Delivery was not confirmed. It may have been sent; wait before trying again, or use email.",
@@ -246,10 +244,10 @@
         }
     },
     "footer": {
-        "description": "Software Developer | Game Creator | Technology Enthusiast",
+        "description": "Software engineer based in Alicante. I develop applications, tools and games.",
         "navigation": "Navigation",
         "connect": "Connect",
-        "allSystemsOperational": "All Systems Operational",
-        "rights": "Pablo Gozálvez. All rights reserved."
+        "rights": "Pablo Gozálvez. All rights reserved.",
+        "tagline": "Always working on something."
     }
 }

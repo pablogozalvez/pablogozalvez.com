@@ -137,20 +137,20 @@
 
     $: techCategories = [
         {
-            category: $t("hero.preview.techCategories.frontend"),
-            items: ["TypeScript", "Angular", "React"],
+            category: $t("hero.preview.techCategories.backend"),
+            items: ["Java", "Spring", "REST / SOAP"],
         },
         {
-            category: $t("hero.preview.techCategories.backend"),
-            items: ["Java", "Spring Boot", "Express"],
+            category: $t("hero.preview.techCategories.frontend"),
+            items: ["TypeScript", "Angular", "React", "Ionic"],
         },
         {
             category: $t("hero.preview.techCategories.dataCloud"),
-            items: ["PostgreSQL", "MongoDB", "Docker"],
+            items: ["SQL", "PostgreSQL", "Git", "Docker"],
         },
         {
             category: $t("hero.preview.techCategories.interactive"),
-            items: ["Unity", "C#", "Three.js", "WebGL"],
+            items: ["C#", "Unity", "Three.js"],
         },
     ];
 
@@ -489,7 +489,7 @@
                                     >
                                         {#each techCategories as category}
                                             <div
-                                                class="p-2 sm:p-2.5 rounded-xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-colors flex flex-col justify-center min-w-0"
+                                                class="p-2 sm:p-2.5 rounded-xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-colors flex flex-col justify-start min-w-0"
                                             >
                                                 <span
                                                     class="text-[10px] font-mono text-gray-400 uppercase tracking-wider block mb-1.5 font-medium truncate"
@@ -497,7 +497,7 @@
                                                     {category.category}
                                                 </span>
                                                 <div
-                                                    class="flex flex-nowrap items-center gap-1 overflow-hidden"
+                                                    class="flex flex-wrap items-center gap-1"
                                                 >
                                                     {#each category.items as item}
                                                         <span

@@ -9,8 +9,8 @@
         ? "Pablo Gozalvez | Desarrollador de software y videojuegos"
         : "Pablo Gozalvez | Software & Game Developer";
     $: description = isSpanish
-        ? "Portfolio oficial de Pablo Gozalvez (Pablo Gozálvez), desarrollador de software y videojuegos en Alicante. Proyectos full stack, Unity y experiencias interactivas."
-        : "Official portfolio of Pablo Gozalvez (Pablo Gozálvez), a software and game developer in Alicante, Spain. Explore full-stack, Unity and interactive projects.";
+        ? "Pablo Gozálvez, desarrollador de software en Alicante. Experiencia con Java, Spring y APIs. Proyectos web, herramientas y videojuegos con Unity."
+        : "Pablo Gozálvez, a software developer based in Alicante. Experience with Java, Spring and APIs. Web projects, tools and Unity games.";
     $: canonicalUrl = isSpanish ? `${SITE_URL}/es` : `${SITE_URL}/`;
     $: ogLocale = isSpanish ? "es_ES" : "en_US";
     $: alternateLocale = isSpanish ? "en_US" : "es_ES";
@@ -25,7 +25,7 @@
         name: "Pablo Gozalvez",
         alternateName: "Pablo Gozálvez",
         url: `${SITE_URL}/`,
-        jobTitle: isSpanish ? "Desarrollador de software y videojuegos" : "Software and Game Developer",
+        jobTitle: isSpanish ? "Ingeniero de software" : "Software engineer",
         description,
         address: {
             "@type": "PostalAddress",
