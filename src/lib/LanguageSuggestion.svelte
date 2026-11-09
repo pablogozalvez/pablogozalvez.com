@@ -1,7 +1,6 @@
 <script>
     import { onMount, tick } from "svelte";
     import { page } from "$app/stores";
-    import { goto } from "$app/navigation";
     import { getI18n, localizePath } from "./i18n";
     import { modal } from "./modal";
     import { getSuggestedLocale, getLanguageSuggestionCopy, LANGUAGE_SUGGESTION_SESSION_KEY } from "./language-suggestion";
@@ -48,7 +47,8 @@
             suggestedLocale = null;
             // Restaurar foco y scroll antes de empezar la navegación de idioma.
             await tick();
-            if (mounted && destination) await goto(destination);
+            // Cargar el HTML del idioma elegido en lugar de reutilizar la página actual.
+            if (mounted && destination) window.location.assign(destination);
         };
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) finish();
         else closeTimer = window.setTimeout(finish, 140);
