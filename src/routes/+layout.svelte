@@ -10,6 +10,7 @@
     import { fly } from "svelte/transition";
     import { isLowPerformanceMode } from "../lib/actions";
     import { animationVisibility } from "../lib/animation-visibility";
+    import { IconArrowUp } from "../lib/icons";
     import "../app.css";
 
     export const hydrate = false;
@@ -58,16 +59,7 @@
 
 <div class="layout-background">
     <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none" use:animationVisibility>
-        <div class="absolute inset-0 static-background-glow" class:show-static-glow={reducedEffects}></div>
-        {#if !reducedEffects}
-            <div
-                class="animated-background-glow absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-600/20 blur-[120px] animate-pulse"
-            ></div>
-            <div
-                class="animated-background-glow absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-purple-600/20 blur-[120px] animate-pulse"
-                style="animation-delay: 2s;"
-            ></div>
-        {/if}
+        <div class="absolute inset-0 static-background-glow"></div>
     </div>
 </div>
 
@@ -75,12 +67,10 @@
     <button
         on:click={scrollToTop}
         transition:fly={{ y: 20, duration: 300 }}
-        class="fixed bottom-8 right-8 z-50 w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/10 flex items-center justify-center text-white hover:bg-white/20 hover:scale-110 transition-all shadow-lg group"
+        class="fixed bottom-8 right-8 z-50 w-11 h-11 rounded-xl bg-white/10 backdrop-blur-md border border-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-colors"
         aria-label={$t("common.scrollToTop")}
     >
-        <svg class="w-5 h-5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
-        </svg>
+        <IconArrowUp class="w-5 h-5 text-white" />
     </button>
 {/if}
 
@@ -99,22 +89,9 @@
     }
 
     .static-background-glow {
-        display: none;
-        background:
-            radial-gradient(circle at 8% 8%, rgba(37, 99, 235, 0.1), transparent 34%),
-            radial-gradient(circle at 92% 92%, rgba(147, 51, 234, 0.1), transparent 34%);
-    }
-
-    .show-static-glow {
         display: block;
-    }
-
-    @media (hover: none), (prefers-reduced-motion: reduce) {
-        .static-background-glow {
-            display: block;
-        }
-        .animated-background-glow {
-            display: none;
-        }
+        background:
+            radial-gradient(circle at 8% 8%, rgba(37, 99, 235, 0.08), transparent 34%),
+            radial-gradient(circle at 92% 92%, rgba(147, 51, 234, 0.08), transparent 34%);
     }
 </style>

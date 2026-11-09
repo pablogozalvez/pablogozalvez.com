@@ -2,11 +2,11 @@
     import { getI18n } from "./i18n";
     import { fade, fly, scale } from "svelte/transition";
     import { cubicOut, cubicInOut } from "svelte/easing";
-    import { rafThrottle } from "./actions";
     import { page } from "$app/stores";
     import { localizePath } from "./locales";
     import { browser } from "$app/environment";
     import { modal } from "./modal";
+    import { IconClose } from "./icons";
 
     export let activeSection = "home";
     export let hideNav = false;
@@ -18,8 +18,6 @@
     let innerHeight = 0;
 
     let navElement;
-    let mouseX = 0;
-    let mouseY = 0;
 
     let isMenuOpen = false;
 
@@ -89,13 +87,7 @@
         }
     }
 
-    const handleMouseMove = rafThrottle((e) => {
-        if (navElement) {
-            const rect = navElement.getBoundingClientRect();
-            mouseX = e.clientX - rect.left;
-            mouseY = e.clientY - rect.top;
-        }
-    });
+
 </script>
 
 <svelte:window bind:scrollY bind:innerWidth bind:innerHeight />
@@ -111,8 +103,14 @@
         out:fade={{ duration: 100, easing: cubicInOut }}
     >
         <h2 id="mobile-menu-title" data-modal-title tabindex="-1" class="sr-only">{$t("nav.menu")}</h2>
-        <button type="button" on:click={() => (isMenuOpen = false)} aria-label={$t("nav.closeMenu")} class="fixed top-6 right-6 z-20 w-12 h-12 rounded-full text-3xl bg-[#050505] hover:bg-white/10">×</button>
-        <div class="absolute inset-0" in:scale={{ start: 1.1, duration: 800, easing: cubicOut }}></div>
+        <button
+            type="button"
+            on:click={() => (isMenuOpen = false)}
+            aria-label={$t("nav.closeMenu")}
+            class="fixed top-6 right-6 z-20 w-11 h-11 rounded-xl flex items-center justify-center bg-white/10 hover:bg-white/20 text-white transition-colors"
+        >
+            <IconClose class="w-5 h-5 text-white" />
+        </button>
 
         <nav aria-label={$t("nav.menu")} class="flex flex-col items-center gap-8 relative z-10 my-auto shrink-0">
             {#each sections as section, i}
@@ -120,8 +118,8 @@
                     href={"#" + section.id}
                     on:click={() => (isMenuOpen = false)}
                     in:fly={{ y: 50, delay: 200 + i * 100, duration: 500, easing: cubicOut }}
-                    class="flex items-baseline gap-3 transition-all duration-300 hover:scale-110
-                    {activeSection === section.id ? 'scale-105' : 'hover:text-white'}"
+                    class="flex items-baseline gap-3 transition-colors duration-200
+                    {activeSection === section.id ? 'text-white' : 'text-white/60 hover:text-white'}"
                 >
                     {#if section.num}
                         <span class="text-sm font-mono font-medium tracking-wide {activeSection === section.id ? 'text-gray-400' : 'text-white/20'}">{section.num}</span>
@@ -136,7 +134,7 @@
                     aria-label={$locale === "en" ? "Español" : "English"}
                     hreflang={$locale === "en" ? "es" : "en"}
                     lang={$locale === "en" ? "es" : "en"}
-                    class="text-sm font-mono text-gray-400 border border-white/10 rounded-full px-4 py-3 hover:bg-white/10 hover:text-white transition-all hover:scale-105 active:scale-95 flex items-center gap-3"
+                    class="text-sm font-mono text-gray-400 border border-white/10 rounded-lg px-4 py-3 hover:bg-white/10 hover:text-white transition-colors flex items-center gap-3"
                 >
                     <img
                         src={$locale === "en" ? "/img/icons/es.png" : "/img/icons/us.png"}
@@ -159,40 +157,17 @@
 >
     <div
         bind:this={navElement}
-        on:mousemove={handleMouseMove}
         role="none"
-        class="nav-surface pointer-events-auto relative group/nav flex items-center justify-between border border-transparent overflow-hidden shadow-2xl"
+        class="nav-surface pointer-events-auto relative flex items-center justify-between border border-transparent overflow-hidden"
         style={navStylesCache}
     >
-        <div
-            class="hidden md:block absolute inset-0 pointer-events-none transition-opacity duration-300"
-            style="
-                background: radial-gradient(600px circle at {mouseX}px {mouseY}px, rgba(255,255,255,0.06), transparent 40%);
-                opacity: {progress};
-            "
-        ></div>
-
-        <div
-            class="hidden md:block absolute inset-0 pointer-events-none transition-opacity duration-300 border border-white/0"
-            style="
-                background: radial-gradient(400px circle at {mouseX}px {mouseY}px, rgba(255,255,255,0.1), transparent 40%);
-                mask-image: linear-gradient(black, black), linear-gradient(black, black);
-                mask-clip: content-box, border-box;
-                mask-composite: exclude;
-                -webkit-mask-composite: xor;
-                opacity: {progress};
-                border-radius: inherit;
-            "
-        ></div>
-
         <a href="#home" class="group flex items-center relative z-20 gap-3">
             <div class="relative w-10 h-10 flex items-center justify-center shrink-0">
                 <div
-                    class="absolute inset-0 rounded-xl border border-white/20 bg-white/5 backdrop-blur-sm transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]
-                    group-hover:rotate-6 group-hover:scale-110 group-hover:border-white/50 group-hover:bg-white/10 shadow-lg"
+                    class="absolute inset-0 rounded-xl border border-white/20 bg-white/5 backdrop-blur-sm transition-colors duration-200 group-hover:border-white/40 group-hover:bg-white/10"
                 ></div>
                 <span
-                    class="relative z-10 font-black text-white text-sm tracking-tighter group-hover:scale-110 transition-transform duration-500"
+                    class="relative z-10 font-black text-white text-sm tracking-tighter"
                     >PG</span
                 >
             </div>
@@ -210,29 +185,13 @@
                 {#each sections as section}
                     <a
                         href={"#" + section.id}
-                        class="relative px-4 py-2 text-xs font-bold uppercase tracking-wider transition-colors duration-300 rounded-full group flex items-center gap-1.5
-                        {activeSection === section.id ? 'text-white' : 'text-gray-400 hover:text-white'}"
+                        class="relative px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider transition-colors duration-200 rounded-lg group flex items-center gap-1.5
+                        {activeSection === section.id ? 'text-white bg-white/10' : 'text-gray-400 hover:text-white'}"
                     >
                         {#if section.num}
                             <span class="relative z-10 text-[9px] font-mono font-medium opacity-40">{section.num}</span>
                         {/if}
                         <span class="relative z-10">{section.label}</span>
-
-                        <div
-                            class="absolute inset-0 bg-white/10 rounded-full transition-all duration-300"
-                            style="opacity: {activeSection === section.id && progress > 0.8
-                                ? 1
-                                : 0}; transform: scale({activeSection === section.id && progress > 0.8 ? 1 : 0.9})"
-                        ></div>
-
-                        <div
-                            class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-white rounded-full shadow-[0_0_10px_white] transition-all duration-300"
-                            style="opacity: {activeSection === section.id && progress <= 0.8
-                                ? 1
-                                : 0}; transform: translateY({activeSection === section.id && progress <= 0.8
-                                ? 0
-                                : 5}px)"
-                        ></div>
                     </a>
                 {/each}
 
@@ -242,7 +201,7 @@
                     aria-label={$locale === "en" ? "Español" : "English"}
                     hreflang={$locale === "en" ? "es" : "en"}
                     lang={$locale === "en" ? "es" : "en"}
-                    class="ml-2 relative min-h-9 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-gray-400 hover:text-white transition-all duration-300 border border-white/10 rounded-full hover:bg-white/10 flex items-center gap-2"
+                    class="ml-2 relative min-h-9 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-gray-400 hover:text-white transition-colors duration-200 border border-white/10 rounded-lg hover:bg-white/10 flex items-center gap-2"
                 >
                     <img
                         src={$locale === "en" ? "/img/icons/es.png" : "/img/icons/us.png"}
@@ -256,7 +215,7 @@
 
             <button
                 on:click={() => (isMenuOpen = !isMenuOpen)}
-                class="md:hidden relative w-12 h-12 flex flex-col items-center justify-center z-50 rounded-full hover:bg-white/5 transition-colors"
+                class="md:hidden relative w-11 h-11 flex flex-col items-center justify-center z-50 rounded-lg hover:bg-white/5 transition-colors"
                 aria-label={$t("nav.openMenu")}
                 aria-expanded={isMenuOpen}
                 aria-controls={isMenuOpen ? "mobile-navigation" : undefined}

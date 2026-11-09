@@ -13,7 +13,7 @@
     let showPdfModal = false;
 </script>
 
-<main id="main-content" tabindex="-1" class="bg-[#030712] shadow-[0_-20px_50px_rgba(0,0,0,0.5)]">
+<main id="main-content" tabindex="-1" class="bg-[#030712]">
     <Hero />
     <About {showPdfModal} on:showPdfModalChange={(e) => (showPdfModal = e.detail)} />
     <Projects />

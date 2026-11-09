@@ -4,6 +4,7 @@
     import { fetchJson } from "./fetch-json";
     import { parseGithubActivity } from "./github-activity";
     import { animationVisibility } from "./animation-visibility";
+    import { IconExternalLink } from "./icons";
 
     const { locale, t } = getI18n();
 
@@ -97,13 +98,13 @@
     function getLevelClass(level) {
         switch (level) {
             case 1:
-                return "bg-emerald-950/70 border border-emerald-500/40 hover:bg-emerald-500 hover:shadow-[0_0_8px_#10b981]";
+                return "bg-emerald-950/70 border border-emerald-500/40 hover:bg-emerald-500";
             case 2:
-                return "bg-emerald-700/80 border border-emerald-400/50 hover:bg-emerald-400 hover:shadow-[0_0_9px_#34d399]";
+                return "bg-emerald-700/80 border border-emerald-400/50 hover:bg-emerald-400";
             case 3:
-                return "bg-emerald-500 border border-emerald-300 shadow-[0_0_6px_rgba(16,185,129,0.5)] hover:bg-emerald-300 hover:shadow-[0_0_10px_#6ee7b7]";
+                return "bg-emerald-500 border border-emerald-300 hover:bg-emerald-300";
             case 4:
-                return "bg-emerald-400 border border-white/60 shadow-[0_0_8px_rgba(52,211,153,0.8)] hover:bg-white hover:shadow-[0_0_12px_#ffffff]";
+                return "bg-emerald-400 border border-white/60 hover:bg-white";
             default:
                 return "bg-white/[0.04] border border-white/5 hover:bg-white/20";
         }
@@ -112,47 +113,31 @@
 
 <div
     use:animationVisibility
-    class="w-full max-w-lg my-6 p-4 rounded-2xl bg-gradient-to-br from-white/[0.04] via-white/[0.015] to-transparent border border-white/10 shadow-2xl shadow-black/40 backdrop-blur-md transition-all duration-300 hover:border-white/20 group/gh"
+    class="w-full max-w-lg my-6 p-4 rounded-2xl bg-white/[0.03] border border-white/10 transition-colors hover:border-white/20"
     role="region"
     aria-label={$t("githubActivity.ariaLabel")}
 >
     <!-- Top Header Bar -->
     <div class="flex items-center justify-between mb-3">
-        <!-- User Pill & Link -->
+        <!-- User Link -->
         <a
             href="https://github.com/pablogozalvez"
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center gap-2 px-2.5 py-1 rounded-lg bg-white/[0.04] hover:bg-white/10 border border-white/10 hover:border-white/25 transition-all text-xs text-gray-200 group/link"
+            class="inline-flex items-center gap-2 px-2.5 py-1 rounded-lg bg-white/[0.04] hover:bg-white/10 border border-white/10 hover:border-white/25 transition-colors text-xs text-gray-200"
         >
             <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
             </svg>
             <span class="font-mono font-medium tracking-tight">pablogozalvez</span>
-            <span class="relative flex h-1.5 w-1.5 ml-0.5">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
-            </span>
-            <svg class="w-3 h-3 text-gray-400 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-            </svg>
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 ml-0.5"></span>
+            <IconExternalLink class="w-3 h-3 text-gray-400" />
         </a>
 
-        <!-- Metric counter & live equalizer -->
-        <div class="flex items-center gap-3">
-            <div class="text-right">
-                <span class="text-xs font-mono font-bold text-emerald-400">{totalYearContributions}</span>
-                <span class="text-[10px] text-gray-400 font-mono ml-1">{$t("githubActivity.commitsPerYear")}</span>
-            </div>
-
-            <!-- Animated audio/frequency micro bars -->
-            <div class="flex items-end gap-0.5 h-4 pl-2 border-l border-white/10" aria-hidden="true">
-                <span class="w-0.5 bg-gradient-to-t from-emerald-500 to-teal-300 rounded-full animate-bar-1"></span>
-                <span class="w-0.5 bg-gradient-to-t from-emerald-500 to-teal-300 rounded-full animate-bar-2"></span>
-                <span class="w-0.5 bg-gradient-to-t from-emerald-500 to-teal-300 rounded-full animate-bar-3"></span>
-                <span class="w-0.5 bg-gradient-to-t from-emerald-500 to-teal-300 rounded-full animate-bar-4"></span>
-                <span class="w-0.5 bg-gradient-to-t from-emerald-500 to-teal-300 rounded-full animate-bar-5"></span>
-            </div>
+        <!-- Metric counter -->
+        <div class="text-right">
+            <span class="text-xs font-mono font-bold text-emerald-400">{totalYearContributions}</span>
+            <span class="text-[10px] text-gray-400 font-mono ml-1">{$t("githubActivity.commitsPerYear")}</span>
         </div>
     </div>
 
@@ -165,7 +150,7 @@
         {#each days as day, index}
             <button
                 type="button"
-                class="p-0 w-[7.5px] h-[7.5px] sm:w-[8.5px] sm:h-[8.5px] rounded-[1.5px] transition-all duration-200 cursor-pointer {getLevelClass(day.l)} hover:scale-135 hover:z-10 focus:outline-none focus:scale-135"
+                class="p-0 w-[7.5px] h-[7.5px] sm:w-[8.5px] sm:h-[8.5px] rounded-[1.5px] transition-colors duration-150 cursor-pointer {getLevelClass(day.l)} focus:outline-none"
                 on:mouseenter={() => (hoveredDay = day)}
                 on:mouseleave={() => (hoveredDay = null)}
                 on:focus={() => { hoveredDay = day; focusedIndex = index; }}
@@ -184,7 +169,7 @@
         <!-- Interactive Tooltip or Default Text -->
         <div class="flex items-center gap-1.5 min-w-0">
             {#if hoveredDay}
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_#10b981] shrink-0"></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0"></span>
                 <span class="text-white font-semibold truncate">
                     {hoveredDay.c} {hoveredDay.c === 1 ? $t("githubActivity.commit") : $t("githubActivity.commits")}
                 </span>
@@ -207,30 +192,4 @@
     </div>
 </div>
 
-<style>
-    @keyframes eqBar1 {
-        0%, 100% { height: 4px; }
-        50% { height: 16px; }
-    }
-    @keyframes eqBar2 {
-        0%, 100% { height: 14px; }
-        50% { height: 6px; }
-    }
-    @keyframes eqBar3 {
-        0%, 100% { height: 8px; }
-        50% { height: 18px; }
-    }
-    @keyframes eqBar4 {
-        0%, 100% { height: 16px; }
-        50% { height: 5px; }
-    }
-    @keyframes eqBar5 {
-        0%, 100% { height: 6px; }
-        50% { height: 13px; }
-    }
-    .animate-bar-1 { animation: eqBar1 1.2s ease-in-out infinite; }
-    .animate-bar-2 { animation: eqBar2 0.9s ease-in-out infinite; }
-    .animate-bar-3 { animation: eqBar3 1.4s ease-in-out infinite; }
-    .animate-bar-4 { animation: eqBar4 1.1s ease-in-out infinite; }
-    .animate-bar-5 { animation: eqBar5 1.3s ease-in-out infinite; }
-</style>
+

@@ -94,7 +94,13 @@
             "seeNext": "Next project",
             "seePrev": "Previous project",
             "switchTab": "Explore projects",
-            "techStack": "Key Technologies",
+            "techStack": "Technologies",
+            "techCategories": {
+                "frontend": "Frontend",
+                "backend": "Backend & APIs",
+                "dataCloud": "Databases & Cloud",
+                "interactive": "3D & Game Dev"
+            },
             "capabilitiesTitle": "What I bring",
             "projectDescriptions": {
                 "outreal": "A social mobile app for discovering spontaneous activities nearby through maps, trust and gamification.",

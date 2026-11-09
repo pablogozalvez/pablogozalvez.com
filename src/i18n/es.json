@@ -94,7 +94,13 @@
             "seeNext": "Siguiente proyecto",
             "seePrev": "Proyecto anterior",
             "switchTab": "Explorar proyectos",
-            "techStack": "Tecnologías clave",
+            "techStack": "Tecnologías",
+            "techCategories": {
+                "frontend": "Frontend",
+                "backend": "Backend y APIs",
+                "dataCloud": "Bases de datos y Cloud",
+                "interactive": "3D y Videojuegos"
+            },
             "capabilitiesTitle": "Qué puedo aportar",
             "projectDescriptions": {
                 "outreal": "Una app móvil para descubrir planes espontáneos cercanos mediante mapas, confianza y gamificación.",

@@ -1,8 +1,9 @@
 <script>
-    import { reveal, rafThrottle } from "./actions";
+    import { reveal } from "./actions";
     import { getI18n } from "./i18n";
     import { fade, scale } from "svelte/transition";
     import { cubicOut } from "svelte/easing";
+    import { IconArrowRight } from "./icons";
 
     const { t } = getI18n();
 
@@ -13,19 +14,42 @@
             category: $t("about.skills.languages"),
             icon: "M14.25 9.75 16.5 12l-2.25 2.25m-4.5 0L7.5 12l2.25-2.25M6 20.25h12A2.25 2.25 0 0 0 20.25 18V6A2.25 2.25 0 0 0 18 3.75H6A2.25 2.25 0 0 0 3.75 6v12A2.25 2.25 0 0 0 6 20.25Z",
             color: "text-indigo-400",
-            items: ["Java", "TypeScript", "JavaScript", "C#", "PHP", "Kotlin", "Python", "SQL"],
+            items: [
+                "Java",
+                "TypeScript",
+                "JavaScript",
+                "C#",
+                "PHP",
+                "Kotlin",
+                "Python",
+                "SQL",
+            ],
         },
         {
             category: $t("about.skills.frontend"),
             icon: "M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0V12a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 12V5.25",
             color: "text-blue-400",
-            items: ["Angular", "Next.js", "React", "Tailwind", "Bootstrap", "Java FX"],
+            items: [
+                "Angular",
+                "Next.js",
+                "React",
+                "Tailwind",
+                "Bootstrap",
+                "Java FX",
+            ],
         },
         {
             category: $t("about.skills.backend"),
             icon: "M5.25 14.25h13.5m-13.5 0a3 3 0 0 1-3-3m3 3a3 3 0 1 0 0 6h13.5a3 3 0 1 0 0-6m-16.5-3a3 3 0 0 1 3-3h13.5a3 3 0 0 1 3 3m-19.5 0a4.5 4.5 0 0 1 .9-2.7L5.737 5.1a3.375 3.375 0 0 1 2.7-1.35h7.126c1.062 0 2.062.5 2.7 1.35l2.587 3.45a4.5 4.5 0 0 1 .9 2.7m0 0a3 3 0 0 1-3 3m0 3h.008v.008h-.008v-.008Zm0-6h.008v.008h-.008v-.008Zm-3 6h.008v.008h-.008v-.008Zm0-6h.008v.008h-.008v-.008Z",
             color: "text-pink-400",
-            items: ["Spring Boot", "Node.js", "Express", "Laravel", "Oracle DB", "MongoDB"],
+            items: [
+                "Spring Boot",
+                "Node.js",
+                "Express",
+                "Laravel",
+                "Oracle DB",
+                "MongoDB",
+            ],
         },
         {
             category: $t("about.skills.gamedev"),
@@ -42,55 +66,56 @@
     const dispatch = createEventDispatcher();
 
     $: dispatch("showPdfModalChange", showPdfModal);
-
-    const handleMouseMove = rafThrottle((e) => {
-        if (!containerRef) return;
-        const cards = containerRef.getElementsByClassName("spotlight-card");
-
-        for (const card of cards) {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-
-            card.style.setProperty("--mouse-x", `${x}px`);
-            card.style.setProperty("--mouse-y", `${y}px`);
-        }
-    });
 </script>
 
-<PdfViewer bind:showPdfModal pdfUrl="/media/pdf/cv.pdf" title={$t("about.resume.title")} downloadName="cv.pdf" />
+<PdfViewer
+    bind:showPdfModal
+    pdfUrl="/media/pdf/cv.pdf"
+    title={$t("about.resume.title")}
+    downloadName="cv.pdf"
+/>
 
 <section
     id="about"
     aria-label={$t("nav.about")}
     class="py-32 relative overflow-hidden bg-[#08080a]"
-    on:mousemove={handleMouseMove}
-    bind:this={containerRef}
 >
     <!-- Section top accent divider -->
-    <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-indigo-500/20 to-transparent"></div>
+    <div
+        class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-indigo-500/20 to-transparent"
+    ></div>
     <!-- Dot pattern overlay -->
-    <div class="absolute inset-0 opacity-[0.04] pointer-events-none about-dots"></div>
+    <div
+        class="absolute inset-0 opacity-[0.04] pointer-events-none about-dots"
+    ></div>
     <div
         class="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay"
         style="background-image: url('/img/noise-transparent.webp');"
     ></div>
 
-
-
     <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         <div class="mb-16 md:mb-24 about-header" use:reveal>
             <div class="flex items-center gap-3 mb-4">
-                <span class="text-[11px] font-mono font-semibold text-gray-500 uppercase tracking-widest">01 —</span>
-                <div class="h-px w-12 bg-gradient-to-r from-white/20 to-transparent"></div>
+                <span
+                    class="text-[11px] font-mono font-semibold text-gray-500 uppercase tracking-widest"
+                    >01</span
+                >
+                <div
+                    class="h-px w-12 bg-gradient-to-r from-white/20 to-transparent"
+                ></div>
             </div>
-            <h2 class="section-title text-4xl md:text-5xl text-white tracking-tight">
+            <h2
+                class="section-title text-4xl md:text-5xl text-white tracking-tight"
+            >
                 {$t("about.title")}
             </h2>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-            <div class="lg:col-span-5 flex flex-col justify-between about-left" use:reveal>
+            <div
+                class="lg:col-span-5 flex flex-col justify-between about-left"
+                use:reveal
+            >
                 <div class="prose prose-invert prose-lg">
                     <p class="text-gray-400 leading-relaxed text-lg">
                         {@html $t("about.p1")}
@@ -101,7 +126,9 @@
                 </div>
 
                 <div class="mt-10 pl-5 border-l border-indigo-400/40">
-                    <p class="text-sm sm:text-base text-gray-400 leading-relaxed">
+                    <p
+                        class="text-sm sm:text-base text-gray-400 leading-relaxed"
+                    >
                         {@html $t("about.trackRecord")}
                     </p>
                 </div>
@@ -110,18 +137,15 @@
             <div class="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-4">
                 {#each skills as skill, i}
                     <div
-                        class="spotlight-card group relative bg-white/[0.02] border border-white/10 p-6 rounded-2xl overflow-hidden skill-card"
+                        class="relative bg-white/[0.02] border border-white/10 p-6 rounded-2xl overflow-hidden skill-card"
                         style="--skill-delay: {i * 100}ms"
                         use:reveal
                     >
-                        <div
-                            class="pointer-events-none absolute -inset-px opacity-0 transition duration-300 group-hover:opacity-100"
-                            style="background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.06), transparent 40%);"
-                        ></div>
-
                         <div class="relative z-10">
                             <div class="flex items-center gap-3 mb-4">
-                                <div class="p-2 rounded-lg bg-white/5 border border-white/5 {skill.color}">
+                                <div
+                                    class="p-2 rounded-lg bg-white/5 border border-white/5 {skill.color}"
+                                >
                                     <svg
                                         class="w-6 h-6"
                                         fill="none"
@@ -132,7 +156,9 @@
                                         <path d={skill.icon} />
                                     </svg>
                                 </div>
-                                <h3 class="text-lg font-bold text-gray-100">{skill.category}</h3>
+                                <h3 class="text-lg font-bold text-gray-100">
+                                    {skill.category}
+                                </h3>
                             </div>
 
                             <div class="flex flex-wrap gap-2">
@@ -148,26 +174,24 @@
                     </div>
                 {/each}
 
-                <a href="/media/pdf/cv.pdf"
-                    class="md:col-span-2 mt-4 p-6 rounded-2xl bg-gradient-to-r from-indigo-900/20 to-blue-900/20 border border-white/10 flex items-center justify-between group cursor-pointer hover:border-white/20 resume-card"
+                <a
+                    href="/media/pdf/cv.pdf"
+                    class="md:col-span-2 mt-4 p-6 rounded-2xl bg-gradient-to-r from-indigo-900/20 to-blue-900/20 border border-white/10 flex items-center justify-between cursor-pointer hover:border-white/20 resume-card"
                     use:reveal
                     on:click|preventDefault={() => (showPdfModal = true)}
                 >
                     <div class="flex flex-col">
-                        <span class="text-white font-bold text-lg">{$t("about.resume.title")}</span>
-                        <span class="text-gray-400 text-sm">{$t("about.resume.subtitle")}</span>
+                        <span class="text-white font-bold text-lg"
+                            >{$t("about.resume.title")}</span
+                        >
+                        <span class="text-gray-400 text-sm"
+                            >{$t("about.resume.subtitle")}</span
+                        >
                     </div>
                     <div
-                        class="w-10 h-10 rounded-full bg-white text-black flex items-center justify-center transform group-hover:scale-110 transition-transform"
+                        class="w-10 h-10 rounded-xl bg-white text-black flex items-center justify-center"
                     >
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            ><path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M14 5l7 7m0 0l-7 7m7-7H3"
-                            ></path></svg
-                        >
+                        <IconArrowRight class="w-5 h-5 text-black" />
                     </div>
                 </a>
             </div>
@@ -177,58 +201,35 @@
 
 <style>
     .about-dots {
-        background-image: radial-gradient(circle, rgba(255, 255, 255, 0.5) 1px, transparent 1px);
+        background-image: radial-gradient(
+            circle,
+            rgba(255, 255, 255, 0.5) 1px,
+            transparent 1px
+        );
         background-size: 24px 24px;
-    }
-
-    .spotlight-card {
-        --mouse-x: 0px;
-        --mouse-y: 0px;
-    }
-
-    .about-header {
-        opacity: 1;
-    }
-    .about-header:global([data-revealed]) {
-        animation: aboutFadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
-    }
-
-    .about-left {
-        opacity: 1;
-    }
-    .about-left:global([data-revealed]) {
-        animation: aboutSlideRight 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
 
     .skill-card {
         opacity: 1;
-        transition:
-            border-color 0.3s,
-            box-shadow 0.4s ease,
-            transform 0.4s ease;
+        transition: border-color 0.3s ease;
     }
     .skill-card:global([data-revealed]) {
         animation: skillReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
         animation-delay: var(--skill-delay, 0ms);
     }
     .skill-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        border-color: rgba(255, 255, 255, 0.16);
     }
 
     .resume-card {
         opacity: 1;
-        transition:
-            border-color 0.3s,
-            box-shadow 0.3s,
-            transform 0.3s;
+        transition: border-color 0.3s ease;
     }
     .resume-card:global([data-revealed]) {
         animation: skillReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
     .resume-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 30px rgba(79, 70, 229, 0.15);
+        border-color: rgba(255, 255, 255, 0.2);
     }
 
     @keyframes aboutFadeUp {

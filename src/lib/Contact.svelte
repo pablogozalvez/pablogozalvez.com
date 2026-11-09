@@ -1,9 +1,10 @@
 <script>
-    import { reveal, rafThrottle } from "./actions";
+    import { reveal } from "./actions";
     import { animationVisibility } from "./animation-visibility";
     import { onMount } from "svelte";
     import { getI18n } from "./i18n";
     import { fetchJson } from "./fetch-json";
+    import { IconArrowRight, IconCheck, IconCopy, IconSpinner } from "./icons";
 
     export let turnstileSiteKey = "";
 
@@ -42,18 +43,30 @@
             };
             const handleLoad = () => {
                 cleanup();
-                window.turnstile ? resolve(window.turnstile) : reject(new Error("Turnstile no está disponible."));
+                window.turnstile
+                    ? resolve(window.turnstile)
+                    : reject(new Error("Turnstile no está disponible."));
             };
-            const handleError = () => { cleanup(); reject(new Error("Turnstile no está disponible.")); };
-            const handleAbort = () => { cleanup(); reject(signal.reason); };
+            const handleError = () => {
+                cleanup();
+                reject(new Error("Turnstile no está disponible."));
+            };
+            const handleAbort = () => {
+                cleanup();
+                reject(signal.reason);
+            };
             const timer = setTimeout(handleError, 15000);
             script.addEventListener("load", handleLoad);
             script.addEventListener("error", handleError);
             signal.addEventListener("abort", handleAbort, { once: true });
-            if (signal.aborted) { handleAbort(); return; }
+            if (signal.aborted) {
+                handleAbort();
+                return;
+            }
             if (existingScript) return;
             script.id = TURNSTILE_SCRIPT_ID;
-            script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+            script.src =
+                "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
             script.async = true;
             script.defer = true;
             document.head.appendChild(script);
@@ -131,7 +144,9 @@
             if (!isMounted) return;
 
             if (!ok || result?.success !== true) {
-                formError = ["invalid", "verification"].includes(result?.error) ? result.error : "unavailable";
+                formError = ["invalid", "verification"].includes(result?.error)
+                    ? result.error
+                    : "unavailable";
                 formState = "error";
                 resetTurnstile();
                 return;
@@ -144,66 +159,68 @@
             successTimer = setTimeout(() => (formState = "idle"), 3000);
         } catch (error) {
             if (!isMounted || lifetime.signal.aborted) return;
-            formError = error.name === "TimeoutError" ? "timeout" : "unavailable";
+            formError =
+                error.name === "TimeoutError" ? "timeout" : "unavailable";
             formState = "error";
             resetTurnstile();
         }
     };
 
-    const handleMouseMove = rafThrottle((e) => {
-        if (!containerRef) return;
-        const rect = containerRef.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        containerRef.style.setProperty("--mouse-x", `${x}px`);
-        containerRef.style.setProperty("--mouse-y", `${y}px`);
-    });
-
     onMount(() => {
         isMounted = true;
 
         if (turnstileSiteKey) {
-            const observer = new IntersectionObserver(([entry]) => {
-                if (!entry.isIntersecting) return;
-                observer.disconnect();
-                loadTurnstile(lifetime.signal)
-                .then((turnstile) => {
-                    if (!isMounted || !turnstileElement) return;
+            const observer = new IntersectionObserver(
+                ([entry]) => {
+                    if (!entry.isIntersecting) return;
+                    observer.disconnect();
+                    loadTurnstile(lifetime.signal)
+                        .then((turnstile) => {
+                            if (!isMounted || !turnstileElement) return;
 
-                    turnstileWidgetId = turnstile.render(turnstileElement, {
-                        sitekey: turnstileSiteKey,
-                        action: "contact",
-                        language: $locale,
-                        theme: "dark",
-                        size: "flexible",
-                        callback: (token) => {
+                            turnstileWidgetId = turnstile.render(
+                                turnstileElement,
+                                {
+                                    sitekey: turnstileSiteKey,
+                                    action: "contact",
+                                    language: $locale,
+                                    theme: "dark",
+                                    size: "flexible",
+                                    callback: (token) => {
+                                        if (!isMounted) return;
+                                        turnstileToken = token;
+                                        if (formError === "verification") {
+                                            formError = "";
+                                            formState = "idle";
+                                        }
+                                    },
+                                    "expired-callback": () => {
+                                        if (!isMounted) return;
+                                        turnstileToken = "";
+                                    },
+                                    "error-callback": () => {
+                                        if (!isMounted) return;
+                                        turnstileToken = "";
+                                        formError = "verificationUnavailable";
+                                        formState = "error";
+                                    },
+                                },
+                            );
+                        })
+                        .catch(() => {
                             if (!isMounted) return;
-                            turnstileToken = token;
-                            if (formError === "verification") {
-                                formError = "";
-                                formState = "idle";
-                            }
-                        },
-                        "expired-callback": () => {
-                            if (!isMounted) return;
-                            turnstileToken = "";
-                        },
-                        "error-callback": () => {
-                            if (!isMounted) return;
-                            turnstileToken = "";
                             formError = "verificationUnavailable";
                             formState = "error";
-                        },
-                    });
-                })
-                .catch(() => {
-                    if (!isMounted) return;
-                    formError = "verificationUnavailable";
-                    formState = "error";
-                });
-            }, { rootMargin: "400px" });
+                        });
+                },
+                { rootMargin: "400px" },
+            );
             observer.observe(turnstileElement);
-            lifetime.signal.addEventListener("abort", () => observer.disconnect(), { once: true });
+            lifetime.signal.addEventListener(
+                "abort",
+                () => observer.disconnect(),
+                { once: true },
+            );
         } else {
             formError = "verificationUnavailable";
             formState = "error";
@@ -211,12 +228,15 @@
 
         const updateTime = () => {
             const now = new Date();
-            currentTime = now.toLocaleTimeString($locale === "es" ? "es-ES" : "en-GB", {
-                hour: "2-digit",
-                minute: "2-digit",
-                timeZone: "Europe/Madrid",
-                timeZoneName: "short",
-            });
+            currentTime = now.toLocaleTimeString(
+                $locale === "es" ? "es-ES" : "en-GB",
+                {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    timeZone: "Europe/Madrid",
+                    timeZoneName: "short",
+                },
+            );
         };
         updateTime();
         const interval = setInterval(updateTime, 60000);
@@ -236,119 +256,131 @@
 <section
     id="contact"
     use:animationVisibility
-    class="py-32 relative flex items-center justify-center overflow-hidden bg-[#060608] -mt-px"
+    class="py-20 md:py-24 relative flex items-center justify-center overflow-hidden bg-[#060608] -mt-px"
 >
     <!-- Section top accent divider -->
-    <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-emerald-500/15 to-transparent"></div>
+    <div
+        class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-emerald-500/15 to-transparent"
+    ></div>
     <!-- Horizontal line pattern -->
-    <div class="absolute inset-0 opacity-[0.03] pointer-events-none contact-lines"></div>
+    <div
+        class="absolute inset-0 opacity-[0.03] pointer-events-none contact-lines"
+    ></div>
     <div
         class="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay"
         style="background-image: url('/img/noise-transparent.webp');"
     ></div>
 
     <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-
-        <!-- Section Header — outside the card, consistent with About & Projects -->
-        <div class="mb-16 md:mb-20" use:reveal>
-            <div class="flex items-center gap-3 mb-4">
-                <span class="text-[11px] font-mono font-semibold text-gray-500 uppercase tracking-widest">03 —</span>
-                <div class="h-px w-12 bg-gradient-to-r from-white/20 to-transparent"></div>
-            </div>
-            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
-                <div>
-                    <h2 class="section-title text-4xl md:text-5xl text-white mb-4 tracking-tight">
-                        {$t("contact.title")}
-                    </h2>
-                    <p class="text-lg text-gray-400 max-w-xl font-light leading-relaxed">
-                        {$t("contact.subtitle")}
-                    </p>
-                </div>
-                <div
-                    class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono shrink-0 self-start md:self-auto"
+        <!-- Section Header outside the card, consistent with About & Projects -->
+        <div class="mb-10 md:mb-12" use:reveal>
+            <div class="flex items-center gap-3 mb-3">
+                <span
+                    class="text-[11px] font-mono font-semibold text-gray-500 uppercase tracking-widest"
+                    >03</span
                 >
-                    <span class="relative flex h-2 w-2">
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                    </span>
-                    {$t("contact.openForOpportunities")}
-                </div>
+                <div
+                    class="h-px w-12 bg-gradient-to-r from-white/20 to-transparent"
+                ></div>
+            </div>
+            <div>
+                <h2
+                    class="section-title text-4xl md:text-5xl text-white mb-3 tracking-tight"
+                >
+                    {$t("contact.title")}
+                </h2>
+                <p
+                    class="text-base sm:text-lg text-gray-400 max-w-xl font-light leading-relaxed"
+                >
+                    {$t("contact.subtitle")}
+                </p>
             </div>
         </div>
 
         <!-- Contact Card -->
         <div
-            bind:this={containerRef}
-            on:mousemove={handleMouseMove}
             role="region"
             aria-label={$t("contact.title")}
-            class="contact-card group relative w-full bg-[#0F1115] border border-white/5 rounded-[2rem] overflow-hidden"
+            class="contact-card relative w-full bg-[#0F1115] border border-white/5 rounded-2xl overflow-hidden"
             use:reveal
         >
-            <!-- Mouse follow glow -->
-            <div
-                class="pointer-events-none absolute -inset-px opacity-0 transition duration-300 group-hover:opacity-100 z-0"
-                style="background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.06), transparent 40%);"
-            ></div>
-            <div class="absolute inset-0 pointer-events-none z-0"></div>
-
             <div class="relative z-10 grid lg:grid-cols-5 gap-0">
-
                 <!-- Left Panel: Direct Contact Info -->
-                <div class="lg:col-span-2 p-8 md:p-10 lg:p-12 border-b lg:border-b-0 lg:border-r border-white/5 flex flex-col justify-between bg-black/20">
-                    <div class="flex flex-col gap-8">
+                <div
+                    class="lg:col-span-2 p-6 sm:p-8 border-b lg:border-b-0 lg:border-r border-white/5 flex flex-col justify-between bg-black/20"
+                >
+                    <div class="flex flex-col gap-6">
                         <!-- Left panel intro text -->
-                        <p class="text-base text-gray-400 leading-relaxed font-light">
+                        <p
+                            class="text-sm sm:text-base text-gray-400 leading-relaxed font-light"
+                        >
                             {$t("contact.cardIntro")}
                         </p>
                         <!-- Email block -->
                         <div>
-                            <span class="block text-xs font-mono text-gray-500 mb-3 uppercase tracking-wider"
+                            <span
+                                class="block text-xs font-mono text-gray-500 mb-2 uppercase tracking-wider"
                                 >{$t("contact.directAccess")}</span
                             >
                             <div
                                 class="flex items-center bg-black/40 border border-white/10 rounded-xl p-1.5 transition-colors hover:border-indigo-500/50 group/email"
                             >
-                                <a href={"mailto:" + email} class="pl-3 pr-2 font-mono text-gray-300 text-xs sm:text-sm break-all flex-1 min-w-0 select-all">
+                                <a
+                                    href={"mailto:" + email}
+                                    class="pl-3 pr-2 font-mono text-gray-300 text-xs sm:text-sm break-all flex-1 min-w-0 select-all"
+                                >
                                     {email}
                                 </a>
                                 <button
                                     on:click={copyToClipboard}
-                                    aria-label={copied ? $t("contact.copied") : $t("contact.copyEmail")}
+                                    aria-label={copied
+                                        ? $t("contact.copied")
+                                        : $t("contact.copyEmail")}
                                     title={$t("contact.copyEmail")}
-                                    class="flex items-center justify-center min-w-11 min-h-11 p-2 rounded-lg {copied
+                                    class="flex items-center justify-center min-w-10 min-h-10 p-2 rounded-lg {copied
                                         ? 'bg-emerald-500/20 text-emerald-400'
-                                        : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'} transition-all duration-200"
+                                        : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'} transition-colors duration-200"
                                 >
                                     {#if copied}
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                            ><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg
-                                        >
+                                        <IconCheck
+                                            class="w-4 h-4 text-emerald-400"
+                                        />
                                     {:else}
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                            ><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg
-                                        >
+                                        <IconCopy class="w-4 h-4" />
                                     {/if}
                                 </button>
                             </div>
-                            <p role="status" class="min-h-12 mt-2 text-xs text-gray-300">{copyError ? $t("contact.copyFailed") : copied ? $t("contact.copied") : ""}</p>
+                            <p
+                                role="status"
+                                class="min-h-6 mt-1 text-xs text-gray-300"
+                            >
+                                {copyError
+                                    ? $t("contact.copyFailed")
+                                    : copied
+                                      ? $t("contact.copied")
+                                      : ""}
+                            </p>
                         </div>
 
                         <!-- Socials block -->
                         <div>
-                            <span class="block text-xs font-mono text-gray-500 mb-3 uppercase tracking-wider"
+                            <span
+                                class="block text-xs font-mono text-gray-500 mb-2 uppercase tracking-wider"
                                 >{$t("footer.connect")}</span
                             >
-                            <div class="flex gap-3">
+                            <div class="flex gap-2.5">
                                 {#each socials as social}
                                     <a
                                         href={social.href}
                                         target="_blank"
                                         rel="me noopener noreferrer"
                                         aria-label={social.label}
-                                        class="social-icon p-3 rounded-lg bg-white/5 border border-white/5 hover:bg-white/10 transition-all text-gray-400 hover:text-white"
+                                        class="social-icon p-2.5 rounded-lg bg-white/5 border border-white/5 hover:bg-white/10 transition-all text-gray-400 hover:text-white"
                                     >
-                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"
+                                        <svg
+                                            class="w-5 h-5"
+                                            fill="currentColor"
+                                            viewBox="0 0 24 24"
                                             ><path d={social.icon} /></svg
                                         >
                                     </a>
@@ -358,21 +390,40 @@
                     </div>
 
                     <!-- Location & time -->
-                    <div class="flex flex-wrap items-center gap-4 text-xs text-gray-400 font-mono mt-10 lg:mt-12">
-                        <span class="min-w-[105px] tabular-nums">{currentTime}</span>
+                    <div
+                        class="flex flex-wrap items-center gap-4 text-xs text-gray-400 font-mono mt-6 lg:mt-8"
+                    >
+                        <span class="min-w-[105px] tabular-nums"
+                            >{currentTime}</span
+                        >
                         <div class="w-1 h-1 bg-gray-700 rounded-full"></div>
                         <span>{$t("contact.location")}</span>
                     </div>
                 </div>
 
                 <!-- Right Panel: Contact Form -->
-                <div class="lg:col-span-3 p-8 md:p-10 lg:p-12 relative">
-                    <form on:submit|preventDefault={handleSubmit} aria-busy={formState === "sending"} class="flex flex-col gap-5 relative z-10">
+                <div class="lg:col-span-3 p-6 sm:p-8 relative">
+                    <form
+                        on:submit|preventDefault={handleSubmit}
+                        aria-busy={formState === "sending"}
+                        class="flex flex-col gap-4 relative z-10"
+                    >
                         <!-- Name & Email row -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="contact-field group/field">
                                 <label for="name" class="contact-label">
-                                    <svg class="w-3.5 h-3.5 text-gray-500 group-focus-within/field:text-indigo-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                                    <svg
+                                        class="w-3.5 h-3.5 text-gray-500 group-focus-within/field:text-indigo-400 transition-colors"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        ><path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                                        /></svg
+                                    >
                                     {$t("contact.form.name")}
                                 </label>
                                 <input
@@ -380,7 +431,9 @@
                                     id="name"
                                     name="name"
                                     bind:value={formData.name}
-                                    placeholder={$t("contact.form.namePlaceholder")}
+                                    placeholder={$t(
+                                        "contact.form.namePlaceholder",
+                                    )}
                                     autocomplete="name"
                                     maxlength="100"
                                     required
@@ -389,7 +442,18 @@
                             </div>
                             <div class="contact-field group/field">
                                 <label for="email" class="contact-label">
-                                    <svg class="w-3.5 h-3.5 text-gray-500 group-focus-within/field:text-indigo-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                                    <svg
+                                        class="w-3.5 h-3.5 text-gray-500 group-focus-within/field:text-indigo-400 transition-colors"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        ><path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                                        /></svg
+                                    >
                                     {$t("contact.form.email")}
                                 </label>
                                 <input
@@ -397,7 +461,9 @@
                                     id="email"
                                     name="email"
                                     bind:value={formData.email}
-                                    placeholder={$t("contact.form.emailPlaceholder")}
+                                    placeholder={$t(
+                                        "contact.form.emailPlaceholder",
+                                    )}
                                     autocomplete="email"
                                     maxlength="254"
                                     required
@@ -409,25 +475,40 @@
                         <!-- Message -->
                         <div class="contact-field group/field">
                             <label for="message" class="contact-label">
-                                <svg class="w-3.5 h-3.5 text-gray-500 group-focus-within/field:text-indigo-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
+                                <svg
+                                    class="w-3.5 h-3.5 text-gray-500 group-focus-within/field:text-indigo-400 transition-colors"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                    ><path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                                    /></svg
+                                >
                                 {$t("contact.form.message")}
                             </label>
                             <textarea
                                 id="message"
                                 name="message"
-                                rows="5"
+                                rows="3"
                                 bind:value={formData.message}
-                                placeholder={$t("contact.form.messagePlaceholder")}
+                                placeholder={$t(
+                                    "contact.form.messagePlaceholder",
+                                )}
                                 minlength="10"
                                 maxlength="3000"
                                 required
-                                class="contact-input resize-y min-h-[130px] max-h-[300px]"
+                                class="contact-input resize-y min-h-[90px] max-h-[240px]"
                             ></textarea>
                         </div>
 
                         <!-- Honeypot -->
                         <div class="contact-honeypot" aria-hidden="true">
-                            <label for="website">{$t("contact.form.website")}</label>
+                            <label for="website"
+                                >{$t("contact.form.website")}</label
+                            >
                             <input
                                 id="website"
                                 name="website"
@@ -446,40 +527,53 @@
                         ></div>
 
                         <!-- Divider + Submit -->
-                        <div class="relative pt-4">
-                            <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-                            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div class="relative pt-3.5">
+                            <div
+                                class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"
+                            ></div>
+                            <div
+                                class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+                            >
                                 <button
                                     type="submit"
-                                    disabled={formState === "sending" || formState === "success"}
-                                    class="contact-submit group/btn"
+                                    disabled={formState === "sending" ||
+                                        formState === "success"}
+                                    class="contact-submit"
                                 >
                                     {#if formState === "success"}
                                         <span>{$t("contact.form.sent")}</span>
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                            ><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg
-                                        >
+                                        <IconCheck class="w-4 h-4 text-white" />
                                     {:else if formState === "sending"}
-                                        <span>{$t("contact.form.sending")}</span>
-                                        <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            ><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle
-                                            ><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg
+                                        <span>{$t("contact.form.sending")}</span
                                         >
+                                        <IconSpinner
+                                            class="w-4 h-4 text-white"
+                                        />
                                     {:else}
                                         <span>{$t("contact.form.send")}</span>
-                                        <svg class="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                            ><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg
-                                        >
+                                        <IconArrowRight
+                                            class="w-4 h-4 text-white"
+                                        />
                                     {/if}
                                 </button>
-                                <div class="min-h-20 w-full sm:flex-1">
+                                <div class="min-h-6 w-full sm:flex-1">
                                     {#if formState === "error"}
-                                        <p class="text-sm text-red-300" role="alert">
-                                            {$t(`contact.form.errors.${formError}`)}
+                                        <p
+                                            class="text-sm text-red-300"
+                                            role="alert"
+                                        >
+                                            {$t(
+                                                `contact.form.errors.${formError}`,
+                                            )}
                                         </p>
                                     {:else if formState === "success"}
-                                        <p class="text-sm text-emerald-300" role="status">
-                                            {$t("contact.form.confirmationSent")}
+                                        <p
+                                            class="text-sm text-emerald-300"
+                                            role="status"
+                                        >
+                                            {$t(
+                                                "contact.form.confirmationSent",
+                                            )}
                                         </p>
                                     {/if}
                                 </div>
@@ -514,7 +608,7 @@
     .contact-field {
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
+        gap: 0.375rem;
     }
 
     .contact-label {
@@ -534,10 +628,10 @@
         background: rgba(255, 255, 255, 0.04);
         border: 1px solid rgba(255, 255, 255, 0.08);
         border-left: 2px solid transparent;
-        border-radius: 0.75rem;
-        padding: 0.8rem 1rem;
+        border-radius: 0.625rem;
+        padding: 0.625rem 0.875rem;
         color: white;
-        font-size: 1rem;
+        font-size: 0.9375rem;
         transition: all 0.25s ease;
     }
     .contact-input::placeholder {
@@ -546,9 +640,8 @@
     .contact-input:focus {
         outline: none;
         background: rgba(255, 255, 255, 0.06);
-        border-color: rgba(255, 255, 255, 0.12);
+        border-color: rgba(255, 255, 255, 0.16);
         border-left-color: rgb(99 102 241);
-        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.08);
     }
 
     .contact-submit {
@@ -556,24 +649,25 @@
         align-items: center;
         justify-content: center;
         gap: 0.5rem;
-        padding: 0.85rem 2rem;
-        min-width: 160px;
-        background: linear-gradient(135deg, rgb(79 70 229), rgb(124 58 237));
-        border-radius: 0.75rem;
+        padding: 0.65rem 1.6rem;
+        min-width: 140px;
+        background: rgb(79 70 229);
+        border-radius: 0.625rem;
         color: white;
         font-weight: 500;
-        font-size: 0.9rem;
+        font-size: 0.875rem;
         cursor: pointer;
         border: none;
-        transition: all 0.3s ease;
+        transition:
+            background-color 0.2s ease,
+            opacity 0.2s ease;
         position: relative;
     }
     .contact-submit:hover:not(:disabled) {
-        box-shadow: 0 0 24px rgba(99, 102, 241, 0.3), 0 8px 24px rgba(0, 0, 0, 0.3);
-        transform: translateY(-1px);
+        background: rgb(99 102 241);
     }
     .contact-submit:active:not(:disabled) {
-        transform: scale(0.98) translateY(0);
+        background: rgb(67 56 202);
     }
     .contact-submit:disabled {
         opacity: 0.7;
@@ -581,12 +675,8 @@
     }
 
     .contact-card {
-        --mouse-x: 0px;
-        --mouse-y: 0px;
         opacity: 1;
-        transition:
-            border-color 0.3s,
-            box-shadow 0.5s ease;
+        transition: border-color 0.3s ease;
     }
 
     .contact-card:global([data-revealed]) {
@@ -594,22 +684,16 @@
     }
 
     .contact-card:hover {
-        box-shadow:
-            0 0 60px rgba(99, 102, 241, 0.06),
-            0 25px 80px rgba(0, 0, 0, 0.3);
+        border-color: rgba(255, 255, 255, 0.1);
     }
 
     .social-icon {
         transition:
-            transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
-            background-color 0.3s,
-            border-color 0.3s,
-            color 0.3s,
-            box-shadow 0.3s;
+            background-color 0.2s ease,
+            border-color 0.2s ease,
+            color 0.2s ease;
     }
     .social-icon:hover {
-        transform: translateY(-3px) scale(1.08);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
         border-color: rgba(255, 255, 255, 0.15);
     }
 
