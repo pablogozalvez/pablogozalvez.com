@@ -196,30 +196,18 @@
         "location": "Alicante, ES",
         "emails": {
             "brand": "Pablo Gozálvez",
-            "role": "Software engineer · Alicante",
             "website": "pablogozalvez.com",
             "owner": {
-                "subject": "New message from {{name}}",
-                "preheader": "{{name}} has contacted you through your portfolio.",
-                "eyebrow": "New contact",
-                "title": "You have a new message",
-                "intro": "Someone has used your portfolio contact form.",
-                "nameLabel": "Name",
-                "emailLabel": "Email",
-                "messageLabel": "Message",
-                "replyAction": "Reply to {{name}}"
+                "subject": "Message from {{name}}",
+                "preheader": "From your website’s contact form.",
+                "replyAction": "Reply"
             },
             "confirmation": {
-                "subject": "I've received your message",
-                "preheader": "Thank you for getting in touch. I'll get back to you as soon as possible.",
-                "eyebrow": "Message received",
-                "title": "Thanks for reaching out, {{name}}",
-                "intro": "I've received your message through my portfolio.",
-                "nextTitle": "What happens next?",
-                "nextBody": "I'll review your message and get back to you personally as soon as possible.",
-                "noReplyTitle": "Automated message · NO REPLY",
-                "noReplyBody": "This email only confirms receipt. Please do not reply to this address.",
-                "signOff": "Best regards,"
+                "subject": "I got your message",
+                "greeting": "Hi, {{name}}",
+                "body": "Thanks for getting in touch. I’ll get back to you as soon as I can.",
+                "signOff": "Cheers,",
+                "note": "This is an automatic email. I’ll reply separately."
             }
         },
         "form": {

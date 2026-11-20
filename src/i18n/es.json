@@ -196,30 +196,18 @@
         "location": "Alicante, ES",
         "emails": {
             "brand": "Pablo Gozálvez",
-            "role": "Ingeniero de software · Alicante",
             "website": "pablogozalvez.com",
             "owner": {
-                "subject": "Nuevo mensaje de {{name}}",
-                "preheader": "{{name}} ha contactado contigo desde tu portfolio.",
-                "eyebrow": "Nuevo contacto",
-                "title": "Tienes un nuevo mensaje",
-                "intro": "Una persona ha utilizado el formulario de contacto de tu portfolio.",
-                "nameLabel": "Nombre",
-                "emailLabel": "Email",
-                "messageLabel": "Mensaje",
-                "replyAction": "Responder a {{name}}"
+                "subject": "Mensaje de {{name}}",
+                "preheader": "Desde el formulario de tu web.",
+                "replyAction": "Responder"
             },
             "confirmation": {
-                "subject": "He recibido tu mensaje",
-                "preheader": "Gracias por contactar conmigo. Te responderé lo antes posible.",
-                "eyebrow": "Mensaje recibido",
-                "title": "Gracias por escribirme, {{name}}",
-                "intro": "He recibido correctamente tu mensaje a través de mi portfolio.",
-                "nextTitle": "¿Qué ocurre ahora?",
-                "nextBody": "Revisaré tu mensaje y te responderé personalmente lo antes posible.",
-                "noReplyTitle": "Mensaje automático · NO REPLY",
-                "noReplyBody": "Este correo confirma únicamente la recepción. Por favor, no respondas a esta dirección.",
-                "signOff": "Un saludo,"
+                "subject": "Me ha llegado tu mensaje",
+                "greeting": "Hola, {{name}}",
+                "body": "Gracias por escribirme. Te contesto lo antes que pueda.",
+                "signOff": "Un saludo,",
+                "note": "Este correo es automático. Mi respuesta te llegará por separado."
             }
         },
         "form": {
