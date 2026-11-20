@@ -6,7 +6,8 @@
     import LanguageSuggestion from "../lib/LanguageSuggestion.svelte";
     import { getLocaleFromPath, provideI18n } from "../lib/i18n";
     import { onMount } from "svelte";
-    import { page, navigating } from "$app/stores";
+    import { browser, dev } from "$app/env";
+    import { page, navigating } from "$app/state";
     import { fly } from "svelte/transition";
     import { isLowPerformanceMode } from "../lib/actions";
     import { animationVisibility } from "../lib/animation-visibility";
@@ -16,20 +17,20 @@
     export const hydrate = false;
     export const router = false;
 
-    let scrollY = 0;
-    let innerHeight = 0;
+    let { children } = $props();
+    let scrollY = $state(0);
+    let innerHeight = $state(0);
     let showPdfModal = false;
-    let showScrollTop = false;
+    let showScrollTop = $derived(innerHeight > 0 && scrollY > innerHeight * 0.8);
     let reducedEffects = false;
 
-    const i18n = provideI18n(getLocaleFromPath($page.url.pathname));
+    const i18n = provideI18n(getLocaleFromPath(page.url.pathname));
     const { t, syncLocaleFromPath } = i18n;
 
-    $: syncLocaleFromPath($page.url.pathname);
-
-    $: if (innerHeight > 0) {
-        showScrollTop = scrollY > innerHeight * 0.8;
-    }
+    const currentPath = $derived(
+        page.url.pathname + (browser ? page.url.search + page.url.hash : ""),
+    );
+    $effect(() => syncLocaleFromPath(page.url.pathname));
 
     onMount(() => {
         reducedEffects = isLowPerformanceMode();
@@ -42,10 +43,15 @@
         });
     }
 
-    $: isLoading = Boolean($navigating?.to && $navigating.from?.url.pathname !== $navigating.to.url.pathname);
+    const isLoading = $derived(Boolean(navigating.to && navigating.from?.url.pathname !== navigating.to.url.pathname));
+    const analyticsBasePath = import.meta.env.VITE_VERCEL_OBSERVABILITY_BASEPATH || "/_vercel";
 </script>
 
 <svelte:window bind:scrollY bind:innerHeight />
+
+<svelte:head>
+    <script defer src={dev ? "https://va.vercel-scripts.com/v1/script.debug.js" : `${analyticsBasePath}/insights/script.js`}></script>
+</svelte:head>
 
 <SEO />
 
@@ -55,7 +61,7 @@
 
 <Cursor hidden={showPdfModal} />
 
-<Navbar hideNav={showPdfModal} />
+<Navbar hideNav={showPdfModal} {currentPath} />
 
 <div class="layout-background">
     <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none" use:animationVisibility>
@@ -65,7 +71,7 @@
 
 {#if showScrollTop}
     <button
-        on:click={scrollToTop}
+        onclick={scrollToTop}
         transition:fly={{ y: 20, duration: 300 }}
         class="fixed bottom-8 right-8 z-50 w-11 h-11 rounded-xl bg-white/10 backdrop-blur-md border border-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-colors"
         aria-label={$t("common.scrollToTop")}
@@ -74,9 +80,9 @@
     </button>
 {/if}
 
-<slot />
+{@render children()}
 
-<LanguageSuggestion />
+<LanguageSuggestion {currentPath} />
 
 <!--<div class="min-h-screen text-white font-sans overflow-x-hidden"></div>-->
 

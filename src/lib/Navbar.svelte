@@ -2,14 +2,13 @@
     import { getI18n } from "./i18n";
     import { fade, fly, scale } from "svelte/transition";
     import { cubicOut, cubicInOut } from "svelte/easing";
-    import { page } from "$app/stores";
     import { localizePath } from "./locales";
-    import { browser } from "$app/environment";
     import { modal } from "./modal";
     import { IconClose } from "./icons";
 
     export let activeSection = "home";
     export let hideNav = false;
+    export let currentPath;
 
     const { t, locale } = getI18n();
 
@@ -64,7 +63,7 @@
         { id: "contact", label: $t("nav.contact"), num: "03" },
     ];
 
-    $: alternateLanguageUrl = localizePath(`${$page.url.pathname}${browser ? $page.url.search + $page.url.hash : ""}`, $locale === "en" ? "es" : "en");
+    $: alternateLanguageUrl = localizePath(currentPath, $locale === "en" ? "es" : "en");
 
     // Detección de sección
     let lastScrollCheck = 0;

@@ -1,6 +1,6 @@
 <script>
-    import { getI18n } from "$lib/i18n";
-    import { SITE_URL } from "$lib/site";
+    import { getI18n } from "./i18n";
+    import { SITE_URL } from "./site";
 
     const { locale } = getI18n();
     const socialImage = `${SITE_URL}/img/meta/og-image.png`;

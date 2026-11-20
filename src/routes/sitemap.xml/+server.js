@@ -1,5 +1,5 @@
-import { AVAILABLE_LOCALES, localizePath } from "$lib/locales";
-import { SITE_URL } from "$lib/site";
+import { AVAILABLE_LOCALES, localizePath } from "#lib/locales.js";
+import { SITE_URL } from "#lib/site.js";
 
 export async function GET() {
     const lastmod = "2026-10-04";

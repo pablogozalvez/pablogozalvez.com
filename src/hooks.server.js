@@ -1,4 +1,4 @@
-import { getLocaleFromPath } from "$lib/locales";
+import { getLocaleFromPath } from "#lib/locales.js";
 
 export async function handle({ event, resolve }) {
     const locale = getLocaleFromPath(event.url.pathname);

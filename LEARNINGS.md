@@ -84,10 +84,21 @@ Svelte, SvelteKit, Vite y el plugin oficial de Svelte declaran rangos de compati
 Un lockfile actualizado hace que desarrollo, CI y producción instalen exactamente el árbol que se ha validado, sin depender de lo que npm considere más reciente en el futuro.
 
 **En este proyecto**
-`package.json` mantiene alineados Svelte 5, SvelteKit 2, Vite 8 y `@sveltejs/vite-plugin-svelte` 7. El override temporal de `cookie` fija la primera línea corregida que elimina el aviso heredado de SvelteKit estable.
+`package.json` mantiene alineados Svelte 5, SvelteKit 3, Vite 8 y `@sveltejs/vite-plugin-svelte` 7. SvelteKit 3 ya declara una versión corregida de `cookie`, así que se pudo retirar el override. `npm audit` permitió detectar avisos adicionales en Vite y la dependencia transitiva `source-map-js`.
 
 **Tradeoffs / pitfalls**
 No se debe usar `npm audit fix --force` como sustituto de revisar compatibilidades. Los overrides transitivos deben ser específicos, probarse con el build y retirarse cuando la dependencia principal adopte directamente una versión corregida.
+
+### Variables de compilación y de ejecución en SvelteKit
+
+**Explicación sencilla**
+Un valor que necesita el HTML prerenderizado debe estar disponible al compilar. Una credencial que solo utiliza un endpoint puede permanecer en el entorno del servidor que atiende la petición.
+
+**Cómo funciona en este proyecto**
+`src/env.js` declara la clave pública del widget Turnstile como estática. El loader de servidor entrega ese valor al HTML. El secreto de Turnstile y la clave de Resend se leen en tiempo de ejecución desde `$app/env/private` al validar y procesar el formulario.
+
+**Tradeoffs / pitfalls**
+Rotar la clave pública de un widget incluido en HTML prerenderizado requiere recompilar. El contenido que devuelve un loader llega al navegador, aunque el valor se importe desde un módulo privado.
 
 ### SEO multidioma con rutas indexables
 

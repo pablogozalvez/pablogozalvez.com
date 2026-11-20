@@ -1,6 +1,5 @@
 <script>
     import { onMount, tick } from "svelte";
-    import { page } from "$app/stores";
     import { getI18n, localizePath } from "./i18n";
     import { modal } from "./modal";
     import {
@@ -10,16 +9,14 @@
     } from "./language-suggestion";
     import { IconClose } from "./icons";
 
+    export let currentPath;
+
     const { locale } = getI18n();
     let dialog;
     let suggestedLocale = null;
     let closing = false;
     let closeTimer;
     let mounted = false;
-
-    $: copy = suggestedLocale
-        ? getLanguageSuggestionCopy(suggestedLocale)
-        : null;
 
     onMount(() => {
         mounted = true;
@@ -98,6 +95,7 @@
 </script>
 
 {#if suggestedLocale}
+    {@const copy = getLanguageSuggestionCopy(suggestedLocale)}
     <dialog
         bind:this={dialog}
         use:modal
@@ -163,10 +161,7 @@
                     >{copy.cancel}</button
                 >
                 <a
-                    href={localizePath(
-                        `${$page.url.pathname}${$page.url.search}${$page.url.hash}`,
-                        suggestedLocale,
-                    )}
+                    href={localizePath(currentPath, suggestedLocale)}
                     hreflang={suggestedLocale}
                     on:click={handleAccept}
                     class="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-blue-400/30 bg-blue-600 px-5 py-2 font-bold hover:bg-blue-500"

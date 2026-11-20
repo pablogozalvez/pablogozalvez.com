@@ -1,7 +1,7 @@
-import { env } from "$env/dynamic/private";
+import { TURNSTILE_SITE_KEY } from "$app/env/private";
 
 export function load() {
     return {
-        turnstileSiteKey: env.TURNSTILE_SITE_KEY ?? "",
+        turnstileSiteKey: TURNSTILE_SITE_KEY ?? "",
     };
 }

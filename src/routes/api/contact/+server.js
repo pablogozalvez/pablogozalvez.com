@@ -1,10 +1,16 @@
 import { json } from "@sveltejs/kit";
-import { dev } from "$app/environment";
-import { env } from "$env/dynamic/private";
+import { dev } from "$app/env";
+import {
+    CONTACT_FROM_EMAIL,
+    CONTACT_TO_EMAIL,
+    RESEND_API_KEY,
+    TURNSTILE_SECRET_KEY,
+    TURNSTILE_SITE_KEY,
+} from "$app/env/private";
 import { Resend } from "resend";
 import en from "../../../i18n/en.json";
 import es from "../../../i18n/es.json";
-import { createConfirmationEmail, createOwnerEmail } from "$lib/server/contact-email";
+import { createConfirmationEmail, createOwnerEmail } from "#lib/server/contact-email.js";
 
 export const prerender = false;
 
@@ -38,11 +44,11 @@ function isSameOrigin(request, url) {
 
 function isConfigured() {
     return Boolean(
-        env.RESEND_API_KEY &&
-            env.CONTACT_TO_EMAIL &&
-            env.CONTACT_FROM_EMAIL &&
-            env.TURNSTILE_SITE_KEY &&
-            env.TURNSTILE_SECRET_KEY,
+        RESEND_API_KEY &&
+            CONTACT_TO_EMAIL &&
+            CONTACT_FROM_EMAIL &&
+            TURNSTILE_SITE_KEY &&
+            TURNSTILE_SECRET_KEY,
     );
 }
 
@@ -52,7 +58,7 @@ async function verifyTurnstile(token, expectedHostname) {
     }
 
     const body = new FormData();
-    body.append("secret", env.TURNSTILE_SECRET_KEY);
+    body.append("secret", TURNSTILE_SECRET_KEY);
     body.append("response", token);
 
     const controller = new AbortController();
@@ -68,7 +74,7 @@ async function verifyTurnstile(token, expectedHostname) {
         if (!response.ok) return { isAvailable: false, isValid: false };
 
         const result = await response.json();
-        const isDevelopmentTest = dev && TURNSTILE_TEST_SECRET_KEYS.has(env.TURNSTILE_SECRET_KEY);
+        const isDevelopmentTest = dev && TURNSTILE_TEST_SECRET_KEYS.has(TURNSTILE_SECRET_KEY);
         const hasExpectedMetadata =
             isDevelopmentTest || (result.action === TURNSTILE_ACTION && result.hostname === expectedHostname);
 
@@ -139,19 +145,19 @@ export async function POST({ request, url }) {
     }
 
     try {
-        const resend = new Resend(env.RESEND_API_KEY);
+        const resend = new Resend(RESEND_API_KEY);
         const copy = TRANSLATIONS[locale].contact.emails;
         const ownerEmail = createOwnerEmail(copy, locale, { name, email, message });
         const confirmationEmail = createConfirmationEmail(copy, locale, { name });
         const { error } = await resend.batch.send([
             {
-                from: env.CONTACT_FROM_EMAIL,
-                to: [env.CONTACT_TO_EMAIL],
+                from: CONTACT_FROM_EMAIL,
+                to: [CONTACT_TO_EMAIL],
                 replyTo: email,
                 ...ownerEmail,
             },
             {
-                from: env.CONTACT_FROM_EMAIL,
+                from: CONTACT_FROM_EMAIL,
                 to: [email],
                 ...confirmationEmail,
             },
