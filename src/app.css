@@ -51,7 +51,7 @@ html {
     outline-offset: 4px;
 }
 
-:where(.portfolio-header, .portfolio-hero, .portfolio-projects, .portfolio-contact, .portfolio-footer)
+:where(.portfolio-header, .portfolio-hero, .portfolio-projects, .portfolio-about, .portfolio-contact, .portfolio-footer)
     :where(a, button, input, textarea, summary):focus-visible,
 .scroll-top:focus-visible {
     outline-color: var(--color-heading) !important;
@@ -70,17 +70,6 @@ html {
 
 .skip-link:focus {
     transform: translateY(0);
-}
-
-[data-reveal-pending] {
-    opacity: 0 !important;
-}
-
-@media (prefers-reduced-motion: reduce) {
-    [data-reveal-pending] {
-        opacity: 1 !important;
-        transform: none !important;
-    }
 }
 
 [id] {
@@ -130,11 +119,6 @@ body {
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-}
-
-.section-title {
-    font-weight: 800;
-    -webkit-text-stroke: 0.25px currentColor;
 }
 
 :where(

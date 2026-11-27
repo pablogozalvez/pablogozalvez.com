@@ -1,19 +1,13 @@
 <script>
-    import { reveal } from "./actions";
     import { getI18n } from "./i18n";
-    import { fade, scale } from "svelte/transition";
-    import { cubicOut } from "svelte/easing";
-    import { IconArrowRight } from "./icons";
+    import PdfViewer from "./PdfViewer.svelte";
 
     const { t } = getI18n();
-
-    let containerRef;
+    let showPdfModal = false;
 
     $: skills = [
         {
             category: $t("about.skills.backend"),
-            icon: "M14.25 9.75 16.5 12l-2.25 2.25m-4.5 0L7.5 12l2.25-2.25M6 20.25h12A2.25 2.25 0 0 0 20.25 18V6A2.25 2.25 0 0 0 18 3.75H6A2.25 2.25 0 0 0 3.75 6v12A2.25 2.25 0 0 0 6 20.25Z",
-            color: "text-indigo-400",
             items: [
                 "Java",
                 "Spring Framework",
@@ -27,8 +21,6 @@
         },
         {
             category: $t("about.skills.frontend"),
-            icon: "M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0V12a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 12V5.25",
-            color: "text-blue-400",
             items: [
                 "JavaScript",
                 "TypeScript",
@@ -43,8 +35,6 @@
         },
         {
             category: $t("about.skills.dataTools"),
-            icon: "M5.25 14.25h13.5m-13.5 0a3 3 0 0 1-3-3m3 3a3 3 0 1 0 0 6h13.5a3 3 0 1 0 0-6m-16.5-3a3 3 0 0 1 3-3h13.5a3 3 0 0 1 3 3m-19.5 0a4.5 4.5 0 0 1 .9-2.7L5.737 5.1a3.375 3.375 0 0 1 2.7-1.35h7.126c1.062 0 2.062.5 2.7 1.35l2.587 3.45a4.5 4.5 0 0 1 .9 2.7m0 0a3 3 0 0 1-3 3m0 3h.008v.008h-.008v-.008Zm0-6h.008v.008h-.008v-.008Zm-3 6h.008v.008h-.008v-.008Zm0-6h.008v.008h-.008v-.008Z",
-            color: "text-pink-400",
             items: [
                 "IBM Db2",
                 "PostgreSQL",
@@ -58,15 +48,9 @@
         },
         {
             category: $t("about.skills.gamedev"),
-            icon: "M14.25 6.087c0-.355.186-.676.401-.959.221-.29.349-.634.349-1.003 0-1.036-1.007-1.875-2.25-1.875s-2.25.84-2.25 1.875c0 .369.128.713.349 1.003.215.283.401.604.401.959v0a.64.64 0 0 1-.657.643 48.39 48.39 0 0 1-4.163-.3c.186 1.613.293 3.25.315 4.907a.656.656 0 0 1-.658.663v0c-.355 0-.676-.186-.959-.401a1.647 1.647 0 0 0-1.003-.349c-1.036 0-1.875 1.007-1.875 2.25s.84 2.25 1.875 2.25c.369 0 .713-.128 1.003-.349.283-.215.604-.401.959-.401v0c.31 0 .555.26.532.57a48.039 48.039 0 0 1-.642 5.056c1.518.19 3.058.309 4.616.354a.64.64 0 0 0 .657-.643v0c0-.355-.186-.676-.401-.959a1.647 1.647 0 0 1-.349-1.003c0-1.035 1.008-1.875 2.25-1.875 1.243 0 2.25.84 2.25 1.875 0 .369-.128.713-.349 1.003-.215.283-.4.604-.4.959v0c0 .333.277.599.61.58a48.1 48.1 0 0 0 5.427-.63 48.05 48.05 0 0 0 .582-4.717.532.532 0 0 0-.533-.57v0c-.355 0-.676.186-.959.401-.29.221-.634.349-1.003.349-1.035 0-1.875-1.007-1.875-2.25s.84-2.25 1.875-2.25c.37 0 .713.128 1.003.349.283.215.604.401.96.401v0a.656.656 0 0 0 .658-.663 48.422 48.422 0 0 0-.37-5.36c-1.886.342-3.81.574-5.766.689a.578.578 0 0 1-.61-.58v0Z",
-            color: "text-purple-400",
             items: ["C#", "Unity", "Three.js", "WebGL", "Phaser"],
         },
     ];
-
-    let showPdfModal = false;
-
-    import PdfViewer from "./PdfViewer.svelte";
 </script>
 
 <PdfViewer
@@ -76,184 +60,124 @@
     downloadName="cv.pdf"
 />
 
-<section
-    id="about"
-    aria-label={$t("nav.about")}
-    class="py-32 relative overflow-hidden bg-[#08080a]"
->
-    <!-- Section top accent divider -->
-    <div
-        class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-indigo-500/20 to-transparent"
-    ></div>
-    <!-- Dot pattern overlay -->
-    <div
-        class="absolute inset-0 opacity-[0.04] pointer-events-none about-dots"
-    ></div>
-    <div
-        class="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay"
-        style="background-image: url('/img/noise-transparent.webp');"
-    ></div>
+<section id="about" class="portfolio-about" aria-labelledby="about-title">
+    <div class="page-width">
+        <h2 id="about-title">{$t("about.title")}</h2>
 
-    <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-        <div class="mb-16 md:mb-24 about-header" use:reveal>
-            <h2
-                class="section-title text-4xl md:text-5xl text-white tracking-tight"
-            >
-                {$t("about.title")}
-            </h2>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-            <div
-                class="lg:col-span-5 flex flex-col justify-between about-left"
-                use:reveal
-            >
-                <div class="prose prose-invert prose-lg">
-                    <p class="text-gray-400 leading-relaxed text-lg">
-                        {@html $t("about.p1")}
-                    </p>
-                    <p class="text-gray-400 leading-relaxed text-lg mt-6">
-                        {@html $t("about.p2")}
-                    </p>
+        <div class="about-layout">
+            <div>
+                <div class="about-copy">
+                    <p>{$t("about.p1")}</p>
+                    <p>{$t("about.p2")}</p>
+                    <p>{$t("about.trackRecord")}</p>
                 </div>
 
-                <div class="mt-10 pl-5 border-l border-indigo-400/40">
-                    <p
-                        class="text-sm sm:text-base text-gray-400 leading-relaxed"
-                    >
-                        {@html $t("about.trackRecord")}
-                    </p>
+                <div class="about-resume">
+                    <a
+                        class="resume-link"
+                        href="/media/pdf/cv.pdf"
+                        aria-describedby="about-resume-description"
+                        on:click|preventDefault={() => (showPdfModal = true)}
+                    >{$t("about.resume.title")}</a>
+                    <p id="about-resume-description">{$t("about.resume.subtitle")}</p>
                 </div>
             </div>
 
-            <div class="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-4">
-                {#each skills as skill, i}
-                    <div
-                        class="relative bg-white/[0.02] border border-white/10 p-6 rounded-2xl overflow-hidden skill-card"
-                        style="--skill-delay: {i * 100}ms"
-                        use:reveal
-                    >
-                        <div class="relative z-10">
-                            <div class="flex items-center gap-3 mb-4">
-                                <div
-                                    class="p-2 rounded-lg bg-white/5 border border-white/5 {skill.color}"
-                                >
-                                    <svg
-                                        class="w-6 h-6"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke-width="1.5"
-                                        stroke="currentColor"
-                                    >
-                                        <path d={skill.icon} />
-                                    </svg>
-                                </div>
-                                <h3 class="text-lg font-bold text-gray-100">
-                                    {skill.category}
-                                </h3>
-                            </div>
-
-                            <div class="flex flex-wrap gap-2">
-                                {#each skill.items as item}
-                                    <span
-                                        class="px-2.5 py-1 text-xs font-mono text-gray-400 bg-white/5 border border-white/5 rounded-md transition-colors group-hover:text-gray-200 group-hover:border-white/20"
-                                    >
-                                        {item}
-                                    </span>
-                                {/each}
-                            </div>
+            <div class="about-skills">
+                <h3>{$t("about.technologies")}</h3>
+                <dl>
+                    {#each skills as skill (skill.category)}
+                        <div class="skill-group">
+                            <dt>{skill.category}</dt>
+                            <dd>{skill.items.join(", ")}</dd>
                         </div>
-                    </div>
-                {/each}
-
-                <a
-                    href="/media/pdf/cv.pdf"
-                    class="md:col-span-2 mt-4 p-6 rounded-2xl bg-gradient-to-r from-indigo-900/20 to-blue-900/20 border border-white/10 flex items-center justify-between cursor-pointer hover:border-white/20 resume-card"
-                    use:reveal
-                    on:click|preventDefault={() => (showPdfModal = true)}
-                >
-                    <div class="flex flex-col">
-                        <span class="text-white font-bold text-lg"
-                            >{$t("about.resume.title")}</span
-                        >
-                        <span class="text-gray-400 text-sm"
-                            >{$t("about.resume.subtitle")}</span
-                        >
-                    </div>
-                    <div
-                        class="w-10 h-10 rounded-xl bg-white text-black flex items-center justify-center"
-                    >
-                        <IconArrowRight class="w-5 h-5 text-black" />
-                    </div>
-                </a>
+                    {/each}
+                </dl>
             </div>
         </div>
     </div>
 </section>
 
 <style>
-    .about-dots {
-        background-image: radial-gradient(
-            circle,
-            rgba(255, 255, 255, 0.5) 1px,
-            transparent 1px
-        );
-        background-size: 24px 24px;
+    .portfolio-about {
+        background: var(--color-paper);
+        color: var(--color-ink);
     }
 
-    .skill-card {
-        opacity: 1;
-        transition: border-color 0.3s ease;
-    }
-    .skill-card:global([data-revealed]) {
-        animation: skillReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
-        animation-delay: var(--skill-delay, 0ms);
-    }
-    .skill-card:hover {
-        border-color: rgba(255, 255, 255, 0.16);
+    h2 {
+        padding-bottom: 0.375rem;
+        margin-bottom: 1.125rem;
+        border-bottom: 1px solid var(--color-rule);
+        color: var(--color-heading);
+        font-size: clamp(1.5rem, 2vw, 1.6875rem);
+        font-weight: 700;
+        line-height: 1.2;
     }
 
-    .resume-card {
-        opacity: 1;
-        transition: border-color 0.3s ease;
-    }
-    .resume-card:global([data-revealed]) {
-        animation: skillReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
-    }
-    .resume-card:hover {
-        border-color: rgba(255, 255, 255, 0.2);
+    .about-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+        gap: clamp(1.5rem, 6vw, 4.5rem);
     }
 
-    @keyframes aboutFadeUp {
-        from {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    .about-copy,
+    dd {
+        line-height: 1.5;
     }
 
-    @keyframes aboutSlideRight {
-        from {
-            opacity: 0;
-            transform: translateX(-30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateX(0);
-        }
+    .about-copy p + p {
+        margin-top: 0.75rem;
     }
 
-    @keyframes skillReveal {
-        from {
-            opacity: 0;
-            transform: translateY(30px) scale(0.97);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
+    .about-resume {
+        margin-top: 1.25rem;
+    }
+
+    .resume-link {
+        display: inline-flex;
+        align-items: center;
+        min-height: 2.75rem;
+        padding-inline: 0.875rem;
+        border: 1px solid var(--color-heading);
+        color: var(--color-heading);
+        font-weight: 700;
+    }
+
+    .resume-link:hover {
+        background: var(--color-heading);
+        color: var(--color-paper);
+    }
+
+    .about-resume p {
+        margin-top: 0.375rem;
+        color: var(--color-heading);
+        font-size: 0.9375rem;
+    }
+
+    .about-skills h3 {
+        margin-bottom: 0.5rem;
+        color: var(--color-heading);
+        font-size: 1.125rem;
+        font-weight: 700;
+    }
+
+    .skill-group {
+        padding-block: 0.625rem;
+        border-top: 1px solid var(--color-rule);
+    }
+
+    dt {
+        color: var(--color-heading);
+        font-weight: 700;
+    }
+
+    dd {
+        margin-top: 0.125rem;
+    }
+
+    @media (max-width: 767px) {
+        .about-layout {
+            grid-template-columns: minmax(0, 1fr);
         }
     }
 </style>

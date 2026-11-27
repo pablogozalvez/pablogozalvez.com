@@ -65,6 +65,7 @@
     },
     "about": {
         "title": "About me",
+        "technologies": "Technologies",
         "p1": "I started making programs on my own and ended up doing this for a living. I like understanding how things work and having room to try out ideas, whether in an application, a tool or a game.",
         "p2": "I now work at Accenture, developing and maintaining Java and Spring applications. My day-to-day work includes REST and SOAP APIs, reviewing SQL queries and fixing production issues. I'm also taking a specialization course in Artificial Intelligence and Big Data.",
         "trackRecord": "I always seem to have a project on the go. Here are a few of them: applications, tools and games I've worked on.",
