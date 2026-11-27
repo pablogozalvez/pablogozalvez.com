@@ -1,11 +1,18 @@
 @import "tailwindcss";
 
 @font-face {
-    font-family: "Manrope";
+    font-family: "Latin Modern Sans";
     font-style: normal;
     font-display: swap;
-    font-weight: 200 800;
-    src: url("/fonts/manrope/manrope-latin-wght-normal.woff2") format("woff2");
+    src: url("/fonts/latin-modern-sans/lmsans10-regular.otf") format("opentype");
+}
+
+@font-face {
+    font-family: "Latin Modern Sans";
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url("/fonts/latin-modern-sans/lmsans10-bold.otf") format("opentype");
 }
 
 @font-face {
@@ -17,7 +24,7 @@
 }
 
 @theme {
-    --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+    --font-sans: "Latin Modern Sans", ui-sans-serif, system-ui, sans-serif;
     --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Consolas, monospace;
 }
 
