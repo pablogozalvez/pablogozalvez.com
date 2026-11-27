@@ -22,7 +22,6 @@
         </div>
 
         <p class="description">{$t("hero.subtitle")}</p>
-        <a class="projects-link" href="#projects">{$t("hero.viewProjects")}</a>
     </div>
 </section>
 
@@ -80,22 +79,6 @@
         margin-top: 1.625rem;
         font-size: 1.125rem;
         line-height: 1.5;
-    }
-
-    .projects-link {
-        display: inline-flex;
-        align-items: center;
-        min-height: 2.75rem;
-        margin-top: 1.3125rem;
-        padding-inline: 0.8125rem;
-        border: 1px solid var(--color-heading);
-        color: var(--color-heading);
-        font-weight: 700;
-    }
-
-    .projects-link:hover {
-        background: var(--color-heading);
-        color: var(--color-paper);
     }
 
     @media (max-width: 767px) {

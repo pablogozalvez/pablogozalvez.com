@@ -50,7 +50,6 @@
         "role": "Ingeniero de software / Backend Java",
         "location": "Alicante, España",
         "subtitle": "Trabajo con Java y Spring en aplicaciones empresariales. Aquí reúno aplicaciones, herramientas y videojuegos en los que he trabajado.",
-        "viewProjects": "Ver proyectos",
         "code": {
             "hello": "¡Hola! Soy ",
             "stack": "Stack: ",
@@ -162,10 +161,8 @@
         }
     },
     "footer": {
-        "description": "Ingeniero de software en Alicante. Desarrollo aplicaciones, herramientas y videojuegos.",
         "navigation": "Navegación",
         "connect": "Conectar",
-        "rights": "Pablo Gozálvez. Todos los derechos reservados.",
-        "tagline": "Siempre con algo entre manos."
+        "rights": "Pablo Gozálvez. Todos los derechos reservados."
     }
 }

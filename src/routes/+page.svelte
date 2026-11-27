@@ -11,7 +11,7 @@
     export const router = false;
 </script>
 
-<main id="main-content" tabindex="-1" class="bg-[#030712]">
+<main id="main-content" tabindex="-1">
     <Hero />
     <Projects />
     <About />

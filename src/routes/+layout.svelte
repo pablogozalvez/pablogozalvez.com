@@ -5,7 +5,6 @@
     import { getLocaleFromPath, provideI18n } from "../lib/i18n";
     import { browser, dev } from "$app/env";
     import { page } from "$app/state";
-    import { fly } from "svelte/transition";
     import { IconArrowUp } from "../lib/icons";
     import "../app.css";
 
@@ -49,12 +48,12 @@
 
 {#if showScrollTop}
     <button
+        type="button"
         onclick={scrollToTop}
-        transition:fly={{ y: 20, duration: 300 }}
-        class="fixed bottom-8 right-8 z-50 w-11 h-11 rounded-xl bg-white/10 backdrop-blur-md border border-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-colors"
+        class="scroll-top"
         aria-label={$t("common.scrollToTop")}
     >
-        <IconArrowUp class="w-5 h-5 text-white" />
+        <IconArrowUp class="w-5 h-5" />
     </button>
 {/if}
 
@@ -63,7 +62,22 @@
 <LanguageSuggestion {currentPath} />
 
 <style>
-    :global(body) {
-        background: #030712 !important;
+    .scroll-top {
+        position: fixed;
+        inset-inline-end: max(1.25rem, env(safe-area-inset-right));
+        inset-block-end: max(1.25rem, env(safe-area-inset-bottom));
+        z-index: 40;
+        display: grid;
+        width: 2.75rem;
+        height: 2.75rem;
+        place-items: center;
+        border: 1px solid var(--color-heading);
+        background: var(--color-paper);
+        color: var(--color-heading);
+    }
+
+    .scroll-top:hover {
+        background: var(--color-heading);
+        color: var(--color-paper);
     }
 </style>

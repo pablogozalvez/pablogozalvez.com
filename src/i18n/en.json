@@ -50,7 +50,6 @@
         "role": "Software Engineer / Java Backend",
         "location": "Alicante, Spain",
         "subtitle": "I work with Java and Spring on enterprise applications. This portfolio brings together applications, tools and games I've worked on.",
-        "viewProjects": "View projects",
         "code": {
             "hello": "Hello! I am ",
             "stack": "Stack: ",
@@ -162,10 +161,8 @@
         }
     },
     "footer": {
-        "description": "Software engineer based in Alicante. I develop applications, tools and games.",
         "navigation": "Navigation",
         "connect": "Connect",
-        "rights": "Pablo Gozálvez. All rights reserved.",
-        "tagline": "Always working on something."
+        "rights": "Pablo Gozálvez. All rights reserved."
     }
 }
