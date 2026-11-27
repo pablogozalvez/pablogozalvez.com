@@ -51,7 +51,8 @@ html {
     outline-offset: 4px;
 }
 
-:where(.portfolio-header, .portfolio-hero, .portfolio-projects) :where(a, button, summary):focus-visible {
+:where(.portfolio-header, .portfolio-hero, .portfolio-projects, .portfolio-contact)
+    :where(a, button, input, textarea, summary):focus-visible {
     outline-color: var(--color-heading) !important;
 }
 

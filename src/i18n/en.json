@@ -122,11 +122,8 @@
         "copyFailed": "Copy failed. Select the address or use the email link.",
         "title": "Contact",
         "subtitle": "Want to talk about a project or a job opportunity? Send me a message and let's discuss it.",
-        "cardIntro": "You can use the form or email me directly.",
-        "directAccess": "Direct Access",
         "emailCommand": "Email Command",
         "copied": "Copied to clipboard!",
-        "location": "Alicante, ES",
         "emails": {
             "brand": "Pablo Gozálvez",
             "website": "pablogozalvez.com",

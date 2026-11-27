@@ -1,20 +1,17 @@
 <script>
-    import { reveal } from "./actions";
     import { onMount } from "svelte";
     import { getI18n } from "./i18n";
     import { fetchJson } from "./fetch-json";
-    import { IconArrowRight, IconCheck, IconCopy, IconSpinner } from "./icons";
+    import { IconCheck, IconCopy, IconSpinner } from "./icons";
 
     export let turnstileSiteKey = "";
 
-    let containerRef;
     let copied = false;
     let copyError = false;
     let copyTimer;
     let successTimer;
     let isMounted = false;
     const lifetime = new AbortController();
-    let currentTime = "--:--";
 
     const { t, locale } = getI18n();
 
@@ -85,20 +82,14 @@
         {
             label: "LinkedIn",
             href: "https://www.linkedin.com/in/pablogoz%C3%A1lvez/",
-            icon: "M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z",
-            color: "hover:text-blue-400 hover:border-blue-400/30",
         },
         {
             label: "GitHub",
             href: "https://github.com/pablogozalvez",
-            icon: "M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z",
-            color: "hover:text-purple-400 hover:border-purple-400/30",
         },
         {
             label: "Itch.io",
             href: "https://pablogozalvez.itch.io/",
-            icon: "M3.129 1.338c-1.047 0.622-3.109 2.991-3.129 3.612v1.029c0 1.304 1.219 2.45 2.325 2.45 1.329 0 2.436-1.101 2.436-2.408 0 1.307 1.069 2.408 2.398 2.408s2.364-1.101 2.364-2.408c0 1.307 1.137 2.408 2.466 2.408h0.024c1.329 0 2.466-1.101 2.466-2.408 0 1.307 1.035 2.408 2.364 2.408s2.398-1.101 2.398-2.408c0 1.307 1.107 2.408 2.436 2.408 1.107 0 2.325-1.146 2.325-2.45v-1.029c-0.020-0.621-2.082-2.991-3.129-3.612-3.254-0.114-5.51-0.134-8.871-0.133s-7.945 0.053-8.871 0.133zM9.506 7.815c-0.133 0.23-0.288 0.428-0.467 0.601l-0.001 0.001c-0.502 0.49-1.189 0.794-1.947 0.794-0.001 0-0.002 0-0.003 0-0.759 0-1.447-0.303-1.949-0.795l0 0c-0.182-0.178-0.320-0.368-0.446-0.59l-0.001 0c-0.126 0.222-0.302 0.412-0.485 0.59-0.502 0.491-1.19 0.794-1.949 0.794-0.001 0-0.002 0-0.003 0h0c-0.091 0-0.186-0.025-0.263-0.052-0.107 1.112-0.152 2.175-0.168 2.95l-0 0.004c-0.002 0.394-0.004 0.717-0.006 1.167 0.021 2.334-0.231 7.564 1.029 8.849 1.953 0.455 5.546 0.663 9.151 0.664h0.001c3.605-0.001 7.198-0.209 9.151-0.664 1.26-1.285 1.008-6.516 1.029-8.849-0.002-0.45-0.004-0.773-0.006-1.167l-0-0.004c-0.016-0.775-0.061-1.838-0.168-2.95-0.077 0.026-0.172 0.052-0.263 0.052-0.001 0-0.002 0-0.002 0-0.759 0-1.447-0.303-1.949-0.795l0.001 0c-0.178-0.174-0.331-0.372-0.456-0.589l-0.007-0.013c-0.132 0.23-0.286 0.428-0.463 0.602l-0 0c-0.502 0.491-1.19 0.795-1.949 0.795-0.001 0-0.002 0-0.003 0h0c-0.026 0-0.053-0.001-0.079-0.002h-0.001c-0.026 0.001-0.053 0.002-0.080 0.002-0.001 0-0.002 0-0.003 0-0.759 0-1.447-0.303-1.949-0.795l0.001 0c-0.178-0.174-0.331-0.372-0.456-0.589l-0.007-0.013zM7.502 10.406l-0 0.001h0.001c0.794 0.002 1.498 0 2.372 0.953 0.687-0.072 1.406-0.108 2.125-0.107h0.001c0.719-0.001 1.437 0.035 2.125 0.107 0.873-0.953 1.578-0.952 2.372-0.953h0.001l-0-0.001c0.375 0 1.875 0 2.92 2.935l1.122 4.026c0.832 2.995-0.266 3.069-1.636 3.071-2.031-0.076-3.156-1.551-3.156-3.026-1.124 0.184-2.436 0.276-3.748 0.276h-0.001c-1.312 0-2.624-0.092-3.748-0.276 0 1.475-1.125 2.95-3.156 3.026-1.37-0.003-2.468-0.076-1.636-3.071l1.123-4.026c1.045-2.935 2.545-2.935 2.92-2.935z",
-            color: "hover:text-red-400 hover:border-red-400/30",
         },
     ];
 
@@ -183,8 +174,8 @@
                                     sitekey: turnstileSiteKey,
                                     action: "contact",
                                     language: $locale,
-                                    theme: "dark",
-                                    size: "flexible",
+                                    theme: "light",
+                                    size: turnstileElement.clientWidth < 300 ? "compact" : "flexible",
                                     callback: (token) => {
                                         if (!isMounted) return;
                                         turnstileToken = token;
@@ -225,26 +216,11 @@
             formState = "error";
         }
 
-        const updateTime = () => {
-            const now = new Date();
-            currentTime = now.toLocaleTimeString(
-                $locale === "es" ? "es-ES" : "en-GB",
-                {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    timeZone: "Europe/Madrid",
-                    timeZoneName: "short",
-                },
-            );
-        };
-        updateTime();
-        const interval = setInterval(updateTime, 60000);
         return () => {
             isMounted = false;
             lifetime.abort();
             clearTimeout(copyTimer);
             clearTimeout(successTimer);
-            clearInterval(interval);
             if (window.turnstile && turnstileWidgetId !== undefined) {
                 window.turnstile.remove(turnstileWidgetId);
             }
@@ -252,444 +228,294 @@
     });
 </script>
 
-<section id="contact" class="py-20 md:py-24 relative flex items-center justify-center overflow-hidden bg-[#060608] -mt-px">
-    <!-- Section top accent divider -->
-    <div
-        class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-emerald-500/15 to-transparent"
-    ></div>
-    <!-- Horizontal line pattern -->
-    <div
-        class="absolute inset-0 opacity-[0.03] pointer-events-none contact-lines"
-    ></div>
-    <div
-        class="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay"
-        style="background-image: url('/img/noise-transparent.webp');"
-    ></div>
+<section id="contact" class="portfolio-contact" aria-labelledby="contact-title">
+    <div class="page-width">
+        <h2 id="contact-title">{$t("contact.title")}</h2>
 
-    <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-        <!-- Section Header outside the card, consistent with About & Projects -->
-        <div class="mb-10 md:mb-12" use:reveal>
-            <div>
-                <h2
-                    class="section-title text-4xl md:text-5xl text-white mb-3 tracking-tight"
-                >
-                    {$t("contact.title")}
-                </h2>
-                <p
-                    class="text-base sm:text-lg text-gray-400 max-w-xl font-light leading-relaxed"
-                >
-                    {$t("contact.subtitle")}
+        <div class="contact-layout">
+            <div class="contact-info">
+                <p>{$t("contact.subtitle")}</p>
+
+                <div class="contact-email">
+                    <a href={"mailto:" + email}>{email}</a>
+                    <button
+                        type="button"
+                        class="copy-email"
+                        on:click={copyToClipboard}
+                        aria-label={copied ? $t("contact.copied") : $t("contact.copyEmail")}
+                        title={$t("contact.copyEmail")}
+                    >
+                        {#if copied}
+                            <IconCheck class="w-4 h-4" />
+                        {:else}
+                            <IconCopy class="w-4 h-4" />
+                        {/if}
+                    </button>
+                </div>
+
+                <p class="copy-status" role="status">
+                    {copyError ? $t("contact.copyFailed") : copied ? $t("contact.copied") : ""}
                 </p>
-            </div>
-        </div>
 
-        <!-- Contact Card -->
-        <div
-            role="region"
-            aria-label={$t("contact.title")}
-            class="contact-card relative w-full bg-[#0F1115] border border-white/5 rounded-2xl overflow-hidden"
-            use:reveal
-        >
-            <div class="relative z-10 grid lg:grid-cols-5 gap-0">
-                <!-- Left Panel: Direct Contact Info -->
-                <div
-                    class="lg:col-span-2 p-6 sm:p-8 border-b lg:border-b-0 lg:border-r border-white/5 flex flex-col justify-between bg-black/20"
+                <div class="contact-profiles">
+                    {#each socials as social, index (social.href)}
+                        {#if index}<span aria-hidden="true">/</span>{/if}
+                        <a href={social.href} target="_blank" rel="me noopener noreferrer">{social.label}</a>
+                    {/each}
+                </div>
+            </div>
+
+            <form
+                class="contact-form"
+                on:submit|preventDefault={handleSubmit}
+                aria-busy={formState === "sending"}
+            >
+                <div class="contact-short-fields">
+                    <div class="contact-field">
+                        <label for="name">{$t("contact.form.name")}</label>
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            bind:value={formData.name}
+                            placeholder={$t("contact.form.namePlaceholder")}
+                            autocomplete="name"
+                            maxlength="100"
+                            required
+                        />
+                    </div>
+
+                    <div class="contact-field">
+                        <label for="email">{$t("contact.form.email")}</label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            bind:value={formData.email}
+                            placeholder={$t("contact.form.emailPlaceholder")}
+                            autocomplete="email"
+                            maxlength="254"
+                            required
+                        />
+                    </div>
+                </div>
+
+                <div class="contact-field">
+                    <label for="message">{$t("contact.form.message")}</label>
+                    <textarea
+                        id="message"
+                        name="message"
+                        rows="4"
+                        bind:value={formData.message}
+                        placeholder={$t("contact.form.messagePlaceholder")}
+                        minlength="10"
+                        maxlength="3000"
+                        required
+                    ></textarea>
+                </div>
+
+                <div class="contact-honeypot" aria-hidden="true">
+                    <label for="website">{$t("contact.form.website")}</label>
+                    <input
+                        id="website"
+                        name="website"
+                        type="text"
+                        bind:value={honeypot}
+                        tabindex="-1"
+                        autocomplete="off"
+                    />
+                </div>
+
+                <div class="turnstile-slot" bind:this={turnstileElement}></div>
+
+                <button
+                    type="submit"
+                    class="contact-submit"
+                    disabled={formState === "sending" || formState === "success"}
                 >
-                    <div class="flex flex-col gap-6">
-                        <!-- Left panel intro text -->
-                        <p
-                            class="text-sm sm:text-base text-gray-400 leading-relaxed font-light"
-                        >
-                            {$t("contact.cardIntro")}
-                        </p>
-                        <!-- Email block -->
-                        <div>
-                            <span
-                                class="block text-xs font-mono text-gray-500 mb-2 uppercase tracking-wider"
-                                >{$t("contact.directAccess")}</span
-                            >
-                            <div
-                                class="flex items-center bg-black/40 border border-white/10 rounded-xl p-1.5 transition-colors hover:border-indigo-500/50 group/email"
-                            >
-                                <a
-                                    href={"mailto:" + email}
-                                    class="pl-3 pr-2 font-mono text-gray-300 text-xs sm:text-sm break-all flex-1 min-w-0 select-all"
-                                >
-                                    {email}
-                                </a>
-                                <button
-                                    on:click={copyToClipboard}
-                                    aria-label={copied
-                                        ? $t("contact.copied")
-                                        : $t("contact.copyEmail")}
-                                    title={$t("contact.copyEmail")}
-                                    class="flex items-center justify-center min-w-10 min-h-10 p-2 rounded-lg {copied
-                                        ? 'bg-emerald-500/20 text-emerald-400'
-                                        : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'} transition-colors duration-200"
-                                >
-                                    {#if copied}
-                                        <IconCheck
-                                            class="w-4 h-4 text-emerald-400"
-                                        />
-                                    {:else}
-                                        <IconCopy class="w-4 h-4" />
-                                    {/if}
-                                </button>
-                            </div>
-                            <p
-                                role="status"
-                                class="min-h-6 mt-1 text-xs text-gray-300"
-                            >
-                                {copyError
-                                    ? $t("contact.copyFailed")
-                                    : copied
-                                      ? $t("contact.copied")
-                                      : ""}
-                            </p>
-                        </div>
+                    {#if formState === "success"}
+                        <span>{$t("contact.form.sent")}</span>
+                        <IconCheck class="w-4 h-4" />
+                    {:else if formState === "sending"}
+                        <span>{$t("contact.form.sending")}</span>
+                        <IconSpinner class="w-4 h-4" />
+                    {:else}
+                        <span>{$t("contact.form.send")}</span>
+                    {/if}
+                </button>
 
-                        <!-- Socials block -->
-                        <div>
-                            <span
-                                class="block text-xs font-mono text-gray-500 mb-2 uppercase tracking-wider"
-                                >{$t("footer.connect")}</span
-                            >
-                            <div class="flex gap-2.5">
-                                {#each socials as social}
-                                    <a
-                                        href={social.href}
-                                        target="_blank"
-                                        rel="me noopener noreferrer"
-                                        aria-label={social.label}
-                                        class="social-icon p-2.5 rounded-lg bg-white/5 border border-white/5 hover:bg-white/10 transition-all text-gray-400 hover:text-white"
-                                    >
-                                        <svg
-                                            class="w-5 h-5"
-                                            fill="currentColor"
-                                            viewBox="0 0 24 24"
-                                            ><path d={social.icon} /></svg
-                                        >
-                                    </a>
-                                {/each}
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Location & time -->
-                    <div
-                        class="flex flex-wrap items-center gap-4 text-xs text-gray-400 font-mono mt-6 lg:mt-8"
-                    >
-                        <span class="min-w-[105px] tabular-nums"
-                            >{currentTime}</span
-                        >
-                        <div class="w-1 h-1 bg-gray-700 rounded-full"></div>
-                        <span>{$t("contact.location")}</span>
-                    </div>
+                <div class="form-status">
+                    {#if formState === "error"}
+                        <p class="form-error" role="alert">{$t(`contact.form.errors.${formError}`)}</p>
+                    {:else if formState === "success"}
+                        <p role="status">{$t("contact.form.confirmationSent")}</p>
+                    {/if}
                 </div>
-
-                <!-- Right Panel: Contact Form -->
-                <div class="lg:col-span-3 p-6 sm:p-8 relative">
-                    <form
-                        on:submit|preventDefault={handleSubmit}
-                        aria-busy={formState === "sending"}
-                        class="flex flex-col gap-4 relative z-10"
-                    >
-                        <!-- Name & Email row -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="contact-field group/field">
-                                <label for="name" class="contact-label">
-                                    <svg
-                                        class="w-3.5 h-3.5 text-gray-500 group-focus-within/field:text-indigo-400 transition-colors"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                        ><path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                                        /></svg
-                                    >
-                                    {$t("contact.form.name")}
-                                </label>
-                                <input
-                                    type="text"
-                                    id="name"
-                                    name="name"
-                                    bind:value={formData.name}
-                                    placeholder={$t(
-                                        "contact.form.namePlaceholder",
-                                    )}
-                                    autocomplete="name"
-                                    maxlength="100"
-                                    required
-                                    class="contact-input"
-                                />
-                            </div>
-                            <div class="contact-field group/field">
-                                <label for="email" class="contact-label">
-                                    <svg
-                                        class="w-3.5 h-3.5 text-gray-500 group-focus-within/field:text-indigo-400 transition-colors"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                        ><path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                                        /></svg
-                                    >
-                                    {$t("contact.form.email")}
-                                </label>
-                                <input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    bind:value={formData.email}
-                                    placeholder={$t(
-                                        "contact.form.emailPlaceholder",
-                                    )}
-                                    autocomplete="email"
-                                    maxlength="254"
-                                    required
-                                    class="contact-input"
-                                />
-                            </div>
-                        </div>
-
-                        <!-- Message -->
-                        <div class="contact-field group/field">
-                            <label for="message" class="contact-label">
-                                <svg
-                                    class="w-3.5 h-3.5 text-gray-500 group-focus-within/field:text-indigo-400 transition-colors"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    ><path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                                    /></svg
-                                >
-                                {$t("contact.form.message")}
-                            </label>
-                            <textarea
-                                id="message"
-                                name="message"
-                                rows="3"
-                                bind:value={formData.message}
-                                placeholder={$t(
-                                    "contact.form.messagePlaceholder",
-                                )}
-                                minlength="10"
-                                maxlength="3000"
-                                required
-                                class="contact-input resize-y min-h-[90px] max-h-[240px]"
-                            ></textarea>
-                        </div>
-
-                        <!-- Honeypot -->
-                        <div class="contact-honeypot" aria-hidden="true">
-                            <label for="website"
-                                >{$t("contact.form.website")}</label
-                            >
-                            <input
-                                id="website"
-                                name="website"
-                                type="text"
-                                bind:value={honeypot}
-                                tabindex="-1"
-                                autocomplete="off"
-                            />
-                        </div>
-
-                        <!-- Turnstile -->
-                        <div
-                            class="min-h-[65px] w-full"
-                            bind:this={turnstileElement}
-                        ></div>
-
-                        <!-- Divider + Submit -->
-                        <div class="relative pt-3.5">
-                            <div
-                                class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"
-                            ></div>
-                            <div
-                                class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
-                            >
-                                <button
-                                    type="submit"
-                                    disabled={formState === "sending" ||
-                                        formState === "success"}
-                                    class="contact-submit"
-                                >
-                                    {#if formState === "success"}
-                                        <span>{$t("contact.form.sent")}</span>
-                                        <IconCheck class="w-4 h-4 text-white" />
-                                    {:else if formState === "sending"}
-                                        <span>{$t("contact.form.sending")}</span
-                                        >
-                                        <IconSpinner
-                                            class="w-4 h-4 text-white"
-                                        />
-                                    {:else}
-                                        <span>{$t("contact.form.send")}</span>
-                                        <IconArrowRight
-                                            class="w-4 h-4 text-white"
-                                        />
-                                    {/if}
-                                </button>
-                                <div class="min-h-6 w-full sm:flex-1">
-                                    {#if formState === "error"}
-                                        <p
-                                            class="text-sm text-red-300"
-                                            role="alert"
-                                        >
-                                            {$t(
-                                                `contact.form.errors.${formError}`,
-                                            )}
-                                        </p>
-                                    {:else if formState === "success"}
-                                        <p
-                                            class="text-sm text-emerald-300"
-                                            role="status"
-                                        >
-                                            {$t(
-                                                "contact.form.confirmationSent",
-                                            )}
-                                        </p>
-                                    {/if}
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
 </section>
 
 <style>
-    .contact-lines {
-        background-image: repeating-linear-gradient(
-            0deg,
-            rgba(255, 255, 255, 0.3) 0px,
-            rgba(255, 255, 255, 0.3) 1px,
-            transparent 1px,
-            transparent 28px
-        );
+    .portfolio-contact {
+        padding-block: clamp(3rem, 5vw, 4.5rem);
+        background: var(--color-paper);
+        color: var(--color-ink);
     }
 
-    .contact-honeypot {
-        position: absolute;
-        left: -9999px;
-        width: 1px;
-        height: 1px;
-        overflow: hidden;
+    h2 {
+        padding-bottom: 0.375rem;
+        margin-bottom: 1.125rem;
+        border-bottom: 1px solid var(--color-rule);
+        color: var(--color-heading);
+        font-size: clamp(1.5rem, 2vw, 1.6875rem);
+        font-weight: 700;
+        line-height: 1.2;
     }
 
-    .contact-field {
-        display: flex;
-        flex-direction: column;
-        gap: 0.375rem;
+    .contact-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
+        gap: clamp(1.5rem, 6vw, 4.5rem);
     }
 
-    .contact-label {
+    .contact-info > p:first-child {
+        max-width: 23rem;
+        line-height: 1.5;
+    }
+
+    .contact-email,
+    .contact-profiles {
         display: flex;
         align-items: center;
-        gap: 0.375rem;
-        font-size: 0.7rem;
-        font-family: var(--font-mono);
-        color: rgb(156 163 175);
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        margin-left: 0.125rem;
+        flex-wrap: wrap;
+        gap: 0.625rem;
     }
 
-    .contact-input {
-        width: 100%;
-        background: rgba(255, 255, 255, 0.04);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-left: 2px solid transparent;
-        border-radius: 0.625rem;
-        padding: 0.625rem 0.875rem;
-        color: white;
-        font-size: 0.9375rem;
-        transition: all 0.25s ease;
-    }
-    .contact-input::placeholder {
-        color: rgb(156 163 175);
-    }
-    .contact-input:focus {
-        outline: none;
-        background: rgba(255, 255, 255, 0.06);
-        border-color: rgba(255, 255, 255, 0.16);
-        border-left-color: rgb(99 102 241);
+    .contact-email {
+        margin-top: 0.75rem;
     }
 
+    .contact-email a {
+        overflow-wrap: anywhere;
+    }
+
+    .contact-info a {
+        text-decoration: underline;
+        text-underline-offset: 0.22em;
+    }
+
+    .copy-email,
     .contact-submit {
         display: inline-flex;
         align-items: center;
         justify-content: center;
+        min-height: 2.75rem;
+        border: 1px solid var(--color-heading);
+        color: var(--color-heading);
+    }
+
+    .copy-email {
+        min-width: 2.75rem;
+    }
+
+    .copy-email:hover,
+    .contact-submit:not(:disabled):hover {
+        background: var(--color-heading);
+        color: var(--color-paper);
+    }
+
+    .copy-status,
+    .form-status {
+        min-height: 1.5rem;
+        color: var(--color-heading);
+        font-size: 0.9375rem;
+    }
+
+    .contact-form {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0.875rem;
+    }
+
+    .contact-short-fields {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.875rem;
+    }
+
+    .contact-field {
+        display: grid;
+        gap: 0.375rem;
+    }
+
+    .contact-field label {
+        color: var(--color-heading);
+        font-weight: 700;
+    }
+
+    .contact-field :is(input, textarea) {
+        width: 100%;
+        min-height: 2.75rem;
+        padding: 0.5rem 0.625rem;
+        border: 1px solid #64748b;
+        background: var(--color-paper);
+    }
+
+    .contact-field :is(input, textarea)::placeholder {
+        color: #475569;
+    }
+
+    .contact-field textarea {
+        min-height: 6rem;
+        max-height: 15rem;
+        resize: vertical;
+    }
+
+    .contact-honeypot {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+    }
+
+    .turnstile-slot {
+        min-height: 65px;
+    }
+
+    .contact-submit {
+        justify-self: start;
         gap: 0.5rem;
-        padding: 0.65rem 1.6rem;
-        min-width: 140px;
-        background: rgb(79 70 229);
-        border-radius: 0.625rem;
-        color: white;
-        font-weight: 500;
-        font-size: 0.875rem;
-        cursor: pointer;
-        border: none;
-        transition:
-            background-color 0.2s ease,
-            opacity 0.2s ease;
-        position: relative;
+        padding-inline: 0.875rem;
+        font-weight: 700;
     }
-    .contact-submit:hover:not(:disabled) {
-        background: rgb(99 102 241);
-    }
-    .contact-submit:active:not(:disabled) {
-        background: rgb(67 56 202);
-    }
+
     .contact-submit:disabled {
         opacity: 0.7;
-        cursor: not-allowed;
     }
 
-    .contact-card {
-        opacity: 1;
-        transition: border-color 0.3s ease;
+    .form-error {
+        color: #991b1b;
     }
 
-    .contact-card:global([data-revealed]) {
-        animation: contactReveal 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
-    }
-
-    .contact-card:hover {
-        border-color: rgba(255, 255, 255, 0.1);
-    }
-
-    .social-icon {
-        transition:
-            background-color 0.2s ease,
-            border-color 0.2s ease,
-            color 0.2s ease;
-    }
-    .social-icon:hover {
-        border-color: rgba(255, 255, 255, 0.15);
-    }
-
-    @keyframes contactReveal {
-        from {
-            opacity: 0;
-            transform: translateY(40px) scale(0.98);
+    @media (max-width: 767px) {
+        .contact-layout {
+            grid-template-columns: minmax(0, 1fr);
         }
-        to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
+    }
+
+    @media (max-width: 479px) {
+        .contact-short-fields {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    @media (max-width: 341px) {
+        .turnstile-slot {
+            min-height: 140px;
         }
     }
 </style>

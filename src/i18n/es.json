@@ -122,11 +122,8 @@
         "copyFailed": "No se ha podido copiar. Selecciona la dirección o usa el enlace de correo.",
         "title": "Contacto",
         "subtitle": "¿Quieres hablar de un proyecto o de una oportunidad de trabajo? Escríbeme y lo comentamos.",
-        "cardIntro": "Puedes usar el formulario o escribirme directamente por correo.",
-        "directAccess": "Acceso Directo",
         "emailCommand": "Comando de Email",
         "copied": "¡Copiado al portapapeles!",
-        "location": "Alicante, ES",
         "emails": {
             "brand": "Pablo Gozálvez",
             "website": "pablogozalvez.com",
