@@ -171,19 +171,6 @@
             }
         }
     },
-    "githubActivity": {
-        "saved": "Actividad guardada",
-        "ariaLabel": "Actividad en GitHub",
-        "commitsPerYear": "contribuciones / año",
-        "gridAriaLabel": "Matriz de contribuciones de GitHub",
-        "contributionTitle": "{{count}} contribuciones el {{date}}",
-        "commit": "contribución",
-        "commits": "contribuciones",
-        "on": "el",
-        "summary": "Actividad en GitHub (últimos 6 meses)",
-        "less": "Menos",
-        "more": "Más"
-    },
     "contact": {
         "copyEmail": "Copiar dirección de correo",
         "copyFailed": "No se ha podido copiar. Selecciona la dirección o usa el enlace de correo.",

@@ -5,7 +5,6 @@
     import { getI18n } from "./i18n";
     import { fly } from "svelte/transition";
     import { cubicOut } from "svelte/easing";
-    import GithubActivityWidget from "./GithubActivityWidget.svelte";
     import {
         IconArrowRight,
         IconChevronDown,
@@ -258,14 +257,6 @@
                 >
                     {$t("hero.subtitle")}
                 </p>
-            </div>
-
-            <!-- Desktop GitHub Real Commits & Activity Heatmap Widget -->
-            <div
-                in:fly={{ y: 20, duration: 800, delay: 180, easing: cubicOut }}
-                class="hidden lg:block w-full"
-            >
-                <GithubActivityWidget />
             </div>
 
             <div
