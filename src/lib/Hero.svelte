@@ -1,81 +1,116 @@
 <script>
     import { getI18n } from "./i18n";
-    import { IconArrowRight } from "./icons";
 
     const { t } = getI18n();
 </script>
 
-<section id="home" class="relative min-h-svh flex items-center overflow-hidden bg-[#0a0a0a]">
-    <div
-        class="absolute inset-0 bg-gradient-to-b from-transparent via-[#0a0a0a]/50 to-[#0a0a0a] z-0 pointer-events-none"
-    ></div>
-
-    <div
-        class="w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10 h-full py-24 lg:py-0 flex flex-col lg:flex-row items-center justify-center lg:justify-between gap-12 lg:gap-8">
-        <!-- Left Column: Presentation -->
-        <div
-            class="flex flex-col items-center lg:items-start text-center lg:text-left w-full lg:w-1/2 max-w-2xl mx-auto lg:mx-0"
-        >
-            <div>
-                <h1
-                    class="hero-title text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-extrabold tracking-tighter mb-6 lg:mb-10 leading-[0.95] text-white"
-                >
-                    {@html $t("hero.title")}
-                </h1>
-            </div>
-
-            <!-- Subtitle -->
-            <div class="w-full flex justify-center">
-                <p
-                    class="text-base sm:text-lg text-gray-300 mb-8 max-w-lg leading-relaxed font-light p-6 bg-white/5 rounded-xl border border-white/5"
-                >
-                    {$t("hero.subtitle")}
-                </p>
-            </div>
-
-            <div class="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 justify-center lg:justify-start w-full">
-                <a
-                    href="#projects"
-                    class="hero-cta px-7 py-3.5 bg-white text-black font-bold rounded-xl hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 cursor-pointer"
-                >
-                    <span>{$t("hero.viewProjects")}</span>
-                    <IconArrowRight class="w-4 h-4 text-black" />
-                </a>
-
-                <a
-                    href="#contact"
-                    class="px-7 py-3.5 bg-white/5 border border-white/10 text-white font-medium rounded-xl hover:bg-white/10 hover:border-white/20 transition-colors cursor-pointer"
-                >
-                    {$t("hero.contactMe")}
-                </a>
-            </div>
+<section id="home" class="portfolio-hero">
+    <div class="page-width">
+        <div class="identity">
+            <h1>{$t("hero.title")}</h1>
+            <span class="location">{$t("hero.location")}</span>
         </div>
+
+        <p class="role">{$t("hero.role")}</p>
+
+        <div class="profile-links">
+            <a href="mailto:pablogozalvezr@gmail.com">{$t("contact.form.email")}</a>
+            <span aria-hidden="true">/</span>
+            <a href="https://github.com/pablogozalvez" target="_blank" rel="me noopener noreferrer">GitHub</a>
+            <span aria-hidden="true">/</span>
+            <a href="https://www.linkedin.com/in/pablogozalvez/" target="_blank" rel="me noopener noreferrer">LinkedIn</a>
+        </div>
+
+        <p class="description">{$t("hero.subtitle")}</p>
+        <a class="projects-link" href="#projects">{$t("hero.viewProjects")}</a>
     </div>
 </section>
 
 <style>
-    .hero-title {
-        background: linear-gradient(
-            180deg,
-            #ffffff 25%,
-            #e2e8f0 70%,
-            #cbd5e1 100%
-        );
-        -webkit-background-clip: text;
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
-        -webkit-text-stroke: 1.2px rgba(255, 255, 255, 0.95);
-        paint-order: stroke fill;
-        letter-spacing: -0.04em;
+    .portfolio-hero {
+        padding-block: clamp(2.5rem, 5.2vw, 4.625rem) clamp(2.625rem, 4.4vw, 3.875rem);
+        background: var(--color-paper);
+        color: var(--color-ink);
     }
 
-    @media (min-width: 1024px) {
-        .hero-title {
-            -webkit-text-stroke-width: 1.8px;
+    .identity {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 1.375rem;
+    }
+
+    h1 {
+        font-size: clamp(2.375rem, 5.2vw, 4.375rem);
+        font-weight: 700;
+        line-height: 1.05;
+        letter-spacing: -0.02em;
+    }
+
+    .location {
+        color: var(--color-heading);
+        white-space: nowrap;
+    }
+
+    .role {
+        margin-top: 0.5625rem;
+        font-size: clamp(1.125rem, 2.15vw, 1.5rem);
+        line-height: 1.3;
+    }
+
+    .profile-links {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0.6875rem;
+        margin-top: 0.8125rem;
+    }
+
+    .profile-links a {
+        text-decoration: underline;
+        text-underline-offset: 0.22em;
+    }
+
+    .profile-links span {
+        color: var(--color-heading);
+    }
+
+    .description {
+        max-width: 38.5rem;
+        margin-top: 1.625rem;
+        font-size: 1.125rem;
+        line-height: 1.5;
+    }
+
+    .projects-link {
+        display: inline-flex;
+        align-items: center;
+        min-height: 2.75rem;
+        margin-top: 1.3125rem;
+        padding-inline: 0.8125rem;
+        border: 1px solid var(--color-heading);
+        color: var(--color-heading);
+        font-weight: 700;
+    }
+
+    .projects-link:hover {
+        background: var(--color-heading);
+        color: var(--color-paper);
+    }
+
+    @media (max-width: 767px) {
+        .identity {
+            flex-direction: column;
+            gap: 0.3125rem;
         }
-    }
 
-    .hero-cta {
-        position: relative;
+        .role {
+            margin-top: 0.4375rem;
+        }
+
+        .description {
+            margin-top: 1.0625rem;
+            font-size: 1.0625rem;
+        }
     }
 </style>

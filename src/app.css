@@ -3,6 +3,7 @@
 @font-face {
     font-family: "Latin Modern Sans";
     font-style: normal;
+    font-weight: 400;
     font-display: swap;
     src: url("/fonts/latin-modern-sans/lmsans10-regular.otf") format("opentype");
 }
@@ -28,6 +29,18 @@
     --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Consolas, monospace;
 }
 
+:root {
+    --color-paper: #fff;
+    --color-ink: #101418;
+    --color-heading: #1f2937;
+    --color-rule: #cbd5e1;
+}
+
+.page-width {
+    width: min(64.375rem, calc(100% - 2.625rem));
+    margin-inline: auto;
+}
+
 html {
     scroll-behavior: smooth;
     font-family: var(--font-sans);
@@ -36,6 +49,10 @@ html {
 :where(a, button, input, textarea, select, [tabindex]):focus-visible {
     outline: 2px solid #a5b4fc !important;
     outline-offset: 4px;
+}
+
+:where(.portfolio-header, .portfolio-hero) :where(a, button):focus-visible {
+    outline-color: var(--color-heading) !important;
 }
 
 .skip-link {

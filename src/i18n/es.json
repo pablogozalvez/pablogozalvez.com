@@ -37,6 +37,7 @@
     "nav": {
         "menu": "Menú de navegación",
         "primary": "Navegación principal",
+        "language": "Idioma",
         "openMenu": "Abrir menú de navegación",
         "closeMenu": "Cerrar menú de navegación",
         "home": "Inicio",
@@ -45,10 +46,11 @@
         "contact": "Contacto"
     },
     "hero": {
-        "title": "PABLO<br />GOZÁLVEZ",
-        "subtitle": "Soy Pablo Gozálvez, desarrollador de software de Alicante. Trabajo principalmente con Java y Spring, y en mis proyectos también hay sitio para aplicaciones web, herramientas y videojuegos.",
+        "title": "Pablo Gozálvez",
+        "role": "Ingeniero de software / Backend Java",
+        "location": "Alicante, España",
+        "subtitle": "Trabajo con Java y Spring en aplicaciones empresariales. Aquí reúno aplicaciones, herramientas y videojuegos en los que he trabajado.",
         "viewProjects": "Ver proyectos",
-        "contactMe": "Hablemos",
         "code": {
             "hello": "¡Hola! Soy ",
             "stack": "Stack: ",
