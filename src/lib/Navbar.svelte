@@ -22,8 +22,8 @@
 
     $: sections = [
         { id: "home", label: $t("nav.home") },
-        { id: "about", label: $t("nav.about") },
         { id: "projects", label: $t("nav.projects") },
+        { id: "about", label: $t("nav.about") },
         { id: "contact", label: $t("nav.contact") },
     ];
 

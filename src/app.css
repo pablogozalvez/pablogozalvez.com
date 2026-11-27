@@ -46,12 +46,12 @@ html {
     font-family: var(--font-sans);
 }
 
-:where(a, button, input, textarea, select, [tabindex]):focus-visible {
+:where(a, button, input, textarea, select, summary, [tabindex]):focus-visible {
     outline: 2px solid #a5b4fc !important;
     outline-offset: 4px;
 }
 
-:where(.portfolio-header, .portfolio-hero) :where(a, button):focus-visible {
+:where(.portfolio-header, .portfolio-hero, .portfolio-projects) :where(a, button, summary):focus-visible {
     outline-color: var(--color-heading) !important;
 }
 

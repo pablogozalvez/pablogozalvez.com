@@ -13,8 +13,8 @@
 
 <main id="main-content" tabindex="-1" class="bg-[#030712]">
     <Hero />
-    <About />
     <Projects />
+    <About />
     <Contact turnstileSiteKey={data.turnstileSiteKey} />
 </main>
 

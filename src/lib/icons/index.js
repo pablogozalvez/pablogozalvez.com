@@ -1,6 +1,5 @@
 export { default as IconArrowRight } from "./IconArrowRight.svelte";
 export { default as IconArrowUp } from "./IconArrowUp.svelte";
-export { default as IconExternalLink } from "./IconExternalLink.svelte";
 export { default as IconClose } from "./IconClose.svelte";
 export { default as IconCopy } from "./IconCopy.svelte";
 export { default as IconCheck } from "./IconCheck.svelte";
