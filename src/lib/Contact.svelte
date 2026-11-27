@@ -269,15 +269,6 @@
     <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         <!-- Section Header outside the card, consistent with About & Projects -->
         <div class="mb-10 md:mb-12" use:reveal>
-            <div class="flex items-center gap-3 mb-3">
-                <span
-                    class="text-[11px] font-mono font-semibold text-gray-500 uppercase tracking-widest"
-                    >03</span
-                >
-                <div
-                    class="h-px w-12 bg-gradient-to-r from-white/20 to-transparent"
-                ></div>
-            </div>
             <div>
                 <h2
                     class="section-title text-4xl md:text-5xl text-white mb-3 tracking-tight"

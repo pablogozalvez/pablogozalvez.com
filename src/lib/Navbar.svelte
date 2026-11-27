@@ -56,10 +56,10 @@
     $: progress, isMobile, isMenuOpen, updateNavStyles();
 
     $: sections = [
-        { id: "home", label: $t("nav.home"), num: null },
-        { id: "about", label: $t("nav.about"), num: "01" },
-        { id: "projects", label: $t("nav.projects"), num: "02" },
-        { id: "contact", label: $t("nav.contact"), num: "03" },
+        { id: "home", label: $t("nav.home") },
+        { id: "about", label: $t("nav.about") },
+        { id: "projects", label: $t("nav.projects") },
+        { id: "contact", label: $t("nav.contact") },
     ];
 
     $: alternateLanguageUrl = localizePath(currentPath, $locale === "en" ? "es" : "en");
@@ -116,12 +116,9 @@
                     href={"#" + section.id}
                     on:click={() => (isMenuOpen = false)}
                     in:fly={{ y: 50, delay: 200 + i * 100, duration: 500, easing: cubicOut }}
-                    class="flex items-baseline gap-3 transition-colors duration-200
+                    class="transition-colors duration-200
                     {activeSection === section.id ? 'text-white' : 'text-white/60 hover:text-white'}"
                 >
-                    {#if section.num}
-                        <span class="text-sm font-mono font-medium tracking-wide {activeSection === section.id ? 'text-gray-400' : 'text-white/20'}">{section.num}</span>
-                    {/if}
                     <span class="text-4xl sm:text-5xl md:text-6xl font-black uppercase tracking-tighter {activeSection === section.id ? 'text-white' : 'text-white/60'}">{section.label}</span>
                 </a>
             {/each}
@@ -181,12 +178,9 @@
                 {#each sections as section}
                     <a
                         href={"#" + section.id}
-                        class="relative px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider transition-colors duration-200 rounded-lg group flex items-center gap-1.5
+                        class="relative px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider transition-colors duration-200 rounded-lg group flex items-center
                         {activeSection === section.id ? 'text-white bg-white/10' : 'text-gray-400 hover:text-white'}"
                     >
-                        {#if section.num}
-                            <span class="relative z-10 text-[9px] font-mono font-medium opacity-40">{section.num}</span>
-                        {/if}
                         <span class="relative z-10">{section.label}</span>
                     </a>
                 {/each}
