@@ -64,13 +64,9 @@
         },
     ];
 
-    export let showPdfModal = false;
+    let showPdfModal = false;
 
     import PdfViewer from "./PdfViewer.svelte";
-    import { createEventDispatcher } from "svelte";
-    const dispatch = createEventDispatcher();
-
-    $: dispatch("showPdfModalChange", showPdfModal);
 </script>
 
 <PdfViewer

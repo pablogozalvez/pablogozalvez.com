@@ -1,7 +1,6 @@
 <script>
     import { fade, scale } from "svelte/transition";
     import { cubicOut } from "svelte/easing";
-    import { createEventDispatcher } from "svelte";
     import { getI18n } from "./i18n";
     import { modal } from "./modal";
     import { IconClose, IconDownload, IconSpinner, IconZoomIn, IconZoomOut } from "./icons";
@@ -12,10 +11,6 @@
     export let pdfUrl = "";
     export let title = "PDF";
     export let downloadName = "document.pdf";
-
-    const dispatch = createEventDispatcher();
-
-    $: dispatch("showPdfModalChange", showPdfModal);
 
     let zoomLevel = 100;
     const ZOOM_MIN = 50;

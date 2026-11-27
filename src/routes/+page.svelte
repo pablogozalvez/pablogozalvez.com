@@ -9,13 +9,11 @@
 
     export const hydrate = false;
     export const router = false;
-
-    let showPdfModal = false;
 </script>
 
 <main id="main-content" tabindex="-1" class="bg-[#030712]">
     <Hero />
-    <About {showPdfModal} on:showPdfModalChange={(e) => (showPdfModal = e.detail)} />
+    <About />
     <Projects />
     <Contact turnstileSiteKey={data.turnstileSiteKey} />
 </main>

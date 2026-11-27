@@ -7,7 +7,6 @@
     import { IconClose } from "./icons";
 
     export let activeSection = "home";
-    export let hideNav = false;
     export let currentPath;
 
     const { t, locale } = getI18n();
@@ -150,9 +149,7 @@
 
 <nav
     aria-label={$t("nav.primary")}
-    class="fixed top-0 left-0 w-full z-50 flex justify-center pointer-events-none transition-transform duration-500 {hideNav
-        ? '-translate-y-[150%]'
-        : 'translate-y-0'}"
+    class="fixed top-0 left-0 w-full z-50 flex justify-center pointer-events-none"
 >
     <div
         bind:this={navElement}

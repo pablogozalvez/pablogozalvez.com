@@ -15,7 +15,6 @@
     let { children } = $props();
     let scrollY = $state(0);
     let innerHeight = $state(0);
-    let showPdfModal = false;
     let showScrollTop = $derived(innerHeight > 0 && scrollY > innerHeight * 0.8);
 
     const i18n = provideI18n(getLocaleFromPath(page.url.pathname));
@@ -46,7 +45,7 @@
 
 <a class="skip-link" href="#main-content">{$t("common.skipToContent")}</a>
 
-<Navbar hideNav={showPdfModal} {currentPath} />
+<Navbar {currentPath} />
 
 {#if showScrollTop}
     <button
