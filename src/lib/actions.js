@@ -98,19 +98,6 @@ export function debounce(fn, delay = 16) {
     };
 }
 
-export function rafThrottle(fn) {
-    let ticking = false;
-    return (...args) => {
-        if (!ticking) {
-            ticking = true;
-            requestAnimationFrame(() => {
-                fn(...args);
-                ticking = false;
-            });
-        }
-    };
-}
-
 let _revealObserver = null;
 const _revealCallbacks = new WeakMap();
 
