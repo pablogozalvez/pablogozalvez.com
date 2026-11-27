@@ -1,6 +1,5 @@
 <script>
     import { reveal } from "./actions";
-    import { animationVisibility } from "./animation-visibility";
     import { getI18n } from "./i18n";
     import { IconArrowRight } from "./icons";
     const { t } = getI18n();
@@ -21,7 +20,7 @@
     ];
 </script>
 
-<footer use:animationVisibility class="relative bg-[#040406] pt-12 md:pt-14 pb-8 overflow-hidden">
+<footer class="relative bg-[#040406] pt-12 md:pt-14 pb-8 overflow-hidden">
     <!-- Section top accent divider -->
     <div
         class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"

@@ -62,17 +62,6 @@ html {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-    [data-animations-paused],
-    [data-animations-paused] *,
-    [data-animations-paused]::before,
-    [data-animations-paused]::after,
-    [data-animations-paused] *::before,
-    [data-animations-paused] *::after {
-        animation-play-state: paused !important;
-    }
-}
-
-@media (prefers-reduced-motion: no-preference) {
     * {
         scroll-behavior: smooth;
     }

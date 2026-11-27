@@ -3,12 +3,9 @@
     import Navbar from "../lib/Navbar.svelte";
     import LanguageSuggestion from "../lib/LanguageSuggestion.svelte";
     import { getLocaleFromPath, provideI18n } from "../lib/i18n";
-    import { onMount } from "svelte";
     import { browser, dev } from "$app/env";
-    import { page, navigating } from "$app/state";
+    import { page } from "$app/state";
     import { fly } from "svelte/transition";
-    import { isLowPerformanceMode } from "../lib/actions";
-    import { animationVisibility } from "../lib/animation-visibility";
     import { IconArrowUp } from "../lib/icons";
     import "../app.css";
 
@@ -20,7 +17,6 @@
     let innerHeight = $state(0);
     let showPdfModal = false;
     let showScrollTop = $derived(innerHeight > 0 && scrollY > innerHeight * 0.8);
-    let reducedEffects = false;
 
     const i18n = provideI18n(getLocaleFromPath(page.url.pathname));
     const { t, syncLocaleFromPath } = i18n;
@@ -29,10 +25,6 @@
         page.url.pathname + (browser ? page.url.search + page.url.hash : ""),
     );
     $effect(() => syncLocaleFromPath(page.url.pathname));
-
-    onMount(() => {
-        reducedEffects = isLowPerformanceMode();
-    });
 
     function scrollToTop() {
         window.scrollTo({
@@ -56,12 +48,6 @@
 
 <Navbar hideNav={showPdfModal} {currentPath} />
 
-<div class="layout-background">
-    <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none" use:animationVisibility>
-        <div class="absolute inset-0 static-background-glow"></div>
-    </div>
-</div>
-
 {#if showScrollTop}
     <button
         onclick={scrollToTop}
@@ -77,20 +63,8 @@
 
 <LanguageSuggestion {currentPath} />
 
-<!--<div class="min-h-screen text-white font-sans overflow-x-hidden"></div>-->
-
 <style>
-    :global(html) {
-        scroll-behavior: smooth;
-    }
     :global(body) {
         background: #030712 !important;
-    }
-
-    .static-background-glow {
-        display: block;
-        background:
-            radial-gradient(circle at 8% 8%, rgba(37, 99, 235, 0.08), transparent 34%),
-            radial-gradient(circle at 92% 92%, rgba(147, 51, 234, 0.08), transparent 34%);
     }
 </style>

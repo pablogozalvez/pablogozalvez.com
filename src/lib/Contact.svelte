@@ -1,6 +1,5 @@
 <script>
     import { reveal } from "./actions";
-    import { animationVisibility } from "./animation-visibility";
     import { onMount } from "svelte";
     import { getI18n } from "./i18n";
     import { fetchJson } from "./fetch-json";
@@ -253,11 +252,7 @@
     });
 </script>
 
-<section
-    id="contact"
-    use:animationVisibility
-    class="py-20 md:py-24 relative flex items-center justify-center overflow-hidden bg-[#060608] -mt-px"
->
+<section id="contact" class="py-20 md:py-24 relative flex items-center justify-center overflow-hidden bg-[#060608] -mt-px">
     <!-- Section top accent divider -->
     <div
         class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-emerald-500/15 to-transparent"
