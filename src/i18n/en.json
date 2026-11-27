@@ -31,7 +31,6 @@
         "unavailable": "The preview is taking too long. You can open or download the PDF using the links above."
     },
     "common": {
-        "loading": "Loading page",
         "skipToContent": "Skip to content",
         "scrollToTop": "Back to top"
     },
@@ -170,19 +169,6 @@
                 "description": "A desktop assistant that recognizes voice commands and performs actions using Microsoft Speech API. Developed with C# and WinForms."
             }
         }
-    },
-    "githubActivity": {
-        "saved": "Saved activity",
-        "ariaLabel": "GitHub Activity",
-        "commitsPerYear": "contributions / year",
-        "gridAriaLabel": "GitHub contribution matrix",
-        "contributionTitle": "{{count}} contributions on {{date}}",
-        "commit": "contribution",
-        "commits": "contributions",
-        "on": "on",
-        "summary": "GitHub activity (last 6 months)",
-        "less": "Less",
-        "more": "More"
     },
     "contact": {
         "copyEmail": "Copy email address",

@@ -1,7 +1,6 @@
 <script>
     import SEO from "../lib/SEO.svelte";
     import Navbar from "../lib/Navbar.svelte";
-    import Loader from "../lib/Loader.svelte";
     import LanguageSuggestion from "../lib/LanguageSuggestion.svelte";
     import { getLocaleFromPath, provideI18n } from "../lib/i18n";
     import { onMount } from "svelte";
@@ -42,7 +41,6 @@
         });
     }
 
-    const isLoading = $derived(Boolean(navigating.to && navigating.from?.url.pathname !== navigating.to.url.pathname));
     const analyticsBasePath = import.meta.env.VITE_VERCEL_OBSERVABILITY_BASEPATH || "/_vercel";
 </script>
 
@@ -53,8 +51,6 @@
 </svelte:head>
 
 <SEO />
-
-<Loader {isLoading} title={$t("common.loading")} />
 
 <a class="skip-link" href="#main-content">{$t("common.skipToContent")}</a>
 
