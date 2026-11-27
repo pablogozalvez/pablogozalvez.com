@@ -522,7 +522,6 @@
                         <!-- Turnstile -->
                         <div
                             class="min-h-[65px] w-full"
-                            data-native-cursor
                             bind:this={turnstileElement}
                         ></div>
 

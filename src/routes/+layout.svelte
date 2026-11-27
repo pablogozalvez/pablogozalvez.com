@@ -1,7 +1,6 @@
 <script>
     import SEO from "../lib/SEO.svelte";
     import Navbar from "../lib/Navbar.svelte";
-    import Cursor from "../lib/Cursor.svelte";
     import Loader from "../lib/Loader.svelte";
     import LanguageSuggestion from "../lib/LanguageSuggestion.svelte";
     import { getLocaleFromPath, provideI18n } from "../lib/i18n";
@@ -58,8 +57,6 @@
 <Loader {isLoading} title={$t("common.loading")} />
 
 <a class="skip-link" href="#main-content">{$t("common.skipToContent")}</a>
-
-<Cursor hidden={showPdfModal} />
 
 <Navbar hideNav={showPdfModal} {currentPath} />
 
