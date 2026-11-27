@@ -61,59 +61,6 @@
             "varStack": "stack",
             "varMood": "mood",
             "varGoal": "goal"
-        },
-        "preview": {
-            "ariaLabel": "About me and project preview",
-            "pause": "Pause automatic preview",
-            "resume": "Resume automatic preview",
-            "showProject": "Show project",
-            "categories": {
-                "outreal": "Mobile app · Social platform",
-                "hospital": "WebGL · Virtual 3D tour",
-                "trickyMansion": "Game development · Procedural 2D",
-                "pseudoBlocks": "Desktop tool · Custom lexer"
-            },
-            "highlights": {
-                "outreal": "Activities and people nearby",
-                "pseudoBlocks": "Custom lexer and parser"
-            },
-            "tabAbout": "About Me",
-            "tabProjects": "Projects",
-            "location": "Alicante, ES",
-            "role": "Software engineer",
-            "summary": "I currently work at Accenture on Java and Spring applications, APIs and databases. Outside work, I keep building my own projects, from mobile apps to Unity games.",
-            "statExp": "Years exp.",
-            "statProjects": "Projects",
-            "statReleases": "Releases",
-            "viewAbout": "More about me",
-            "featuredProject": "Featured project",
-            "viewInProjects": "View in projects",
-            "allProjects": "View all projects",
-            "seeNext": "Next project",
-            "seePrev": "Previous project",
-            "switchTab": "Explore projects",
-            "techStack": "Technologies I use",
-            "techCategories": {
-                "frontend": "Frontend",
-                "backend": "Backend",
-                "dataCloud": "Data and tools",
-                "interactive": "Games and 3D"
-            },
-            "capabilitiesTitle": "What I bring",
-            "projectDescriptions": {
-                "outreal": "A mobile app for finding things to do and meeting people nearby, with a map, proximity alerts and a user trust system.",
-                "hospitalXyz": "A 3D tour to explore the route to radiodiagnosis at Hospital Dr. Balmis before a visit.",
-                "trickyMansion": "A 2D platformer with random levels, made with Unity and released on Google Play and itch.io.",
-                "pseudoBlocks": "A block-based programming environment in C# and WinForms, with its own lexer and parser."
-            },
-            "capabilities": {
-                "frontend": "Frontend and mobile apps",
-                "backend": "Backend and microservices",
-                "apis": "REST and SOAP APIs",
-                "databases": "SQL and NoSQL databases",
-                "devops": "Cloud, Docker and CI/CD",
-                "quality": "Testing, debugging and code review"
-            }
         }
     },
     "about": {

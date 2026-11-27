@@ -61,59 +61,6 @@
             "varStack": "stack",
             "varMood": "estado",
             "varGoal": "objetivo"
-        },
-        "preview": {
-            "ariaLabel": "Vista previa de mi perfil y proyectos",
-            "pause": "Pausar la vista previa automática",
-            "resume": "Reanudar la vista previa automática",
-            "showProject": "Mostrar proyecto",
-            "categories": {
-                "outreal": "App móvil · Plataforma social",
-                "hospital": "WebGL · Recorrido virtual 3D",
-                "trickyMansion": "Desarrollo de juegos · 2D procedural",
-                "pseudoBlocks": "Herramienta de escritorio · Lexer propio"
-            },
-            "highlights": {
-                "outreal": "Planes y gente cerca",
-                "pseudoBlocks": "Lexer y parser propios"
-            },
-            "tabAbout": "Sobre mí",
-            "tabProjects": "Proyectos",
-            "location": "Alicante, ES",
-            "role": "Ingeniero de software",
-            "summary": "Actualmente trabajo en Accenture con aplicaciones Java y Spring, APIs y bases de datos. Fuera del trabajo sigo desarrollando proyectos propios, desde aplicaciones móviles hasta juegos con Unity.",
-            "statExp": "Años exp.",
-            "statProjects": "Proyectos",
-            "statReleases": "Lanzamientos",
-            "viewAbout": "Más sobre mí",
-            "featuredProject": "Proyecto destacado",
-            "viewInProjects": "Ver en proyectos",
-            "allProjects": "Ver todos los proyectos",
-            "seeNext": "Siguiente proyecto",
-            "seePrev": "Proyecto anterior",
-            "switchTab": "Explorar proyectos",
-            "techStack": "Tecnologías que utilizo",
-            "techCategories": {
-                "frontend": "Frontend",
-                "backend": "Backend",
-                "dataCloud": "Datos y herramientas",
-                "interactive": "Videojuegos y 3D"
-            },
-            "capabilitiesTitle": "Qué puedo aportar",
-            "projectDescriptions": {
-                "outreal": "Una app móvil para encontrar planes y conocer gente cerca, con mapa, avisos de proximidad y un sistema de confianza.",
-                "hospitalXyz": "Un recorrido 3D para conocer el trayecto hasta radiodiagnóstico del Hospital Dr. Balmis antes de la visita.",
-                "trickyMansion": "Un plataformas 2D con niveles aleatorios, hecho con Unity y publicado en Google Play e itch.io.",
-                "pseudoBlocks": "Un entorno de programación por bloques en C# y WinForms, con lexer y parser propios."
-            },
-            "capabilities": {
-                "frontend": "Frontend y apps móviles",
-                "backend": "Backend y microservicios",
-                "apis": "APIs REST y SOAP",
-                "databases": "Bases de datos SQL y NoSQL",
-                "devops": "Cloud, Docker y CI/CD",
-                "quality": "Testing, depuración y revisión de código"
-            }
         }
     },
     "about": {
