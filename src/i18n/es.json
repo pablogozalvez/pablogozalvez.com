@@ -80,6 +80,36 @@
             "subtitle": "Experiencia, formación y tecnologías con las que he trabajado."
         }
     },
+    "cv": {
+        "title": "Vista CV",
+        "close": "Cerrar",
+        "download": "Descargar PDF (EN)",
+        "showDetails": "Ver funciones",
+        "hideDetails": "Ocultar funciones",
+        "experience": {
+            "title": "Experiencia profesional",
+            "accenture": {
+                "role": "Desarrollador de sistemas (Backend Java)",
+                "dates": "jun. 2025 – actualidad",
+                "location": "Alicante / remoto",
+                "details": [
+                    "Desarrollé y mantuve aplicaciones empresariales con Java, JSP y Spring Framework.",
+                    "Desarrollé y mantuve servicios SOAP para una plataforma de venta de billetes de tren utilizada por más de 500 agencias de viajes. Creé desde cero un servicio de respaldo para recuperar el sistema de ventas anterior en caso de fallo del nuevo.",
+                    "Diagnostiqué y resolví incidencias de producción en servicios backend, APIs e integraciones con bases de datos."
+                ]
+            },
+            "university": {
+                "role": "Técnico informático en prácticas",
+                "dates": "feb. 2023 – jul. 2023",
+                "location": "Alicante / presencial",
+                "details": [
+                    "Rediseñé las vistas de tickets y los flujos de historial en la plataforma interna de soporte informático de la universidad con PHP, JavaScript, HTML y CSS.",
+                    "Mejoré los tiempos de carga y de respuesta del servidor reduciendo los datos enviados, usando peticiones asíncronas, eliminando llamadas duplicadas y optimizando consultas a la base de datos.",
+                    "Di soporte de software y hardware al personal académico y administrativo. Instalé, configuré y mantuve equipos informáticos y software."
+                ]
+            }
+        }
+    },
     "projects": {
         "sourceCode": "Código fuente",
         "title": "Proyectos seleccionados",

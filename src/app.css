@@ -34,6 +34,7 @@
     --color-ink: #101418;
     --color-heading: #1f2937;
     --color-rule: #cbd5e1;
+    --cv-tab-height: 2.75rem;
 }
 
 .page-width {
@@ -53,7 +54,8 @@ html {
 
 :where(.portfolio-header, .portfolio-hero, .portfolio-projects, .portfolio-about, .portfolio-contact, .portfolio-footer)
     :where(a, button, input, textarea, summary):focus-visible,
-.scroll-top:focus-visible {
+:where(.cv-drawer) :where(a, button, summary, [tabindex]):focus-visible,
+:where(.cv-trigger, .scroll-top):focus-visible {
     outline-color: var(--color-heading) !important;
 }
 

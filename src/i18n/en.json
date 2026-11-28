@@ -80,6 +80,36 @@
             "subtitle": "Experience, education and technologies I've worked with."
         }
     },
+    "cv": {
+        "title": "View CV",
+        "close": "Close",
+        "download": "Download PDF (EN)",
+        "showDetails": "Show responsibilities",
+        "hideDetails": "Hide responsibilities",
+        "experience": {
+            "title": "Work Experience",
+            "accenture": {
+                "role": "System Developer (Java Backend)",
+                "dates": "Jun 2025 – Present",
+                "location": "Alicante / Remote",
+                "details": [
+                    "Developed and maintained enterprise applications using Java, JSP, and Spring Framework.",
+                    "Built and maintained SOAP services for a rail ticketing platform used by more than 500 travel agencies. Developed a fallback service from scratch to restore the legacy sales system if the new system fails.",
+                    "Diagnosed and resolved production issues across backend services, APIs, and database integrations."
+                ]
+            },
+            "university": {
+                "role": "IT Technician Intern",
+                "dates": "Feb 2023 – Jul 2023",
+                "location": "Alicante / On-site",
+                "details": [
+                    "Redesigned ticket views and history workflows in the university's internal IT ticketing platform using PHP, JavaScript, HTML, and CSS.",
+                    "Improved ticket loading and server response times by reducing the data sent, using asynchronous requests, eliminating duplicate calls, and optimizing database queries.",
+                    "Provided software and hardware support to academic and administrative staff. Installed, configured, and maintained computer equipment and software."
+                ]
+            }
+        }
+    },
     "projects": {
         "sourceCode": "Source code",
         "title": "Selected projects",

@@ -80,4 +80,10 @@
         background: var(--color-heading);
         color: var(--color-paper);
     }
+
+    @media (max-width: 767px) {
+        .scroll-top {
+            inset-block-end: calc(var(--cv-tab-height) + 1.25rem + env(safe-area-inset-bottom));
+        }
+    }
 </style>

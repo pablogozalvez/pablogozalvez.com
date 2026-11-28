@@ -4,6 +4,7 @@
     import Projects from "../lib/Projects.svelte";
     import Contact from "../lib/Contact.svelte";
     import Footer from "../lib/Footer.svelte";
+    import CvDrawer from "../lib/CvDrawer.svelte";
 
     export let data;
 
@@ -19,3 +20,4 @@
 </main>
 
 <Footer />
+<CvDrawer />

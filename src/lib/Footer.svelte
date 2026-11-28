@@ -84,7 +84,7 @@
 
     @media (max-width: 767px) {
         .footer-inner {
-            padding-bottom: 4.5rem;
+            padding-bottom: calc(4.5rem + var(--cv-tab-height) + env(safe-area-inset-bottom));
         }
 
         .footer-links {
